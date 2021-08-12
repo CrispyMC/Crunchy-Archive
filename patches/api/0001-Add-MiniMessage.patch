@@ -1,0 +1,31 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <finlayoxby@outlook.com>
+Date: Thu, 12 Aug 2021 15:20:08 +0100
+Subject: [PATCH] Add MiniMessage
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 15b8f4708887535383bb74bd922f893231737599..1622e94f8cad4b1afa0893a637cc39f5e1fdd988 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -12,6 +12,12 @@ java {
+ 
+ val adventureVersion = "4.8.1"
+ 
++// Crunchy start - Add MiniMessage
++repositories {
++    mavenCentral()
++}
++// Crunchy end - Add MiniMessage
++
+ dependencies {
+     // api dependencies are listed transitively to API consumers
+     api("commons-lang:commons-lang:2.6")
+@@ -30,6 +36,7 @@ dependencies {
+ 
+     implementation("org.ow2.asm:asm:9.1")
+     implementation("org.ow2.asm:asm-commons:9.1")
++    implementation("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT") // Crunchy - Add MiniMessage
+ 
+     compileOnly("org.apache.maven:maven-resolver-provider:3.8.1")
+     compileOnly("org.apache.maven.resolver:maven-resolver-connector-basic:1.7.0")
