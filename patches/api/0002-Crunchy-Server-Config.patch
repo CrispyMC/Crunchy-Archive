@@ -1,0 +1,25 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <finlayoxby@outlook.com>
+Date: Thu, 12 Aug 2021 16:01:49 +0100
+Subject: [PATCH] Crunchy Server Config
+
+
+diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
+index f09444d684ecbd00fcbd5f7921311e73f2678f90..d69be69fddd71c55702e5e988fb87d811f43cb6e 100644
+--- a/src/main/java/org/bukkit/Server.java
++++ b/src/main/java/org/bukkit/Server.java
+@@ -1685,6 +1685,14 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+         }
+         // Tuinity end - add config to timings report
+ 
++        // Crunchy start - Server config
++        @NotNull
++        public org.bukkit.configuration.file.YamlConfiguration getCrunchyConfig()
++        {
++            throw new UnsupportedOperationException("Not supported yet.");
++        }
++        // Crunchy end - Server config
++
+         /**
+          * Sends the component to the player
+          *
