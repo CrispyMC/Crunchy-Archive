@@ -1,0 +1,152 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <finlayoxby@outlook.com>
+Date: Thu, 12 Aug 2021 17:34:58 +0100
+Subject: [PATCH] Add Uptime Command
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 4a72ee2b63364ae4a2b69afdeed46e6cac83af33..6f9a8b3a31984fc44121bb3e9ca6c5f60f6ac6aa 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -74,6 +74,8 @@ dependencies {
+     testImplementation("io.github.classgraph:classgraph:4.8.47") // Paper - mob goal test
+     testImplementation("junit:junit:4.13.1")
+     testImplementation("org.hamcrest:hamcrest-library:1.3")
++
++    compileOnly("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT") // Crunchy
+ }
+ 
+ tasks.jar {
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/commands/UptimeCommand.java b/src/main/java/dev/mrfishcakes/crunchy/commands/UptimeCommand.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..0e25be4f57eec8fd3e1dfda58e570c363e92021c
+--- /dev/null
++++ b/src/main/java/dev/mrfishcakes/crunchy/commands/UptimeCommand.java
+@@ -0,0 +1,76 @@
++package dev.mrfishcakes.crunchy.commands;
++
++import dev.mrfishcakes.crunchy.config.CrunchyConfig;
++import net.kyori.adventure.text.minimessage.MiniMessage;
++import net.minecraft.server.MinecraftServer;
++import org.bukkit.command.Command;
++import org.bukkit.command.CommandSender;
++import org.bukkit.util.StringUtil;
++import org.jetbrains.annotations.NotNull;
++
++import java.text.SimpleDateFormat;
++import java.time.Duration;
++import java.util.*;
++
++public class UptimeCommand extends Command {
++
++    private static final String BASE_PERMISSION = "bukkit.command.uptime";
++    private static final String ZONE_PERMISSION = BASE_PERMISSION + ".timezone";
++
++    private final MiniMessage message;
++
++    public UptimeCommand() {
++        super("uptime", "Check the uptime of the server",
++                "/<command> [TimeZone]", Collections.singletonList("upt"));
++        setPermission(BASE_PERMISSION);
++
++        this.message = MiniMessage.get();
++    }
++
++    @Override
++    public boolean execute(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
++        if (!testPermission(sender)) return true;
++
++        TimeZone zone;
++
++        if (args.length == 1 && sender.hasPermission(ZONE_PERMISSION)) {
++            zone = TimeZone.getTimeZone(args[0]);
++        } else {
++            zone = TimeZone.getTimeZone(CrunchyConfig.uptimeCommandTimezone);
++        }
++
++        sendUptimeMessage(sender, zone);
++        return true;
++    }
++
++    @Override
++    @NotNull
++    public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
++        if (args.length != 1) return Collections.emptyList();
++
++        if (!sender.hasPermission(ZONE_PERMISSION)) return Collections.emptyList();
++
++        return StringUtil.copyPartialMatches(args[0], Arrays.asList(TimeZone.getAvailableIDs()), new ArrayList<>());
++    }
++
++    private void sendUptimeMessage(CommandSender sender, TimeZone zone) {
++        final long elapsedTime = (System.currentTimeMillis() - MinecraftServer.SERVER_START_MILLIS);
++
++        SimpleDateFormat dateFormat = new SimpleDateFormat(CrunchyConfig.uptimeCommandDateFormat);
++        dateFormat.setTimeZone(zone);
++
++        Duration duration = Duration.ofMillis(elapsedTime);
++
++        long days = duration.toDaysPart();
++        int hours = duration.toHoursPart();
++        int minutes = duration.toMinutesPart();
++
++        Map<String, String> placeholders = new HashMap<>();
++        placeholders.put("uptimeDays", days + (days != 1 ? " days" : " day"));
++        placeholders.put("uptimeHours", hours + (hours != 1 ? " hours" : " hour"));
++        placeholders.put("uptimeMins", minutes + (minutes != 1 ? " minutes" : " minute"));
++        placeholders.put("uptimeDate", dateFormat.format(new Date(MinecraftServer.SERVER_START_MILLIS)));
++
++        sender.sendMessage(message.parse(CrunchyConfig.uptimeCommandOutput, placeholders));
++    }
++}
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
+index 1db4c6b7228bc5ed4edecda7c50291092f4e151d..094a3272d4d0849563f53d723c4f668f344738d8 100644
+--- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
++++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
+@@ -1,6 +1,7 @@
+ package dev.mrfishcakes.crunchy.config;
+ 
+ import com.google.common.base.Throwables;
++import dev.mrfishcakes.crunchy.commands.UptimeCommand;
+ import net.minecraft.server.MinecraftServer;
+ import org.bukkit.Bukkit;
+ import org.bukkit.command.Command;
+@@ -67,6 +68,8 @@ public final class CrunchyConfig {
+         version = getInt("current-version", 1);
+         set("current-version", 1);
+ 
++        commands.put("uptime", new UptimeCommand());
++
+         readConfig(CrunchyConfig.class, null);
+     }
+ 
+@@ -140,4 +143,16 @@ public final class CrunchyConfig {
+             Bukkit.getLogger().log(level, message);
+     }
+ 
++    // Uptime command
++    public static String uptimeCommandOutput;
++    public static String uptimeCommandTimezone;
++    public static String uptimeCommandDateFormat;
++
++    private static void uptimeCommandSettings() {
++        uptimeCommandOutput = getString("commands.uptime.output", "<white>Server Uptime: " +
++                "<green><uptimeDays>, <uptimeHours>, <uptimeMins> <white>(<green><uptimeDate><white>)");
++        uptimeCommandTimezone = getString("commands.uptime.default-timezone", "GMT");
++        uptimeCommandDateFormat = getString("commands.uptime.date-format", "dd/MM/yyyy HH:mm");
++    }
++
+ }
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index 4dedc00c06cd17870c2b015df799bf1d84030cda..d6cc9a307c7a2616937e57aecd4116c7c6b99727 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -398,6 +398,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+     }
+     // Tuinity end - execute chunk tasks mid tick
+ 
++    public static final long SERVER_START_MILLIS = System.currentTimeMillis(); // Crunchy - Uptime command
++
+     public MinecraftServer(OptionSet options, DataPackConfig datapackconfiguration, Thread thread, RegistryAccess.RegistryHolder iregistrycustom_dimension, LevelStorageSource.LevelStorageAccess convertable_conversionsession, WorldData savedata, PackRepository resourcepackrepository, Proxy proxy, DataFixer datafixer, ServerResources datapackresources, @Nullable MinecraftSessionService minecraftsessionservice, @Nullable GameProfileRepository gameprofilerepository, @Nullable GameProfileCache usercache, ChunkProgressListenerFactory worldloadlistenerfactory) {
+         super("Server");
+         SERVER = this; // Paper - better singleton
