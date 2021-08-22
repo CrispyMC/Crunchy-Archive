@@ -1,7 +1,7 @@
 plugins {
   java
   id("com.github.johnrengelman.shadow") version "7.0.0" apply false
-  id("io.papermc.paperweight.patcher") version "1.1.9-SNAPSHOT"
+  id("io.papermc.paperweight.patcher") version "1.1.11"
 }
 
 repositories {
@@ -43,14 +43,12 @@ subprojects {
 paperweight {
   serverProject.set(project(":Crunchy-Server"))
 
-  useStandardUpstream("tuinity") {
-    url.set(github("Tuinity", "Tuinity"))
-    ref.set(providers.gradleProperty("tuinityRef"))
-
-    withStandardPatcher {
-      baseName("Tuinity")
-
+  usePaperUpstream(providers.gradleProperty("paperCommit")) {
+    withPaperPatcher {
+      apiPatchDir.set(layout.projectDirectory.dir("patches/api"))
       apiOutputDir.set(layout.projectDirectory.dir("Crunchy-API"))
+
+      serverPatchDir.set(layout.projectDirectory.dir("patches/server"))
       serverOutputDir.set(layout.projectDirectory.dir("Crunchy-Server"))
     }
   }

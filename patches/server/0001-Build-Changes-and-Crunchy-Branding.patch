@@ -5,77 +5,79 @@ Subject: [PATCH] Build Changes and Crunchy Branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index f5a9c41fdbaede65cf4607737421571f0c344c1f..4a72ee2b63364ae4a2b69afdeed46e6cac83af33 100644
+index 83ce7b299033806297095028989976259f9c2a92..5b741e4476a876af86ff0bc92778a9d104f2c9c8 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -35,7 +35,7 @@ repositories {
+@@ -28,8 +28,8 @@ repositories {
  }
  
  dependencies {
--    implementation(project(":Tuinity-API")) // Tuinity
+-    implementation(project(":Paper-API"))
+-    implementation(project(":Paper-MojangAPI"))
 +    implementation(project(":Crunchy-API")) // Crunchy
-     implementation("io.papermc.paper:paper-mojangapi:1.17.1-R0.1-SNAPSHOT") // Tuinity
++    implementation("io.papermc.paper:paper-mojangapi:1.17.1-R0.1-SNAPSHOT") // Crunchy
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.12.1")
-@@ -88,7 +88,7 @@ tasks.jar {
+     implementation("net.minecrell:terminalconsoleappender:1.2.0")
+@@ -80,7 +80,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
--            "Implementation-Version" to "git-Tuinity-$implementationVersion", // Tuinity
-+            "Implementation-Version" to "git-Crunchy-$implementationVersion", // Crunchy
+-            "Implementation-Version" to "git-Paper-$implementationVersion",
++            "Implementation-Version" to "git-Crunchy-$implementationVersion",
              "Implementation-Vendor" to date, // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
 diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-index d50b61876f15d95b836b3dd81d9c3492c91a8448..dfa1a105bdb027cd52c1a236e49be2ae2724a591 100644
+index 580bae0d414d371a07a6bfeefc41fdd989dc0083..31a6e7259df2bb2fd77eff29b7f7540842f3c214 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 @@ -29,8 +29,8 @@ public class PaperVersionFetcher implements VersionFetcher {
      @Nonnull
      @Override
      public Component getVersionMessage(@Nonnull String serverVersion) {
--        String[] parts = serverVersion.substring("git-Tuinity-".length()).split("[-\\s]"); // Tuinity
--        final Component updateMessage = getUpdateStatusMessage("Spottedleaf/Tuinity", GITHUB_BRANCH_NAME, parts[0]); // Tuinity
+-        String[] parts = serverVersion.substring("git-Paper-".length()).split("[-\\s]");
+-        final Component updateMessage = getUpdateStatusMessage("PaperMC/Paper", GITHUB_BRANCH_NAME, parts[0]);
 +        String[] parts = serverVersion.substring("git-Crunchy-".length()).split("[-\\s]"); // Crunchy
 +        final Component updateMessage = getUpdateStatusMessage("MrFishCakes/Crunchy", GITHUB_BRANCH_NAME, parts[0]); // Crunchy
          final Component history = getHistory();
  
          return history != null ? TextComponent.ofChildren(updateMessage, Component.newline(), history) : updateMessage;
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index f25bb4214cffd0050241ea229b6acb0c16b2b0a5..4dedc00c06cd17870c2b015df799bf1d84030cda 100644
+index 3dded5c491ace6b073a7bc3178976bd70f0b9393..76ae9e9e83ef134ada0c6cbacbfb029f080e07e0 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1716,7 +1716,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1651,7 +1651,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
      @DontObfuscate
      public String getServerModName() {
--        return "Tuinity"; // Tuinity - Tuinity > //Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
+-        return "Paper"; //Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
 +        return "Crunchy"; // Crunchy - Crunchy > // Tuinity - Tuinity > //Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
      }
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 1ec307d705087eec9d867f9f8e8858ac388f3846..765f0e3b2cf1eab41c029a29f83428d2053479ac 100644
+index 6d7f16fede01c19f638e1dcdae8b07b79cd86dc0..50b5fea56e01bbfc9bdf6c28fe32fbb4c78bed80 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -239,7 +239,7 @@ import javax.annotation.Nullable; // Paper
+@@ -240,7 +240,7 @@ import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {
--    private final String serverName = "Tuinity"; // Tuinity // Paper
+-    private final String serverName = "Paper"; // Paper
 +    private final String serverName = "Crunchy"; // Crunchy // Tuinity // Paper
      private final String serverVersion;
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
-index 001b1e5197eaa51bfff9031aa6c69876c9a47960..4dda8281bb81517f8e3cafb896420fa46e36f9ed 100644
+index 774556a62eb240da42e84db4502e2ed43495be17..4dda8281bb81517f8e3cafb896420fa46e36f9ed 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 @@ -11,7 +11,7 @@ public final class Versioning {
      public static String getBukkitVersion() {
          String result = "Unknown-Version";
  
--        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/com.tuinity/tuinity-api/pom.properties"); // Tuinity
+-        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/io.papermc.paper/paper-api/pom.properties");
 +        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/dev.mrfishcakes.crunchy/crunchy-api/pom.properties"); // Tuinity
          Properties properties = new Properties();
  

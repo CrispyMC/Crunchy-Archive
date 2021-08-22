@@ -1,0 +1,44 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <finlayoxby@outlook.com>
+Date: Fri, 13 Aug 2021 19:11:42 +0100
+Subject: [PATCH] Modify Piston Push Limit
+
+
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
+index 514d7fa01bbb21910bc6ed28d093dc019288c189..9a02daf3a384145f7a139d7f70dd8ac606fa8992 100644
+--- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
++++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
+@@ -67,4 +67,11 @@ public final class CrunchyWorldConfig {
+         return CrunchyConfig.config.getLong(namedPath + path, CrunchyConfig.config.getLong(defaultPath + path));
+     }
+ 
++    // Piston push distance
++    public int pistonPushDistance;
++
++    private void pistonSettings() {
++        pistonPushDistance = getInt("gameplay.mechanics.piston-push-distance", 12);
++    }
++
+ }
+diff --git a/src/main/java/net/minecraft/world/level/block/piston/PistonStructureResolver.java b/src/main/java/net/minecraft/world/level/block/piston/PistonStructureResolver.java
+index 744d91546d1a810f60a43c15ed74b4158f341a4a..6ba9a3808c15191faf8efbdee74f3021722cbd21 100644
+--- a/src/main/java/net/minecraft/world/level/block/piston/PistonStructureResolver.java
++++ b/src/main/java/net/minecraft/world/level/block/piston/PistonStructureResolver.java
+@@ -86,7 +86,7 @@ public class PistonStructureResolver {
+             return true;
+         } else {
+             int i = 1;
+-            if (i + this.toPush.size() > 12) {
++            if (i + this.toPush.size() > level.crunchyConfig.pistonPushDistance) { // Crunchy - Modify piston push distance
+                 return false;
+             } else {
+                 while(isSticky(blockState)) {
+@@ -98,7 +98,7 @@ public class PistonStructureResolver {
+                     }
+ 
+                     ++i;
+-                    if (i + this.toPush.size() > 12) {
++                    if (i + this.toPush.size() > level.crunchyConfig.pistonPushDistance) { // Crunchy - Modify piston push distance
+                         return false;
+                     }
+                 }

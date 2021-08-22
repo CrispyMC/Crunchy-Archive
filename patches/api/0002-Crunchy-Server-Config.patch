@@ -5,13 +5,21 @@ Subject: [PATCH] Crunchy Server Config
 
 
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index f09444d684ecbd00fcbd5f7921311e73f2678f90..d69be69fddd71c55702e5e988fb87d811f43cb6e 100644
+index 83870d54a5ff1017ad7455e9c931fdee54354434..6fe53add360c8965866a26cf45a613227a381241 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1685,6 +1685,14 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1679,6 +1679,22 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
          }
-         // Tuinity end - add config to timings report
+         // Paper end
  
++        // Tuinity start - add config to timings report
++        @NotNull
++        public org.bukkit.configuration.file.YamlConfiguration getTuinityConfig()
++        {
++            throw new UnsupportedOperationException("Not supported yet.");
++        }
++        // Tuinity end - add config to timings report
++
 +        // Crunchy start - Server config
 +        @NotNull
 +        public org.bukkit.configuration.file.YamlConfiguration getCrunchyConfig()

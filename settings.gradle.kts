@@ -6,4 +6,5 @@ pluginManagement {
 }
 
 rootProject.name = "Crunchy"
+
 include("Crunchy-API", "Crunchy-Server")
