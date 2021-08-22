@@ -1,8 +1,5 @@
 # Crunchy
-A fork of Tuinity built to enhance gameplay features, make quality of life better for owners and assist developers where possible.
-
-### What is Crunchy?
-Crunchy is a fork of [Paper](https://github.com/PaperMC/Paper/) built for optimisations and quaility of life changes for developers and server owners alike.
+A fork of [Paper](https://github.com/PaperMC/Paper/) built to enhance gameplay features, make quality of life better for owners and developers where possible.
 
 ### How do I get the server jar?
 Firstly there are some requirements to build the server jar:
