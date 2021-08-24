@@ -1,0 +1,48 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <finlayoxby@outlook.com>
+Date: Tue, 24 Aug 2021 23:27:03 +0100
+Subject: [PATCH] Creative Instant Kill
+
+
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
+index 6ebe927d7924f85e801411c5795954996839382b..0de801f9b6d3b6e0023257d86a2f8a85d00fd423 100644
+--- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
++++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
+@@ -82,4 +82,11 @@ public final class CrunchyWorldConfig {
+         disableWitherSkeletonWithering = getBoolean("gameplay.mobs.wither-skeleton.disable-withering", false);
+     }
+ 
++    // GameMode settings
++    public boolean creativeInstantKill;
++
++    private void gameModeSettings() {
++        creativeInstantKill = getBoolean("gameplay.mechanics.creative-instant-kill", true);
++    }
++
+ }
+diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
+index 6175360eb2b19c8197cc5b82a09030211afd838b..86924d32fb18a772a0ca537e794760c206822a05 100644
+--- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
++++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
+@@ -2103,6 +2103,21 @@ public abstract class LivingEntity extends Entity {
+                 ((ServerPlayer) damagesource.getEntity()).awardStat(Stats.DAMAGE_DEALT_ABSORBED, Math.round(f2 * 10.0F));
+             }
+ 
++            // Crunchy start - Creative instant kill
++            if (damagesource.getEntity() instanceof net.minecraft.world.entity.player.Player player && player.level.crunchyConfig.creativeInstantKill) {
++                if (player.isCreative()) {
++                    double attackDamage = 0;
++                    for (AttributeModifier attributeModifier : player.getMainHandItem().getAttributeModifiers(EquipmentSlot.MAINHAND).get(Attributes.ATTACK_DAMAGE)) {
++                        attackDamage += attributeModifier.getAmount();
++                    }
++
++                    if (attackDamage == 0) {
++                        this.setHealth(0);
++                    }
++                }
++            }
++            // Crunchy end - Creative instant kill
++
+             if (f > 0 || !human) {
+                 if (human) {
+                     // PAIL: Be sure to drag all this code from the EntityHuman subclass each update.
