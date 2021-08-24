@@ -5,12 +5,12 @@ Subject: [PATCH] Add MiniMessage
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index d69d367a7527d677661ea56453b95417748b70a9..0b869637ebfb4bd328b807ec122b9329ed8650b5 100644
+index 689d470ebe2c7e25e4c87f6127978d1d283e55b5..7d5727da22ec4ec468927cd1d2430e1b6e9ed284 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -12,6 +12,12 @@ java {
- 
- val adventureVersion = "4.8.1"
+@@ -23,6 +23,12 @@ configurations.api {
+     extendsFrom(apiAndDocs)
+ }
  
 +// Crunchy start - Add MiniMessage
 +repositories {
@@ -21,7 +21,7 @@ index d69d367a7527d677661ea56453b95417748b70a9..0b869637ebfb4bd328b807ec122b9329
  dependencies {
      // api dependencies are listed transitively to API consumers
      api("commons-lang:commons-lang:2.6")
-@@ -31,6 +37,7 @@ dependencies {
+@@ -42,6 +48,7 @@ dependencies {
  
      implementation("org.ow2.asm:asm:9.1")
      implementation("org.ow2.asm:asm-commons:9.1")
