@@ -1,0 +1,29 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <finlayoxby@outlook.com>
+Date: Tue, 24 Aug 2021 23:32:16 +0100
+Subject: [PATCH] Register Multiple Events at Once
+
+
+diff --git a/src/main/java/org/bukkit/plugin/PluginManager.java b/src/main/java/org/bukkit/plugin/PluginManager.java
+index 86cc5025ad98f7a752c51713b7cd6a39d5136ecc..ce33dfa594ac73d4e68e26dcf76ec489d88106f8 100644
+--- a/src/main/java/org/bukkit/plugin/PluginManager.java
++++ b/src/main/java/org/bukkit/plugin/PluginManager.java
+@@ -119,6 +119,18 @@ public interface PluginManager {
+      */
+     public void registerEvents(@NotNull Listener listener, @NotNull Plugin plugin);
+ 
++    // Crunchy start - Register multiple events at once
++    /**
++     * Registers all specific listeners that have been passed
++     *
++     * @param listeners Listeners to register
++     * @param plugin Plugin to register
++     */
++    default void registerEvents(@NotNull Listener[] listeners, @NotNull Plugin plugin) {
++        for (Listener listener : listeners) registerEvents(listener, plugin);
++    }
++    // Crunchy end - Register multiple events at once
++
+     /**
+      * Registers the specified executor to the given event class
+      *
