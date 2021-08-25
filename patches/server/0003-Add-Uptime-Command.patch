@@ -5,7 +5,7 @@ Subject: [PATCH] Add Uptime Command
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 5b741e4476a876af86ff0bc92778a9d104f2c9c8..961b094a7bc611a4db22508ecdb6bfbceb8b0701 100644
+index 4c811107b904e3827da134168673e025be917c0b..54c008ebdc18c6391077bd7d0eaf31f43b44eef4 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -66,6 +66,8 @@ dependencies {
@@ -138,10 +138,10 @@ index 1db4c6b7228bc5ed4edecda7c50291092f4e151d..094a3272d4d0849563f53d723c4f668f
 +
  }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 76ae9e9e83ef134ada0c6cbacbfb029f080e07e0..27e06eddef1d3ba312f1fd0fec0d33e18992a235 100644
+index 042e8ca6b738d31acc6f5e111a9eac2d9d4235f5..159bad6616dc14ccc7ed7c2bdc6f80773e97d6ab 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -327,6 +327,78 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -329,6 +329,78 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          return s0;
      }
  
