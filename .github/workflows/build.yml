@@ -1,42 +1,37 @@
-# Here lie dragons!
-#
-# Note that there is no artifact step in this script. We do not want Paperclip
-# jars to be built for every push & PR; our CI handles pushes to branches, while
-# PRs can themselves link to Paperclip jars if it is necessary. Official such
-# PRs will take use of testing builds.
-#
-# This was taken from the PaperMC/Paper repository
-
 name: Build Crunchy
-on: [push, pull_request]
-
+on: [ push, pull_request ]
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                java: [16]
-            fail-fast: true
-        steps:
-            - uses: actions/checkout@v2
-            - name: JDK ${{ matrix.java }}
-              uses: actions/setup-java@v2
-              with:
-                  java-version: ${{ matrix.java }}
-                  distribution: 'adopt'
-            - name: Cache gradle
-              uses: actions/cache@v2
-              with:
-                  path: |
-                    ~/.gradle/caches
-                    ~/.gradle/jdks
-                    ~/.gradle/native
-                    ~/.gradle/wrapper
-                  key: ${{ runner.os }}-paper-2-${{ hashFiles('**/*.gradle*', 'gradle/**', 'gradle.properties') }}
-                  restore-keys: ${{ runner.os }}-paper-2
-            - name: Patch and build
-              run: |
-                  git config --global user.email "no-reply@github.com"
-                  git config --global user.name "Github Actions"
-                  ./gradlew applyPatches --stacktrace
-                  ./gradlew build --stacktrace
+  build:
+    # Only run on PRs if the source branch is on someone else's repo
+    if: ${{ github.event_name != 'pull_request' || github.repository != github.event.pull_request.head.repo.full_name }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ 16 ]
+      fail-fast: true
+    steps:
+      - name: Checkout Git Repository
+        uses: actions/checkout@v2
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: 'adopt'
+      - name: Configure Git
+        run: |
+          git config --global user.email "no-reply@github.com"
+          git config --global user.name "Github Actions"
+      - name: Patch Crunchy
+        run: |
+          ./gradlew applyPatches --stacktrace --no-daemon
+      - name: Build Crunchy
+        run: |
+          ./gradlew build --stacktrace --no-daemon
+          ./gradlew paperclipJar --stacktrace --no-daemon
+      - name: Archive Crunchy Paperclip
+        uses: actions/upload-artifact@v2
+        with:
+          name: Crunchy
+          path: Crunchy.jar
