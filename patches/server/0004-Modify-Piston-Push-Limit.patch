@@ -21,7 +21,7 @@ index 514d7fa01bbb21910bc6ed28d093dc019288c189..9a02daf3a384145f7a139d7f70dd8ac6
 +
  }
 diff --git a/src/main/java/net/minecraft/world/level/block/piston/PistonStructureResolver.java b/src/main/java/net/minecraft/world/level/block/piston/PistonStructureResolver.java
-index 744d91546d1a810f60a43c15ed74b4158f341a4a..6ba9a3808c15191faf8efbdee74f3021722cbd21 100644
+index 744d91546d1a810f60a43c15ed74b4158f341a4a..3855732f09f5c21b312d6e01d5cf3c5e74d66e52 100644
 --- a/src/main/java/net/minecraft/world/level/block/piston/PistonStructureResolver.java
 +++ b/src/main/java/net/minecraft/world/level/block/piston/PistonStructureResolver.java
 @@ -86,7 +86,7 @@ public class PistonStructureResolver {
@@ -29,7 +29,7 @@ index 744d91546d1a810f60a43c15ed74b4158f341a4a..6ba9a3808c15191faf8efbdee74f3021
          } else {
              int i = 1;
 -            if (i + this.toPush.size() > 12) {
-+            if (i + this.toPush.size() > level.crunchyConfig.pistonPushDistance) { // Crunchy - Modify piston push distance
++            if (i + this.toPush.size() > this.level.crunchyConfig.pistonPushDistance) { // Crunchy - Modify piston push distance
                  return false;
              } else {
                  while(isSticky(blockState)) {
@@ -38,7 +38,16 @@ index 744d91546d1a810f60a43c15ed74b4158f341a4a..6ba9a3808c15191faf8efbdee74f3021
  
                      ++i;
 -                    if (i + this.toPush.size() > 12) {
-+                    if (i + this.toPush.size() > level.crunchyConfig.pistonPushDistance) { // Crunchy - Modify piston push distance
++                    if (i + this.toPush.size() > this.level.crunchyConfig.pistonPushDistance) { // Crunchy - Modify piston push distance
                          return false;
                      }
                  }
+@@ -142,7 +142,7 @@ public class PistonStructureResolver {
+                         return true;
+                     }
+ 
+-                    if (this.toPush.size() >= 12) {
++                    if (this.toPush.size() >= this.level.crunchyConfig.pistonPushDistance) { // Crunchy - Modify piston push distance
+                         return false;
+                     }
+ 
