@@ -138,83 +138,13 @@ index 1db4c6b7228bc5ed4edecda7c50291092f4e151d..094a3272d4d0849563f53d723c4f668f
 +
  }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 042e8ca6b738d31acc6f5e111a9eac2d9d4235f5..159bad6616dc14ccc7ed7c2bdc6f80773e97d6ab 100644
+index 042e8ca6b738d31acc6f5e111a9eac2d9d4235f5..a0755395f964a78d785a8bd2ad444a79b645aa29 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -329,6 +329,78 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -329,6 +329,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          return s0;
      }
  
-+    // Tuinity start - execute chunk tasks mid tick
-+    static final long CHUNK_TASK_QUEUE_BACKOFF_MIN_TIME = 25L * 1000L; // 25us
-+    static final long MAX_CHUNK_EXEC_TIME = 1000L; // 1us
-+
-+    static final long TASK_EXECUTION_FAILURE_BACKOFF = 5L * 1000L; // 5us
-+
-+    private static long lastMidTickExecute;
-+    private static long lastMidTickExecuteFailure;
-+
-+    private boolean tickMidTickTasks() {
-+        // give all worlds a fair chance at by targetting them all.
-+        // if we execute too many tasks, that's fine - we have logic to correctly handle overuse of allocated time.
-+        boolean executed = false;
-+        for (ServerLevel world : this.getAllLevels()) {
-+            long currTime = System.nanoTime();
-+            if (currTime - world.lastMidTickExecuteFailure <= TASK_EXECUTION_FAILURE_BACKOFF) {
-+                continue;
-+            }
-+            if (!world.getChunkSource().pollTask()) {
-+                // we need to back off if this fails
-+                world.lastMidTickExecuteFailure = currTime;
-+            } else {
-+                executed = true;
-+            }
-+        }
-+
-+        return executed;
-+    }
-+
-+    public final void executeMidTickTasks() {
-+        org.spigotmc.AsyncCatcher.catchOp("mid tick chunk task execution");
-+        long startTime = System.nanoTime();
-+        if ((startTime - lastMidTickExecute) <= CHUNK_TASK_QUEUE_BACKOFF_MIN_TIME || (startTime - lastMidTickExecuteFailure) <= TASK_EXECUTION_FAILURE_BACKOFF) {
-+            // it's shown to be bad to constantly hit the queue (chunk loads slow to a crawl), even if no tasks are executed.
-+            // so, backoff to prevent this
-+            return;
-+        }
-+
-+        co.aikar.timings.MinecraftTimings.midTickChunkTasks.startTiming();
-+        try {
-+            for (;;) {
-+                boolean moreTasks = this.tickMidTickTasks();
-+                long currTime = System.nanoTime();
-+                long diff = currTime - startTime;
-+
-+                if (!moreTasks || diff >= MAX_CHUNK_EXEC_TIME) {
-+                    if (!moreTasks) {
-+                        lastMidTickExecuteFailure = currTime;
-+                    }
-+
-+                    // note: negative values reduce the time
-+                    long overuse = diff - MAX_CHUNK_EXEC_TIME;
-+                    if (overuse >= (10L * 1000L * 1000L)) { // 10ms
-+                        // make sure something like a GC or dumb plugin doesn't screw us over...
-+                        overuse = 10L * 1000L * 1000L; // 10ms
-+                    }
-+
-+                    double overuseCount = (double)overuse/(double)MAX_CHUNK_EXEC_TIME;
-+                    long extraSleep = (long)Math.round(overuseCount*CHUNK_TASK_QUEUE_BACKOFF_MIN_TIME);
-+
-+                    lastMidTickExecute = currTime + extraSleep;
-+                    return;
-+                }
-+            }
-+        } finally {
-+            co.aikar.timings.MinecraftTimings.midTickChunkTasks.stopTiming();
-+        }
-+    }
-+    // Tuinity end - execute chunk tasks mid tick
-+
 +    public static final long SERVER_START_MILLIS = System.currentTimeMillis(); // Crunchy - Uptime command
 +
      public MinecraftServer(OptionSet options, DataPackConfig datapackconfiguration, Thread thread, RegistryAccess.RegistryHolder iregistrycustom_dimension, LevelStorageSource.LevelStorageAccess convertable_conversionsession, WorldData savedata, PackRepository resourcepackrepository, Proxy proxy, DataFixer datafixer, ServerResources datapackresources, @Nullable MinecraftSessionService minecraftsessionservice, @Nullable GameProfileRepository gameprofilerepository, @Nullable GameProfileCache usercache, ChunkProgressListenerFactory worldloadlistenerfactory) {
