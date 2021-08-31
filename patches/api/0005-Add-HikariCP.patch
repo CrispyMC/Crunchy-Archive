@@ -1,0 +1,18 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <finlayoxby@outlook.com>
+Date: Tue, 31 Aug 2021 22:09:14 +0100
+Subject: [PATCH] Add HikariCP
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 82cdc5e10cb6c1437cc73e1142066fa5095e4eeb..583f7ecf937e49bfb1a544e028db3c99ed79a8c6 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -46,6 +46,7 @@ dependencies {
+     api("org.apache.logging.log4j:log4j-api:2.14.1") // Paper
+     api("org.slf4j:slf4j-api:1.7.30") // Paper
+     api("net.kyori:adventure-text-minimessage:4.2.0-SNAPSHOT") // Crunchy - Add MiniMessage
++    api("com.zaxxer:HikariCP:5.0.0") // Crunchy - Add HikariCP
+ 
+     implementation("org.ow2.asm:asm:9.1")
+     implementation("org.ow2.asm:asm-commons:9.1")
