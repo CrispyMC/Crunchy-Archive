@@ -5,14 +5,29 @@ Subject: [PATCH] Add HikariCP
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 82cdc5e10cb6c1437cc73e1142066fa5095e4eeb..583f7ecf937e49bfb1a544e028db3c99ed79a8c6 100644
+index 82cdc5e10cb6c1437cc73e1142066fa5095e4eeb..f5507ae2cb80aeed56b189f70ae405539825cfe9 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -46,6 +46,7 @@ dependencies {
+@@ -11,6 +11,7 @@ java {
+ }
+ 
+ val adventureVersion = "4.8.1"
++val hikariVersion = "5.0.0" // Crunchy - Add HikariCP
+ val apiAndDocs by configurations.creating {
+     attributes {
+         attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category.DOCUMENTATION))
+@@ -46,6 +47,7 @@ dependencies {
      api("org.apache.logging.log4j:log4j-api:2.14.1") // Paper
      api("org.slf4j:slf4j-api:1.7.30") // Paper
      api("net.kyori:adventure-text-minimessage:4.2.0-SNAPSHOT") // Crunchy - Add MiniMessage
-+    api("com.zaxxer:HikariCP:5.0.0") // Crunchy - Add HikariCP
++    api("com.zaxxer:HikariCP:$hikariVersion") // Crunchy - Add HikariCP
  
      implementation("org.ow2.asm:asm:9.1")
      implementation("org.ow2.asm:asm-commons:9.1")
+@@ -103,5 +105,6 @@ tasks.withType<Javadoc>().configureEach {
+         "https://jd.adventure.kyori.net/text-serializer-legacy/$adventureVersion/",
+         "https://jd.adventure.kyori.net/text-serializer-plain/$adventureVersion/",
+         // Paper end
++        "https://javadoc.io/doc/com.zaxxer/HikariCP", // Crunchy - Add HikariCP
+     )
+ }
