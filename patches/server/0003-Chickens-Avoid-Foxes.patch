@@ -1,0 +1,54 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <finlayoxby@outlook.com>
+Date: Fri, 3 Sep 2021 22:19:57 +0100
+Subject: [PATCH] Chickens Avoid Foxes
+
+
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
+index ad027d773bfc7a8aa718caf9457a51fee8fd29e6..4d790ca3bd78f5a4a84b0536a31a4a57ed04b788 100644
+--- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
++++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
+@@ -81,4 +81,17 @@ public final class CrunchyWorldConfig {
+         return config.getList(namedPath + path, config.getList(defaultPath + path));
+     }
+ 
++    // Chicken Settings
++    public boolean chickenAvoidFox;
++    public float chickenAvoidFoxDistance;
++    public double chickenAvoidFoxSlow;
++    public double chickenAvoidFoxFast;
++
++    private void chickenSettings() {
++        this.chickenAvoidFox = getBoolean("mobs.chicken.avoid-fox.enabled", true);
++        this.chickenAvoidFoxDistance = Double.valueOf(getDouble("mobs.chicken.avoid-fox.distance", 6.0D)).floatValue();
++        this.chickenAvoidFoxSlow = getDouble("mobs.chicken.avoid-fox.slow-speed", 1.0D);
++        this.chickenAvoidFoxFast = getDouble("mobs.chicken.avoid-fox.fast-speed", 1.5D);
++    }
++
+ }
+diff --git a/src/main/java/net/minecraft/world/entity/animal/Chicken.java b/src/main/java/net/minecraft/world/entity/animal/Chicken.java
+index cece07e000a4355e88aef7848fd264191521484e..de4c8fda202b61f222969962f3095390130bd386 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/Chicken.java
++++ b/src/main/java/net/minecraft/world/entity/animal/Chicken.java
+@@ -16,6 +16,7 @@ import net.minecraft.world.entity.Mob;
+ import net.minecraft.world.entity.Pose;
+ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+ import net.minecraft.world.entity.ai.attributes.Attributes;
++import net.minecraft.world.entity.ai.goal.AvoidEntityGoal; // Crunchy
+ import net.minecraft.world.entity.ai.goal.BreedGoal;
+ import net.minecraft.world.entity.ai.goal.FloatGoal;
+ import net.minecraft.world.entity.ai.goal.FollowParentGoal;
+@@ -62,6 +63,13 @@ public class Chicken extends Animal {
+         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
+         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
++
++        // Crunchy start - Chickens avoid foxes
++        if (this.level.crunchyConfig.chickenAvoidFox) {
++            this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Fox.class, this.level.crunchyConfig.chickenAvoidFoxDistance,
++                    this.level.crunchyConfig.chickenAvoidFoxSlow, this.level.crunchyConfig.chickenAvoidFoxFast));
++        }
++        // Crunchy end - Chickens avoid foxes
+     }
+ 
+     @Override
