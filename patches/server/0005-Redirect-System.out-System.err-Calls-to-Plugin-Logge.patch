@@ -1,0 +1,91 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <finlayoxby@outlook.com>
+Date: Sat, 4 Sep 2021 20:47:01 +0100
+Subject: [PATCH] Redirect System.out / System.err Calls to Plugin Loggers
+
+
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/CrunchyPrintStream.java b/src/main/java/dev/mrfishcakes/crunchy/CrunchyPrintStream.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..93e621626bc3019cda87d921201713b85ca5da6d
+--- /dev/null
++++ b/src/main/java/dev/mrfishcakes/crunchy/CrunchyPrintStream.java
+@@ -0,0 +1,37 @@
++package dev.mrfishcakes.crunchy;
++
++import org.bukkit.Bukkit;
++import org.bukkit.plugin.java.JavaPlugin;
++import org.jetbrains.annotations.NotNull;
++import org.jetbrains.annotations.Nullable;
++
++import java.io.OutputStream;
++import java.io.PrintStream;
++import java.util.function.BiConsumer;
++import java.util.logging.Logger;
++
++public class CrunchyPrintStream extends PrintStream {
++
++    private static final StackWalker WALKER = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
++
++    private final BiConsumer<Logger, String> consumer;
++
++    public CrunchyPrintStream(@NotNull OutputStream outputStream, @NotNull BiConsumer<Logger, String> consumer) {
++        super(outputStream);
++        this.consumer = consumer;
++    }
++
++    @Override
++    public void print(@Nullable String input) {
++        try {
++            JavaPlugin plugin = JavaPlugin.getProvidingPlugin(WALKER.getCallerClass());
++
++            consumer.accept(plugin.getLogger(), input);
++        } catch (Throwable ex) {
++            StackTraceElement element = Thread.currentThread().getStackTrace()[2];
++
++            consumer.accept(Bukkit.getLogger(), String.format("(%s:%d) %s", element.getClassName(), element.getLineNumber(), input));
++        }
++    }
++
++}
+diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+index 605f4e0c5055612a839d9a85cb74f54c9478db74..1042b0453cf81c913ae92b840ac9ec78fe546949 100644
+--- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
++++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+@@ -23,6 +23,8 @@ import java.util.concurrent.Executor;
+ import java.util.function.BooleanSupplier;
+ import java.util.regex.Pattern;
+ import javax.annotation.Nullable;
++
++import dev.mrfishcakes.crunchy.CrunchyPrintStream; // Crunchy
+ import net.minecraft.DefaultUncaughtExceptionHandler;
+ import net.minecraft.DefaultUncaughtExceptionHandlerWithName;
+ import net.minecraft.SharedConstants;
+@@ -177,9 +179,13 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+         new org.bukkit.craftbukkit.util.TerminalConsoleWriterThread(System.out, this.reader).start();
+         */
+         // Paper end
++        // Crunchy start - Redirect System.out / System.err calls
++        // System.setOut(IoBuilder.forLogger(logger).setLevel(Level.INFO).buildPrintStream());
++        // System.setErr(IoBuilder.forLogger(logger).setLevel(Level.WARN).buildPrintStream());
+ 
+-        System.setOut(IoBuilder.forLogger(logger).setLevel(Level.INFO).buildPrintStream());
+-        System.setErr(IoBuilder.forLogger(logger).setLevel(Level.WARN).buildPrintStream());
++        System.setOut(new CrunchyPrintStream(IoBuilder.forLogger(logger).setLevel(Level.INFO).buildPrintStream(), java.util.logging.Logger::info));
++        System.setErr(new CrunchyPrintStream(IoBuilder.forLogger(logger).setLevel(Level.WARN).buildPrintStream(), java.util.logging.Logger::severe));
++        // Crunchy end - Redirect System.out / System.err calls
+         // CraftBukkit end
+ 
+         thread.setDaemon(true);
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index d45c047bcd0265f0608c4aa1d2042c67d5d0349e..a9163812e58c2cb13087b9e1abf9ae4166fa30c1 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -284,7 +284,7 @@ public final class CraftServer implements Server {
+     public int reloadCount;
+     private final io.papermc.paper.datapack.PaperDatapackManager datapackManager; // Paper
+     public static Exception excessiveVelEx; // Paper - Velocity warnings
+-    private final SysoutCatcher sysoutCatcher = new SysoutCatcher(); // Paper
++    // private final SysoutCatcher sysoutCatcher = new SysoutCatcher(); // Paper // Crunchy - Redirect System.out / System.err calls
+ 
+     static {
+         ConfigurationSerialization.registerClass(CraftOfflinePlayer.class);
