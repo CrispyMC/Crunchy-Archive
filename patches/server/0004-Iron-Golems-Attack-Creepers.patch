@@ -39,3 +39,19 @@ index ec00c2dd8f969eb99ec6a014e3bcd09c7484b237..99bd163ce5bf55770a239ea04a469f49
          }));
          this.targetSelector.addGoal(4, new ResetUniversalAngerTargetGoal<>(this, false));
      }
+diff --git a/src/main/java/net/minecraft/world/entity/monster/Creeper.java b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
+index e8c36e8541f041a0d72a86f49ced2a3ce1549be0..29a4d9ac6e89f626f122c7433596b676d48cc66a 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/Creeper.java
++++ b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
+@@ -76,6 +76,11 @@ public class Creeper extends Monster implements PowerableMob {
+         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
++        // Crunchy start - Iron Golems can attack Creepers
++        if (this.level.crunchyConfig.ironGolemAttackCreepers) {
++            this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, net.minecraft.world.entity.animal.IronGolem.class, true));
++        }
++        // Crunchy end - Iron Golems can attack Creepers
+         this.targetSelector.addGoal(2, new HurtByTargetGoal(this, new Class[0]));
+     }
+ 
