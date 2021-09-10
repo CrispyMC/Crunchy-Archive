@@ -1,0 +1,157 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <finlayoxby@outlook.com>
+Date: Fri, 10 Sep 2021 21:15:32 +0100
+Subject: [PATCH] Nuclear Creepers
+
+
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
+index 4d790ca3bd78f5a4a84b0536a31a4a57ed04b788..9a761f41106c0995e5bf6d70a300d9b51d4049cd 100644
+--- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
++++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
+@@ -94,4 +94,23 @@ public final class CrunchyWorldConfig {
+         this.chickenAvoidFoxFast = getDouble("mobs.chicken.avoid-fox.fast-speed", 1.5D);
+     }
+ 
++    // Creeper Settings
++    public boolean nuclearCreeper;
++    public double nuclearCreeperChanceEasy;
++    public double nuclearCreeperChanceNormal;
++    public double nuclearCreeperChanceHard;
++    public float nuclearCreeperPower;
++    public String nuclearCreeperName;
++    public boolean nuclearCreeperShowName;
++
++    private void creeperSettings() {
++        this.nuclearCreeper = getBoolean("mobs.creeper.nuclear.enabled", false);
++        this.nuclearCreeperChanceEasy = getDouble("mobs.creeper.nuclear.easy-spawn-chance", 0.0D);
++        this.nuclearCreeperChanceNormal = getDouble("mobs.creeper.nuclear.normal-spawn-chance", 0.0D);
++        this.nuclearCreeperChanceHard = getDouble("mobs.creeper.nuclear.hard-spawn-chance", 0.0D);
++        this.nuclearCreeperPower = Double.valueOf(getDouble("mobs.creeper.nuclear.power", 3.5D)).floatValue();
++        this.nuclearCreeperName = getString("mobs.creeper.nuclear.name", "<#2cfa1f>Nuclear Creeper");
++        this.nuclearCreeperShowName = getBoolean("mobs.creeper.nuclear.show-name", true);
++    }
++
+ }
+diff --git a/src/main/java/net/minecraft/world/entity/monster/Creeper.java b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
+index e8c36e8541f041a0d72a86f49ced2a3ce1549be0..268166595fae28925efc85af062f7995f154f2ff 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/Creeper.java
++++ b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
+@@ -60,6 +60,7 @@ public class Creeper extends Monster implements PowerableMob {
+     public int maxSwell = 30;
+     public int explosionRadius = 3;
+     private int droppedSkulls;
++    private boolean nuclear; // Crunchy - Nuclear Creepers
+ 
+     public Creeper(EntityType<? extends Creeper> type, Level world) {
+         super(type, world);
+@@ -79,6 +80,34 @@ public class Creeper extends Monster implements PowerableMob {
+         this.targetSelector.addGoal(2, new HurtByTargetGoal(this, new Class[0]));
+     }
+ 
++    // Crunchy start
++    @org.jetbrains.annotations.Nullable
++    @Override
++    public net.minecraft.world.entity.SpawnGroupData finalizeSpawn(net.minecraft.world.level.ServerLevelAccessor world, net.minecraft.world.DifficultyInstance difficulty, net.minecraft.world.entity.MobSpawnType spawnReason, @org.jetbrains.annotations.Nullable net.minecraft.world.entity.SpawnGroupData entityData, @org.jetbrains.annotations.Nullable CompoundTag entityNbt) {
++        // Crunchy start - Nuclear Creepers
++        if (this.level.crunchyConfig.nuclearCreeper) {
++            double chance = switch (difficulty.getDifficulty()) {
++                case EASY -> this.level.crunchyConfig.nuclearCreeperChanceEasy;
++                case NORMAL -> this.level.crunchyConfig.nuclearCreeperChanceNormal;
++                case HARD -> this.level.crunchyConfig.nuclearCreeperChanceHard;
++                default -> 0.0D;
++            };
++
++            if (chance > 0D && random.nextDouble() <= chance) {
++                this.setNuclear(true);
++
++                this.getBukkitEntity().customName(net.kyori.adventure.text.minimessage.MiniMessage.get().parse(this.level.crunchyConfig.nuclearCreeperName));
++                if (this.level.crunchyConfig.nuclearCreeperShowName) {
++                    this.getBukkitEntity().setCustomNameVisible(true);
++                }
++            }
++        }
++        // Crunchy end - Nuclear Creepers
++
++        return super.finalizeSpawn(world, difficulty, spawnReason, entityData, entityNbt);
++    }
++    // Crunchy end
++
+     public static AttributeSupplier.Builder createAttributes() {
+         return Monster.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 0.25D);
+     }
+@@ -118,6 +147,7 @@ public class Creeper extends Monster implements PowerableMob {
+         nbt.putShort("Fuse", (short) this.maxSwell);
+         nbt.putByte("ExplosionRadius", (byte) this.explosionRadius);
+         nbt.putBoolean("ignited", this.isIgnited());
++        nbt.putBoolean("Crunchy.Nuclear", nuclear); // Crunchy - Nuclear Creepers
+     }
+ 
+     @Override
+@@ -136,6 +166,12 @@ public class Creeper extends Monster implements PowerableMob {
+             this.ignite();
+         }
+ 
++        // Crunchy start - Nuclear Creepers
++        if (nbt.contains("Crunchy.Nuclear")) {
++            this.nuclear = nbt.getBoolean("Crunchy.Nuclear");
++        }
++        // Crunchy end - Nuclear Creepers
++
+     }
+ 
+     @Override
+@@ -262,6 +298,16 @@ public class Creeper extends Monster implements PowerableMob {
+             Explosion.BlockInteraction explosion_effect = this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING) ? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE;
+             float f = this.isPowered() ? 2.0F : 1.0F;
+ 
++            // Crunchy start - Nuclear Creepers
++            if (this.isNuclear()) {
++                f = this.level.crunchyConfig.nuclearCreeperPower;
++
++                if (f < 0F) {
++                    f = this.isPowered() ? 2.0F : 1.0F;
++                }
++            }
++            // Crunchy end - Nuclear Creepers
++
+             // CraftBukkit start
+             ExplosionPrimeEvent event = new ExplosionPrimeEvent(this.getBukkitEntity(), this.explosionRadius * f, false);
+             this.level.getCraftServer().getPluginManager().callEvent(event);
+@@ -330,4 +376,15 @@ public class Creeper extends Monster implements PowerableMob {
+     public void increaseDroppedSkulls() {
+         ++this.droppedSkulls;
+     }
++
++    // Crunchy start - Nuclear Creepers
++    public boolean isNuclear() {
++        return nuclear;
++    }
++
++    public void setNuclear(boolean nuclear) {
++        this.nuclear = nuclear;
++    }
++    // Crunchy end - Nuclear Creepers
++
+ }
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftCreeper.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftCreeper.java
+index 63a8188010f045d5c17a1ecb63e8081ec86c2960..98f9adae7c910b7effd448b8442743476f27aa28 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftCreeper.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftCreeper.java
+@@ -106,4 +106,17 @@ public class CraftCreeper extends CraftMonster implements Creeper {
+         return getHandle().isIgnited();
+     }
+     // Paper end
++
++    // Crunchy start - Nuclear Creepers
++    @Override
++    public boolean isNuclear() {
++        return getHandle().isNuclear();
++    }
++
++    @Override
++    public void setNuclear(boolean nuclear) {
++        getHandle().setNuclear(nuclear);
++    }
++    // Crunchy end - Nuclear Creepers
++
+ }

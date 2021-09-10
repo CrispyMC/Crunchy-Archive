@@ -1,0 +1,32 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <finlayoxby@outlook.com>
+Date: Fri, 10 Sep 2021 21:14:48 +0100
+Subject: [PATCH] Nuclear Creepers
+
+
+diff --git a/src/main/java/org/bukkit/entity/Creeper.java b/src/main/java/org/bukkit/entity/Creeper.java
+index e144f618702122bf28ebedc5cb8ce0f6ef27c107..a0dbbb6e429edd296b81c2a1a2f4dac939fb7ec9 100644
+--- a/src/main/java/org/bukkit/entity/Creeper.java
++++ b/src/main/java/org/bukkit/entity/Creeper.java
+@@ -103,4 +103,21 @@ public interface Creeper extends Monster {
+      */
+     public boolean isIgnited();
+     // Paper end
++
++    // Crunchy start - Nuclear Creepers
++    /**
++     * Check if Creeper is nuclear or not
++     *
++     * @return Nuclear state
++     */
++    public boolean isNuclear();
++
++    /**
++     * Set whether the Creeper is nuclear or not
++     *
++     * @param nuclear New nuclear state
++     */
++    public void setNuclear(boolean nuclear);
++    // Crunchy end - Nuclear Creepers
++
+ }
