@@ -21,37 +21,27 @@ index 4d790ca3bd78f5a4a84b0536a31a4a57ed04b788..05fb6c98c28d4a97da8e35c033ebdb4a
 +
  }
 diff --git a/src/main/java/net/minecraft/world/entity/animal/IronGolem.java b/src/main/java/net/minecraft/world/entity/animal/IronGolem.java
-index ec00c2dd8f969eb99ec6a014e3bcd09c7484b237..99bd163ce5bf55770a239ea04a469f493da6c512 100644
+index ec00c2dd8f969eb99ec6a014e3bcd09c7484b237..dd9d074d1bea2eea56e12f443eafe91ea02373f5 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/IronGolem.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/IronGolem.java
-@@ -83,7 +83,13 @@ public class IronGolem extends AbstractGolem implements NeutralMob {
+@@ -82,9 +82,17 @@ public class IronGolem extends AbstractGolem implements NeutralMob {
+         this.targetSelector.addGoal(1, new DefendVillageTargetGoal(this));
          this.targetSelector.addGoal(2, new HurtByTargetGoal(this, new Class[0]));
          this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
-         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Mob.class, 5, false, false, (entityliving) -> {
+-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Mob.class, 5, false, false, (entityliving) -> {
 -            return entityliving instanceof Enemy && !(entityliving instanceof Creeper);
-+            // Crunchy start - Iron Golems can attack Creepers
-+            if (this.level.crunchyConfig.ironGolemAttackCreepers) {
-+                return entityliving instanceof Enemy;
-+            } else {
-+                return entityliving instanceof Enemy && !(entityliving instanceof Creeper);
-+            }
-+            // Crunchy end - Iron Golems can attack Creepers
-         }));
-         this.targetSelector.addGoal(4, new ResetUniversalAngerTargetGoal<>(this, false));
-     }
-diff --git a/src/main/java/net/minecraft/world/entity/monster/Creeper.java b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
-index e8c36e8541f041a0d72a86f49ced2a3ce1549be0..29a4d9ac6e89f626f122c7433596b676d48cc66a 100644
---- a/src/main/java/net/minecraft/world/entity/monster/Creeper.java
-+++ b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
-@@ -76,6 +76,11 @@ public class Creeper extends Monster implements PowerableMob {
-         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
-         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
+-        }));
 +        // Crunchy start - Iron Golems can attack Creepers
 +        if (this.level.crunchyConfig.ironGolemAttackCreepers) {
-+            this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, net.minecraft.world.entity.animal.IronGolem.class, true));
++            this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Mob.class, 5, false, false, (entity) -> {
++                return entity instanceof Enemy;
++            }));
++        } else {
++            this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Mob.class, 5, false, false, (entity) -> {
++                return entity instanceof Enemy && !(entity instanceof Creeper);
++            }));
 +        }
 +        // Crunchy end - Iron Golems can attack Creepers
-         this.targetSelector.addGoal(2, new HurtByTargetGoal(this, new Class[0]));
+         this.targetSelector.addGoal(4, new ResetUniversalAngerTargetGoal<>(this, false));
      }
  
