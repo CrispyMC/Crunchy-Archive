@@ -1,0 +1,127 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <finlayoxby@outlook.com>
+Date: Sat, 11 Sep 2021 22:00:31 +0100
+Subject: [PATCH] Uptime Command
+
+
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/commands/UptimeCommand.java b/src/main/java/dev/mrfishcakes/crunchy/commands/UptimeCommand.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..1ff3fd523c0741c7c01eb137c20a09e86e199adb
+--- /dev/null
++++ b/src/main/java/dev/mrfishcakes/crunchy/commands/UptimeCommand.java
+@@ -0,0 +1,71 @@
++package dev.mrfishcakes.crunchy.commands;
++
++import dev.mrfishcakes.crunchy.config.CrunchyConfig;
++import net.kyori.adventure.text.minimessage.MiniMessage;
++import net.minecraft.server.MinecraftServer;
++import org.bukkit.ChatColor;
++import org.bukkit.command.Command;
++import org.bukkit.command.CommandSender;
++import org.jetbrains.annotations.NotNull;
++
++import java.time.Duration;
++import java.util.Collections;
++import java.util.HashMap;
++import java.util.List;
++import java.util.Map;
++
++/**
++ * Class to manage the <i>/uptime</i> command
++ *
++ * @author MrFishCakes
++ */
++public class UptimeCommand extends Command {
++
++    public UptimeCommand() {
++        super("uptime");
++        this.description = "Check the uptime of the server";
++        this.usageMessage = "/uptime";
++        this.setPermission("bukkit.command.uptime");
++    }
++
++    @Override
++    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
++        if (!testPermission(sender)) return true;
++
++        if (args.length != 0) {
++            sender.sendMessage(ChatColor.RED + "Usage: " + usageMessage);
++            return true;
++        }
++
++        String output = CrunchyConfig.uptimeCommandOutput;
++        boolean hasDays = output.contains("<days>");
++        boolean hasHours = output.contains("<hours>");
++        boolean hasMinutes = output.contains("<minutes>");
++
++        long elapsedTime = System.currentTimeMillis() - MinecraftServer.START_TIME_MILLIS;
++        Map<String, String> placeholders = new HashMap<>();
++
++        Duration duration = Duration.ofMillis(elapsedTime);
++        if (hasDays) {
++            placeholders.put("<days>", String.valueOf(duration.toDaysPart()));
++        }
++
++        if (hasHours) {
++            placeholders.put("<hours>", String.valueOf(duration.toHoursPart()));
++        }
++
++        if (hasMinutes) {
++            placeholders.put("<minutes>", String.valueOf(duration.toMinutesPart()));
++        }
++
++        sender.sendMessage(MiniMessage.get().parse(output, placeholders));
++        return true;
++    }
++
++    @Override
++    @NotNull
++    public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
++        return Collections.emptyList();
++    }
++
++}
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
+index a6e17086eb0c36500975dbc353bc5ea3dd2d5247..2ae7ab5e2b09fff1905089045460374f11229d21 100644
+--- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
++++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
+@@ -1,6 +1,7 @@
+ package dev.mrfishcakes.crunchy.config;
+ 
+ import dev.mrfishcakes.crunchy.commands.CrunchyCommand;
++import dev.mrfishcakes.crunchy.commands.UptimeCommand;
+ import net.minecraft.server.MinecraftServer;
+ import org.bukkit.Bukkit;
+ import org.bukkit.command.Command;
+@@ -55,6 +56,7 @@ public final class CrunchyConfig {
+         commands = new HashMap<>();
+ 
+         commands.put("crunchy", new CrunchyCommand());
++        commands.put("uptime", new UptimeCommand());
+ 
+         if (!configFile.exists()) {
+             try {
+@@ -171,4 +173,11 @@ public final class CrunchyConfig {
+         enhancedMending = getBoolean("enchantments.enhanced-mending", true);
+     }
+ 
++    // Uptime Command
++    public static String uptimeCommandOutput;
++
++    private static void uptimeCommandSettings() {
++        uptimeCommandOutput = getString("commands.uptime-output", "<white>The server has been up for: <green><days><white>, <green><hours><white>, <green><minutes>");
++    }
++
+ }
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index 53507b55e94d4235d510e09e1ec589b6be9c19ba..f067dbfb35e4b7061ebaa08ad19f9d3b43eafbd4 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -212,6 +212,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+     public static final int ABSOLUTE_MAX_WORLD_SIZE = 29999984;
+     public static final LevelSettings DEMO_SETTINGS = new LevelSettings("Demo World", GameType.SURVIVAL, false, Difficulty.NORMAL, false, new GameRules(), DataPackConfig.DEFAULT);
+     private static final long DELAYED_TASKS_TICK_EXTENSION = 50L;
++    public static final long START_TIME_MILLIS = System.currentTimeMillis(); // Crunchy - Uptime Command
+     public LevelStorageSource.LevelStorageAccess storageSource;
+     public final PlayerDataStorage playerDataStorage;
+     private final Snooper snooper = new Snooper("server", this, Util.getMillis());
