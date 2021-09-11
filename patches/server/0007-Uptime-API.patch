@@ -1,0 +1,22 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <finlayoxby@outlook.com>
+Date: Sat, 11 Sep 2021 22:16:26 +0100
+Subject: [PATCH] Uptime API
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index d45c047bcd0265f0608c4aa1d2042c67d5d0349e..be8d33fac30539c35348c223f6c6c13f1c689a74 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -2677,4 +2677,11 @@ public final class CraftServer implements Server {
+     }
+ 
+     // Paper end
++
++    // Crunchy start - Uptime API
++    @Override
++    public long getUptime() {
++        return (System.currentTimeMillis() - MinecraftServer.START_TIME_MILLIS);
++    }
++    // Crunchy end - Uptime API
+ }
