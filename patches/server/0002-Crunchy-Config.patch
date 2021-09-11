@@ -112,10 +112,10 @@ index 0000000000000000000000000000000000000000..0b408e42f901dd26497e3449f93b46a5
 +}
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..8ce3f94f41e759ec81eebefd694a6c91ff6f06c3
+index 0000000000000000000000000000000000000000..40c54440e43eeab92e498c9ba28ff1141fa006eb
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-@@ -0,0 +1,162 @@
+@@ -0,0 +1,167 @@
 +package dev.mrfishcakes.crunchy.config;
 +
 +import dev.mrfishcakes.crunchy.commands.CrunchyCommand;
@@ -272,6 +272,11 @@ index 0000000000000000000000000000000000000000..8ce3f94f41e759ec81eebefd694a6c91
 +        return config.getLong(path, config.getLong(path));
 +    }
 +
++    private static float getFloat(String path, float def) {
++        config.addDefault(path, def);
++        return Double.valueOf(getDouble(path, config.getDouble(path))).floatValue();
++    }
++
 +    private static List<?> getList(String path, List<?> def) {
 +        config.addDefault(path, def);
 +        return config.getList(path, config.getList(path));
@@ -280,10 +285,10 @@ index 0000000000000000000000000000000000000000..8ce3f94f41e759ec81eebefd694a6c91
 +}
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..ad027d773bfc7a8aa718caf9457a51fee8fd29e6
+index 0000000000000000000000000000000000000000..2e7da735e449b3e436370b8a717f4df2a298eaa0
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
-@@ -0,0 +1,84 @@
+@@ -0,0 +1,89 @@
 +package dev.mrfishcakes.crunchy.config;
 +
 +import org.bukkit.configuration.ConfigurationSection;
@@ -357,9 +362,14 @@ index 0000000000000000000000000000000000000000..ad027d773bfc7a8aa718caf9457a51fe
 +        return config.getDouble(namedPath + path, config.getDouble(defaultPath + path));
 +    }
 +
-+    private long getString(String path, long def) {
++    private long getLong(String path, long def) {
 +        config.addDefault(defaultPath + path, def);
 +        return config.getLong(namedPath + path, config.getLong(defaultPath + path));
++    }
++
++    private float getFloat(String path, float def) {
++        config.addDefault(defaultPath + path, def);
++        return Double.valueOf(getDouble(namedPath + path, config.getDouble(defaultPath + path))).floatValue();
 +    }
 +
 +    private List<?> getList(String path, List<?> def) {

@@ -5,10 +5,10 @@ Subject: [PATCH] Chickens Avoid Foxes
 
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
-index ad027d773bfc7a8aa718caf9457a51fee8fd29e6..4d790ca3bd78f5a4a84b0536a31a4a57ed04b788 100644
+index 2e7da735e449b3e436370b8a717f4df2a298eaa0..bdc91e250c08dead99555368006ee898e5e76ca9 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
-@@ -81,4 +81,17 @@ public final class CrunchyWorldConfig {
+@@ -86,4 +86,17 @@ public final class CrunchyWorldConfig {
          return config.getList(namedPath + path, config.getList(defaultPath + path));
      }
  
@@ -20,7 +20,7 @@ index ad027d773bfc7a8aa718caf9457a51fee8fd29e6..4d790ca3bd78f5a4a84b0536a31a4a57
 +
 +    private void chickenSettings() {
 +        this.chickenAvoidFox = getBoolean("mobs.chicken.avoid-fox.enabled", true);
-+        this.chickenAvoidFoxDistance = Double.valueOf(getDouble("mobs.chicken.avoid-fox.distance", 6.0D)).floatValue();
++        this.chickenAvoidFoxDistance = getFloat("mobs.chicken.avoid-fox.distance", 6.0F);
 +        this.chickenAvoidFoxSlow = getDouble("mobs.chicken.avoid-fox.slow-speed", 1.0D);
 +        this.chickenAvoidFoxFast = getDouble("mobs.chicken.avoid-fox.fast-speed", 1.5D);
 +    }
