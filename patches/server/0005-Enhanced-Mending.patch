@@ -1,0 +1,90 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <finlayoxby@outlook.com>
+Date: Sat, 11 Sep 2021 18:22:24 +0100
+Subject: [PATCH] Enhanced Mending
+
+
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
+index 40c54440e43eeab92e498c9ba28ff1141fa006eb..a6e17086eb0c36500975dbc353bc5ea3dd2d5247 100644
+--- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
++++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
+@@ -164,4 +164,11 @@ public final class CrunchyConfig {
+         return config.getList(path, config.getList(path));
+     }
+ 
++    // Enchantment Settings
++    public static boolean enhancedMending;
++
++    private static void enchantmentSettings() {
++        enhancedMending = getBoolean("enchantments.enhanced-mending", true);
++    }
++
+ }
+diff --git a/src/main/java/net/minecraft/world/entity/ExperienceOrb.java b/src/main/java/net/minecraft/world/entity/ExperienceOrb.java
+index ec7d011fa5df0b4775bedc01632ba549d3803693..a40ceb29f1d98c79614a232c780013ce181966dc 100644
+--- a/src/main/java/net/minecraft/world/entity/ExperienceOrb.java
++++ b/src/main/java/net/minecraft/world/entity/ExperienceOrb.java
+@@ -319,7 +319,7 @@ public class ExperienceOrb extends Entity {
+     }
+ 
+     private int repairPlayerItems(Player player, int amount) {
+-        Entry<EquipmentSlot, ItemStack> entry = EnchantmentHelper.getRandomItemWith(Enchantments.MENDING, (LivingEntity) player, ItemStack::isDamaged);
++        Entry<EquipmentSlot, ItemStack> entry = dev.mrfishcakes.crunchy.config.CrunchyConfig.enhancedMending ? EnchantmentHelper.getMostDamagedItem(Enchantments.MENDING, player) : EnchantmentHelper.getRandomItemWith(Enchantments.MENDING, player, ItemStack::isDamaged); // Crunchy - Enhanced mending
+ 
+         if (entry != null) {
+             ItemStack itemstack = (ItemStack) entry.getValue();
+diff --git a/src/main/java/net/minecraft/world/item/ItemStack.java b/src/main/java/net/minecraft/world/item/ItemStack.java
+index 3e5e358e24bd84a05785a9391526f316475e95ff..174a16977562230b0c1cf1fa19928630c11fb6e4 100644
+--- a/src/main/java/net/minecraft/world/item/ItemStack.java
++++ b/src/main/java/net/minecraft/world/item/ItemStack.java
+@@ -1349,6 +1349,16 @@ public final class ItemStack {
+         return this.getItem().getEquipSound();
+     }
+ 
++    // Crunchy start - Enhanced mending
++    public float getDamagePercent() {
++        if (this.isDamaged()) {
++            return (float) this.getDamageValue() / (float) this.getItem().getMaxDamage();
++        }
++
++        return 0F;
++    }
++    // Crunchy end - Enhanced mending
++
+     public static enum TooltipPart {
+ 
+         ENCHANTMENTS, MODIFIERS, UNBREAKABLE, CAN_DESTROY, CAN_PLACE, ADDITIONAL, DYE;
+diff --git a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
+index d439e8ce87bf7da03683a336941c7673b8b166e4..6de50b822b52b06643649be2c9f85018daea1455 100644
+--- a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
++++ b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
+@@ -408,6 +408,29 @@ public class EnchantmentHelper {
+         return list;
+     }
+ 
++    // Crunchy start - Enhanced mending
++    public static Entry<EquipmentSlot, ItemStack> getMostDamagedItem(Enchantment enchantment, LivingEntity entity) {
++        Map<EquipmentSlot, ItemStack> map = enchantment.getSlotItems(entity);
++        if (map.isEmpty()) return null;
++
++        Entry<EquipmentSlot, ItemStack> item = null;
++        float max = 0F;
++
++        for (Entry<EquipmentSlot, ItemStack> entry : map.entrySet()) {
++            ItemStack itemStack = entry.getValue();
++            if (!itemStack.isEmpty() && itemStack.isDamaged() && getItemEnchantmentLevel(enchantment, itemStack) > 0) {
++                float percent = itemStack.getDamagePercent();
++                if (item == null || percent > max) {
++                    item = entry;
++                    max = percent;
++                }
++            }
++        }
++
++        return item;
++    }
++    // Crunchy end - Enhanced mending
++
+     @FunctionalInterface
+     interface EnchantmentVisitor {
+         void accept(Enchantment enchantment, int level);
