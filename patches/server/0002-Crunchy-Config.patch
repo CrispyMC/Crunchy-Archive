@@ -379,11 +379,11 @@ index 0000000000000000000000000000000000000000..2e7da735e449b3e436370b8a717f4df2
 +
 +}
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 7b6c547e71230fbb3733f99a4597b3f5b51547b8..605f4e0c5055612a839d9a85cb74f54c9478db74 100644
+index 1bf19965d12514dee34545235bfbadc0b74ddc8b..5b0ccad1a3f17f571f3eb9118fdc8adfdfc2064b 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -224,6 +224,16 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
-         io.papermc.paper.util.ObfHelper.INSTANCE.getClass(); // load mappings for stacktrace deobf and etc.
+         io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
          // Paper end
  
 +        // Crunchy start
@@ -421,7 +421,7 @@ index b93056b91e7ebd49e6ddb53ccb6c05c056088df9..ffd232ebd2d24876698f7b7c9cc3b0d3
          this.world = new CraftWorld((ServerLevel) this, gen, biomeProvider, env);
          this.ticksPerAnimalSpawns = this.getCraftServer().getTicksPerAnimalSpawns(); // CraftBukkit
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 413724509e709573be201d345fd01c6aa54d9b14..d45c047bcd0265f0608c4aa1d2042c67d5d0349e 100644
+index 75c14bbbff7774112de7eea1a27909d15b6be75b..192f32b796a340f911ed15e782dcb64c948a0eb8 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -892,6 +892,7 @@ public final class CraftServer implements Server {
@@ -448,7 +448,7 @@ index 413724509e709573be201d345fd01c6aa54d9b14..d45c047bcd0265f0608c4aa1d2042c67
          this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
          this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -2513,6 +2516,13 @@ public final class CraftServer implements Server {
+@@ -2509,6 +2512,13 @@ public final class CraftServer implements Server {
              return com.destroystokyo.paper.PaperConfig.config;
          }
  
