@@ -1,0 +1,40 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <finlayoxby@outlook.com>
+Date: Sat, 11 Sep 2021 22:16:26 +0100
+Subject: [PATCH] Uptime API
+
+
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index 53507b55e94d4235d510e09e1ec589b6be9c19ba..762a013e324bd00724bebae0bcc2f055349ae360 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -313,6 +313,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+     public volatile Thread shutdownThread; // Paper
+     public volatile boolean abnormalExit = false; // Paper
+ 
++    public static final long START_MILLIS = System.currentTimeMillis(); // Crunchy - Uptime API
++
+     public static <S extends MinecraftServer> S spin(Function<Thread, S> serverFactory) {
+         AtomicReference<S> atomicreference = new AtomicReference();
+         Thread thread = new Thread(() -> {
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index 192f32b796a340f911ed15e782dcb64c948a0eb8..01214b1da6391eab44f4327eee86a2326da7612a 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -2673,4 +2673,16 @@ public final class CraftServer implements Server {
+     }
+ 
+     // Paper end
++
++    // Crunchy start - Uptime API
++    @Override
++    public long getUptimeElapsed() {
++        return System.currentTimeMillis() - MinecraftServer.START_MILLIS;
++    }
++
++    @Override
++    public long getUptimeStart() {
++        return MinecraftServer.START_MILLIS;
++    }
++    // Crunchy end - Uptime API
+ }

@@ -5,10 +5,10 @@ Subject: [PATCH] Uptime API
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index d36e4bc3c3713407704b865574cba28662f17315..9862f105a13bdfb7b05988db148a8a3751124a97 100644
+index d36e4bc3c3713407704b865574cba28662f17315..e6d5718e7e3fcfde8e893c4b66b28b64660a7ee3 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2059,6 +2059,17 @@ public final class Bukkit {
+@@ -2059,6 +2059,37 @@ public final class Bukkit {
      }
      // Paper end
  
@@ -17,20 +17,40 @@ index d36e4bc3c3713407704b865574cba28662f17315..9862f105a13bdfb7b05988db148a8a37
 +     * Get the server uptime in milliseconds
 +     *
 +     * @return Uptime in milliseconds
++     * @deprecated Use alternative methods for more definitive returns
 +     */
++    @Deprecated
 +    public static long getUptime() {
 +        return server.getUptime();
 +    }
-+    // Crunchy start - Uptime API
++
++    /**
++     * Get the elapsed server uptime in milliseconds
++     *
++     * @return Elapsed uptime in milliseconds
++     */
++    public static long getUptimeElapsed() {
++        return server.getUptimeElapsed();
++    }
++
++    /**
++     * Get the uptime start in milliseconds
++     *
++     * @return Uptime start in milliseconds
++     */
++    public static long getUptimeStart() {
++        return server.getUptimeStart();
++    }
++    // Crunchy end - Uptime API
 +
      @NotNull
      public static Server.Spigot spigot() {
          return server.spigot();
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 83fa8d2d901898c20e9a3c8018feeeaff0ee6b57..8c563d20e0ef6fa28878518dd02296d63b2bc06d 100644
+index 83fa8d2d901898c20e9a3c8018feeeaff0ee6b57..7b878367a3ac14b7c9eefe2d90c59be81545d4f2 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1797,4 +1797,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1797,4 +1797,31 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      @NotNull
      io.papermc.paper.datapack.DatapackManager getDatapackManager();
      // Paper end
@@ -40,7 +60,25 @@ index 83fa8d2d901898c20e9a3c8018feeeaff0ee6b57..8c563d20e0ef6fa28878518dd02296d6
 +     * Get the server uptime in milliseconds
 +     *
 +     * @return Uptime in milliseconds
++     * @deprecated Use alternative methods for more definitive returns
 +     */
-+    long getUptime();
++    @Deprecated
++    default long getUptime() {
++        return getUptimeElapsed();
++    }
++
++    /**
++     * Get the elapsed server uptime in milliseconds
++     *
++     * @return Elapsed uptime in milliseconds
++     */
++    long getUptimeElapsed();
++
++    /**
++     * Get the uptime start in milliseconds
++     *
++     * @return Uptime start in milliseconds
++     */
++    long getUptimeStart();
 +    // Crunchy end - Uptime API
  }

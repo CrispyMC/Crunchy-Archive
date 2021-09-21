@@ -6,18 +6,20 @@ Subject: [PATCH] Uptime Command
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/commands/UptimeCommand.java b/src/main/java/dev/mrfishcakes/crunchy/commands/UptimeCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..1ff3fd523c0741c7c01eb137c20a09e86e199adb
+index 0000000000000000000000000000000000000000..e49c2bffa1917592297f27db5fe1198abd274d2c
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/commands/UptimeCommand.java
-@@ -0,0 +1,71 @@
+@@ -0,0 +1,73 @@
 +package dev.mrfishcakes.crunchy.commands;
 +
 +import dev.mrfishcakes.crunchy.config.CrunchyConfig;
 +import net.kyori.adventure.text.minimessage.MiniMessage;
 +import net.minecraft.server.MinecraftServer;
++import org.bukkit.Bukkit;
 +import org.bukkit.ChatColor;
 +import org.bukkit.command.Command;
 +import org.bukkit.command.CommandSender;
++import org.bukkit.craftbukkit.CraftServer;
 +import org.jetbrains.annotations.NotNull;
 +
 +import java.time.Duration;
@@ -54,7 +56,7 @@ index 0000000000000000000000000000000000000000..1ff3fd523c0741c7c01eb137c20a09e8
 +        boolean hasHours = output.contains("<hours>");
 +        boolean hasMinutes = output.contains("<minutes>");
 +
-+        long elapsedTime = System.currentTimeMillis() - MinecraftServer.START_TIME_MILLIS;
++        long elapsedTime = Bukkit.getUptimeElapsed();
 +        Map<String, String> placeholders = new HashMap<>();
 +
 +        Duration duration = Duration.ofMillis(elapsedTime);
@@ -113,15 +115,3 @@ index a6e17086eb0c36500975dbc353bc5ea3dd2d5247..2ae7ab5e2b09fff1905089045460374f
 +    }
 +
  }
-diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 53507b55e94d4235d510e09e1ec589b6be9c19ba..f067dbfb35e4b7061ebaa08ad19f9d3b43eafbd4 100644
---- a/src/main/java/net/minecraft/server/MinecraftServer.java
-+++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -212,6 +212,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
-     public static final int ABSOLUTE_MAX_WORLD_SIZE = 29999984;
-     public static final LevelSettings DEMO_SETTINGS = new LevelSettings("Demo World", GameType.SURVIVAL, false, Difficulty.NORMAL, false, new GameRules(), DataPackConfig.DEFAULT);
-     private static final long DELAYED_TASKS_TICK_EXTENSION = 50L;
-+    public static final long START_TIME_MILLIS = System.currentTimeMillis(); // Crunchy - Uptime Command
-     public LevelStorageSource.LevelStorageAccess storageSource;
-     public final PlayerDataStorage playerDataStorage;
-     private final Snooper snooper = new Snooper("server", this, Util.getMillis());
