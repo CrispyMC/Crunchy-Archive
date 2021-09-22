@@ -1,0 +1,35 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: DoctaEnkoda <bierquejason@gmail.com>
+Date: Mon, 5 Jul 2021 06:00:17 +0200
+Subject: [PATCH] Add Option for disable observer clocks
+
+Allow to disable observer clocks: https://www.spigotmc.org/attachments/observerclock-gif.365936/
+
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
+index c116e00699c57ca2df084cee7f442a3be33247d5..80e1d871658ad7d168d569aec9b210493dbaafb3 100644
+--- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
++++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
+@@ -118,4 +118,11 @@ public final class CrunchyWorldConfig {
+         this.nuclearCreeperShowName = getBoolean("mobs.creeper.nuclear.show-name", true);
+     }
+ 
++    // Observer Settings
++    public boolean disableObserverClocks;
++
++    private void observerSettings() {
++        this.disableObserverClocks = getBoolean("blocks.observer.disable-clocks", true);
++    }
++
+ }
+diff --git a/src/main/java/net/minecraft/world/level/block/ObserverBlock.java b/src/main/java/net/minecraft/world/level/block/ObserverBlock.java
+index 101317912b8299f5be406b75c19cfddb30c1f3f3..fa44ac2ce055639e1f8d3326d8acf745d1ec2b1c 100644
+--- a/src/main/java/net/minecraft/world/level/block/ObserverBlock.java
++++ b/src/main/java/net/minecraft/world/level/block/ObserverBlock.java
+@@ -64,6 +64,7 @@ public class ObserverBlock extends DirectionalBlock {
+     @Override
+     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos) {
+         if (state.getValue(ObserverBlock.FACING) == direction && !(Boolean) state.getValue(ObserverBlock.POWERED)) {
++            if (!world.getMinecraftWorld().crunchyConfig.disableObserverClocks || !(neighborState.getBlock() instanceof ObserverBlock) || neighborState.getValue(ObserverBlock.FACING).getOpposite() != direction) // Crunchy - Swapped config files // Purpur
+             this.startSignal(world, pos);
+         }
+ 
