@@ -5,7 +5,7 @@ Subject: [PATCH] Crunchy Config
 
 
 diff --git a/src/main/java/co/aikar/timings/TimingsExport.java b/src/main/java/co/aikar/timings/TimingsExport.java
-index 7d44abcb4fff9717a1af55879deb7eb9c2d9e7e9..61ca10b644d90d597cbb73a8b9c0231b4b1de53e 100644
+index e29b0a90019b12bd6586ad0f7b5314f307e527ba..fd507594ff451541e85be7cd1db29da2886eb0d0 100644
 --- a/src/main/java/co/aikar/timings/TimingsExport.java
 +++ b/src/main/java/co/aikar/timings/TimingsExport.java
 @@ -228,7 +228,8 @@ public class TimingsExport extends Thread {
@@ -112,10 +112,10 @@ index 0000000000000000000000000000000000000000..0b408e42f901dd26497e3449f93b46a5
 +}
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..40c54440e43eeab92e498c9ba28ff1141fa006eb
+index 0000000000000000000000000000000000000000..8ce3f94f41e759ec81eebefd694a6c91ff6f06c3
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-@@ -0,0 +1,167 @@
+@@ -0,0 +1,162 @@
 +package dev.mrfishcakes.crunchy.config;
 +
 +import dev.mrfishcakes.crunchy.commands.CrunchyCommand;
@@ -272,11 +272,6 @@ index 0000000000000000000000000000000000000000..40c54440e43eeab92e498c9ba28ff114
 +        return config.getLong(path, config.getLong(path));
 +    }
 +
-+    private static float getFloat(String path, float def) {
-+        config.addDefault(path, def);
-+        return Double.valueOf(getDouble(path, config.getDouble(path))).floatValue();
-+    }
-+
 +    private static List<?> getList(String path, List<?> def) {
 +        config.addDefault(path, def);
 +        return config.getList(path, config.getList(path));
@@ -285,10 +280,10 @@ index 0000000000000000000000000000000000000000..40c54440e43eeab92e498c9ba28ff114
 +}
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..2e7da735e449b3e436370b8a717f4df2a298eaa0
+index 0000000000000000000000000000000000000000..d79711985c4a92ce2ffc6e38c992b4f96d3fc03c
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
-@@ -0,0 +1,89 @@
+@@ -0,0 +1,84 @@
 +package dev.mrfishcakes.crunchy.config;
 +
 +import org.bukkit.configuration.ConfigurationSection;
@@ -365,11 +360,6 @@ index 0000000000000000000000000000000000000000..2e7da735e449b3e436370b8a717f4df2
 +    private long getLong(String path, long def) {
 +        config.addDefault(defaultPath + path, def);
 +        return config.getLong(namedPath + path, config.getLong(defaultPath + path));
-+    }
-+
-+    private float getFloat(String path, float def) {
-+        config.addDefault(defaultPath + path, def);
-+        return Double.valueOf(getDouble(namedPath + path, config.getDouble(defaultPath + path))).floatValue();
 +    }
 +
 +    private List<?> getList(String path, List<?> def) {

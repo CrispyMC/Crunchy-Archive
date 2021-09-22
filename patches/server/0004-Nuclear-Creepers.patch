@@ -5,10 +5,10 @@ Subject: [PATCH] Nuclear Creepers
 
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
-index bdc91e250c08dead99555368006ee898e5e76ca9..c116e00699c57ca2df084cee7f442a3be33247d5 100644
+index 89a26d6531411fbb75dcedd08e06faa1e22509fb..389319e6eea72520a9dcd7659044665e57d8ce01 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
-@@ -99,4 +99,23 @@ public final class CrunchyWorldConfig {
+@@ -94,4 +94,23 @@ public final class CrunchyWorldConfig {
          this.chickenAvoidFoxFast = getDouble("mobs.chicken.avoid-fox.fast-speed", 1.5D);
      }
  
@@ -26,7 +26,7 @@ index bdc91e250c08dead99555368006ee898e5e76ca9..c116e00699c57ca2df084cee7f442a3b
 +        this.nuclearCreeperChanceEasy = getDouble("mobs.creeper.nuclear.easy-spawn-chance", 0.0D);
 +        this.nuclearCreeperChanceNormal = getDouble("mobs.creeper.nuclear.normal-spawn-chance", 0.0D);
 +        this.nuclearCreeperChanceHard = getDouble("mobs.creeper.nuclear.hard-spawn-chance", 0.0D);
-+        this.nuclearCreeperPower = getFloat("mobs.creeper.nuclear.power", 3.5F);
++        this.nuclearCreeperPower = (float) getDouble("mobs.creeper.nuclear.power", 3.5D);
 +        this.nuclearCreeperName = getString("mobs.creeper.nuclear.name", "<#2cfa1f>Nuclear Creeper");
 +        this.nuclearCreeperShowName = getBoolean("mobs.creeper.nuclear.show-name", true);
 +    }

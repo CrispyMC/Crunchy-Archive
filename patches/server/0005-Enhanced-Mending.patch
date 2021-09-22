@@ -5,10 +5,10 @@ Subject: [PATCH] Enhanced Mending
 
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-index 40c54440e43eeab92e498c9ba28ff1141fa006eb..a6e17086eb0c36500975dbc353bc5ea3dd2d5247 100644
+index 8ce3f94f41e759ec81eebefd694a6c91ff6f06c3..34ef541aa609de545e12614d7dc91e569f314380 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-@@ -164,4 +164,11 @@ public final class CrunchyConfig {
+@@ -159,4 +159,11 @@ public final class CrunchyConfig {
          return config.getList(path, config.getList(path));
      }
  

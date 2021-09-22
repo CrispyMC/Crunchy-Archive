@@ -84,7 +84,7 @@ index 0000000000000000000000000000000000000000..e49c2bffa1917592297f27db5fe1198a
 +
 +}
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-index a6e17086eb0c36500975dbc353bc5ea3dd2d5247..2ae7ab5e2b09fff1905089045460374f11229d21 100644
+index 34ef541aa609de545e12614d7dc91e569f314380..3a68e6ff3ed74aea8c3e09aaee72b4d2ba22f4b1 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 @@ -1,6 +1,7 @@
@@ -103,7 +103,7 @@ index a6e17086eb0c36500975dbc353bc5ea3dd2d5247..2ae7ab5e2b09fff1905089045460374f
  
          if (!configFile.exists()) {
              try {
-@@ -171,4 +173,11 @@ public final class CrunchyConfig {
+@@ -166,4 +168,11 @@ public final class CrunchyConfig {
          enhancedMending = getBoolean("enchantments.enhanced-mending", true);
      }
  
