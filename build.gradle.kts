@@ -29,6 +29,19 @@ allprojects {
             languageVersion.set(JavaLanguageVersion.of(16))
         }
     }
+
+    publishing {
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/mrfishcakes/crunchy")
+                credentials {
+                    username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+                    password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+                }
+            }
+        }
+    }
 }
 
 subprojects {
@@ -72,6 +85,6 @@ paperweight {
 }
 
 tasks.paperclipJar {
-  destinationDirectory.set(rootProject.layout.projectDirectory)
-  archiveFileName.set("Crunchy.jar")
+    destinationDirectory.set(rootProject.layout.projectDirectory)
+    archiveFileName.set("Crunchy.jar")
 }
