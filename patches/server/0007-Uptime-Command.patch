@@ -6,12 +6,13 @@ Subject: [PATCH] Uptime Command
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/commands/UptimeCommand.java b/src/main/java/dev/mrfishcakes/crunchy/commands/UptimeCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..e49c2bffa1917592297f27db5fe1198abd274d2c
+index 0000000000000000000000000000000000000000..b9914a10076ef06c1e35aa1eeb7f25d5ab16595a
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/commands/UptimeCommand.java
-@@ -0,0 +1,73 @@
+@@ -0,0 +1,74 @@
 +package dev.mrfishcakes.crunchy.commands;
 +
++import dev.mrfishcakes.crunchy.CrunchyUtil;
 +import dev.mrfishcakes.crunchy.config.CrunchyConfig;
 +import net.kyori.adventure.text.minimessage.MiniMessage;
 +import net.minecraft.server.MinecraftServer;
@@ -47,7 +48,7 @@ index 0000000000000000000000000000000000000000..e49c2bffa1917592297f27db5fe1198a
 +        if (!testPermission(sender)) return true;
 +
 +        if (args.length != 0) {
-+            sender.sendMessage(ChatColor.RED + "Usage: " + usageMessage);
++            CrunchyUtil.sendMessage(sender, ChatColor.RED + "Usage: " + usageMessage);
 +            return true;
 +        }
 +
@@ -72,7 +73,7 @@ index 0000000000000000000000000000000000000000..e49c2bffa1917592297f27db5fe1198a
 +            placeholders.put("<minutes>", String.valueOf(duration.toMinutesPart()));
 +        }
 +
-+        sender.sendMessage(MiniMessage.get().parse(output, placeholders));
++        CrunchyUtil.sendMessage(MiniMessage.get(), placeholders, sender, output);
 +        return true;
 +    }
 +

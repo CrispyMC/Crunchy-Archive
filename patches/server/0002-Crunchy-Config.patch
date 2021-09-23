@@ -20,12 +20,13 @@ index e29b0a90019b12bd6586ad0f7b5314f307e527ba..fd507594ff451541e85be7cd1db29da2
          new TimingsExport(listeners, parent, history).start();
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/commands/CrunchyCommand.java b/src/main/java/dev/mrfishcakes/crunchy/commands/CrunchyCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..0b408e42f901dd26497e3449f93b46a5d7a04a0c
+index 0000000000000000000000000000000000000000..30e6da894a7d861538cee9816e20bbea747efe51
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/commands/CrunchyCommand.java
-@@ -0,0 +1,86 @@
+@@ -0,0 +1,87 @@
 +package dev.mrfishcakes.crunchy.commands;
 +
++import dev.mrfishcakes.crunchy.CrunchyUtil;
 +import dev.mrfishcakes.crunchy.config.CrunchyConfig;
 +import net.minecraft.server.MinecraftServer;
 +import net.minecraft.server.level.ServerLevel;
@@ -59,8 +60,8 @@ index 0000000000000000000000000000000000000000..0b408e42f901dd26497e3449f93b46a5
 +        if (!testPermission(sender)) return true;
 +
 +        if (args.length != 1) {
-+            sender.sendMessage(ChatColor.RED + "Usage: " + usageMessage);
-+            return false;
++            CrunchyUtil.sendMessage(sender, ChatColor.RED + "Usage: " + usageMessage);
++            return true;
 +        }
 +
 +        switch (args[0].toLowerCase()) {
@@ -76,7 +77,7 @@ index 0000000000000000000000000000000000000000..0b408e42f901dd26497e3449f93b46a5
 +                    break;
 +                }
 +            default:
-+                sender.sendMessage(ChatColor.RED + "Usage: " + usageMessage);
++                CrunchyUtil.sendMessage(sender, ChatColor.RED + "Usage: " + usageMessage);
 +                return false;
 +        }
 +

@@ -24,3 +24,42 @@ index 689d470ebe2c7e25e4c87f6127978d1d283e55b5..3ebf7b7b3cdc61dd933f0a902ae564a4
 +        "https://javadoc.io/doc/com.zaxxer/HikariCP/latest/index.html", // Crunchy
      )
  }
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/CrunchyUtil.java b/src/main/java/dev/mrfishcakes/crunchy/CrunchyUtil.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..6eb404f228c7353c2a4b02d979f85eb6fa3ba54f
+--- /dev/null
++++ b/src/main/java/dev/mrfishcakes/crunchy/CrunchyUtil.java
+@@ -0,0 +1,33 @@
++package dev.mrfishcakes.crunchy;
++
++import net.kyori.adventure.text.minimessage.MiniMessage;
++import org.bukkit.ChatColor;
++import org.bukkit.command.CommandSender;
++import org.jetbrains.annotations.NotNull;
++
++import java.util.Map;
++
++/**
++ * Class for managing simple/repetitive methods used within Crunchy
++ *
++ * @author MrFishCakes
++ */
++public final class CrunchyUtil {
++
++    private CrunchyUtil() {
++        throw new UnsupportedOperationException("CrunchyUtil cannot be initiated");
++    }
++
++    public static void sendMessage(@NotNull CommandSender sender, @NotNull String message) {
++        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', message.replaceAll("''", "'")));
++    }
++
++    public static void sendMessage(@NotNull MiniMessage miniMessage, @NotNull CommandSender sender, @NotNull String message) {
++        sender.sendMessage(miniMessage.parse(message.replaceAll("''", "'")));
++    }
++
++    public static void sendMessage(@NotNull MiniMessage miniMessage, @NotNull Map<String, String> placeholders, @NotNull CommandSender sender, @NotNull String message) {
++        sender.sendMessage(miniMessage.parse(message.replaceAll("''", "'"), placeholders));
++    }
++
++}

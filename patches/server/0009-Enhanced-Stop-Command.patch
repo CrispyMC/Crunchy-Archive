@@ -6,12 +6,13 @@ Subject: [PATCH] Enhanced Stop Command
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/commands/StopCommand.java b/src/main/java/dev/mrfishcakes/crunchy/commands/StopCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..14b9df486194d545fa4299948ea58aca3d2a24ae
+index 0000000000000000000000000000000000000000..426792df5815a3d611ac4662209a2966c2a6d2a4
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/commands/StopCommand.java
-@@ -0,0 +1,135 @@
+@@ -0,0 +1,132 @@
 +package dev.mrfishcakes.crunchy.commands;
 +
++import dev.mrfishcakes.crunchy.CrunchyUtil;
 +import dev.mrfishcakes.crunchy.config.CrunchyConfig;
 +import net.kyori.adventure.text.minimessage.MiniMessage;
 +import org.bukkit.Bukkit;
@@ -64,24 +65,24 @@ index 0000000000000000000000000000000000000000..14b9df486194d545fa4299948ea58aca
 +        if (args.length == 1 || args.length == 2) {
 +            if (args[0].equalsIgnoreCase("cancel")) {
 +                if (stopTimer == null) {
-+                    sendMessage(sender, CrunchyConfig.stopCommandNotScheduled);
++                    CrunchyUtil.sendMessage(message, sender, CrunchyConfig.stopCommandNotScheduled);
 +                    return true;
 +                }
 +
 +                try {
 +                    stopTimer.stop();
 +                } catch (Exception ex) { // Just in case
-+                    sendMessage(sender, CrunchyConfig.stopCommandCancelFail);
++                    CrunchyUtil.sendMessage(message, sender, CrunchyConfig.stopCommandCancelFail);
 +                    return true;
 +                }
 +
-+                sendMessage(sender, CrunchyConfig.stopCommandCancelled);
++                CrunchyUtil.sendMessage(message, sender, CrunchyConfig.stopCommandCancelled);
 +                stopTimer = null;
 +                return true;
 +            }
 +
 +            if (stopTimer != null) {
-+                sendMessage(sender, CrunchyConfig.stopCommandAlreadyScheduled);
++                CrunchyUtil.sendMessage(message, sender, CrunchyConfig.stopCommandAlreadyScheduled);
 +                return true;
 +            }
 +
@@ -107,7 +108,7 @@ index 0000000000000000000000000000000000000000..14b9df486194d545fa4299948ea58aca
 +            stopTimer.setRepeats(false);
 +            stopTimer.start();
 +
-+            sendMessage(sender, CrunchyConfig.stopCommandSuccess);
++            CrunchyUtil.sendMessage(message, sender, CrunchyConfig.stopCommandSuccess);
 +            return true;
 +        } else if (args.length == 0) {
 +            Bukkit.shutdown();
@@ -136,12 +137,8 @@ index 0000000000000000000000000000000000000000..14b9df486194d545fa4299948ea58aca
 +    }
 +
 +    private boolean sendUsageMessage(CommandSender sender) {
-+        sender.sendMessage(ChatColor.RED + "Usage: " + usageMessage);
++        CrunchyUtil.sendMessage(sender, ChatColor.RED + "Usage: " + usageMessage);
 +        return true;
-+    }
-+
-+    private void sendMessage(CommandSender sender, String msg) {
-+        sender.sendMessage(message.parse(msg.replaceAll("''", "'")));
 +    }
 +
 +}
