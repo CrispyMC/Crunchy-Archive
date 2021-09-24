@@ -1,0 +1,34 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <finlayoxby@outlook.com>
+Date: Fri, 24 Sep 2021 21:07:02 +0100
+Subject: [PATCH] Allow Infinity and Mending
+
+
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
+index e6ba4883a6280c3e25b13867dc6e21731f8519a4..318bc0ac8b4591d04192eff2bde6272aaeca8972 100644
+--- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
++++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
+@@ -165,9 +165,11 @@ public final class CrunchyConfig {
+ 
+     // Enchantment Settings
+     public static boolean enhancedMending;
++    public static boolean infinityMending;
+ 
+     private static void enchantmentSettings() {
+         enhancedMending = getBoolean("enchantments.enhanced-mending", true);
++        infinityMending = getBoolean("enchantments.allow-infinity-mending", true);
+     }
+ 
+     // Uptime Command
+diff --git a/src/main/java/net/minecraft/world/item/enchantment/ArrowInfiniteEnchantment.java b/src/main/java/net/minecraft/world/item/enchantment/ArrowInfiniteEnchantment.java
+index 3aece8245060dd1ba269c08d226c84247a6f0a83..6443a32d844c0fbd01b583c260b962a8dba96e47 100644
+--- a/src/main/java/net/minecraft/world/item/enchantment/ArrowInfiniteEnchantment.java
++++ b/src/main/java/net/minecraft/world/item/enchantment/ArrowInfiniteEnchantment.java
+@@ -24,6 +24,6 @@ public class ArrowInfiniteEnchantment extends Enchantment {
+ 
+     @Override
+     public boolean checkCompatibility(Enchantment other) {
+-        return other instanceof MendingEnchantment ? false : super.checkCompatibility(other);
++        return other instanceof MendingEnchantment ? dev.mrfishcakes.crunchy.config.CrunchyConfig.infinityMending : super.checkCompatibility(other); // Crunchy - Allow infinity and mending
+     }
+ }
