@@ -3,8 +3,7 @@ A fork of [Paper](https://github.com/PaperMC/Paper/) built to enhance gameplay f
 
 ### How do I get the server jar?
 Firstly there are some requirements to build the server jar:
-- JDK 16 (or higher)
-- JRE 16 (or higher)
+- JDK/JRE 16 (or higher)
 - Maven ([Installation](https://maven.apache.org/install.html))
 - Access to git commands
   - Linux/MacOS will have these by default
