@@ -5,10 +5,10 @@ Subject: [PATCH] Allow Infinity and Mending
 
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-index e6ba4883a6280c3e25b13867dc6e21731f8519a4..318bc0ac8b4591d04192eff2bde6272aaeca8972 100644
+index 1af9ce8307ca8e77fee52ec50cf0eae81aabd8a8..d0166d9e5520eabdd6e74a43c3ded1cb6f2bafa5 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-@@ -165,9 +165,11 @@ public final class CrunchyConfig {
+@@ -170,9 +170,11 @@ public final class CrunchyConfig {
  
      // Enchantment Settings
      public static boolean enhancedMending;

@@ -143,10 +143,10 @@ index 0000000000000000000000000000000000000000..426792df5815a3d611ac4662209a2966
 +
 +}
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-index 3a68e6ff3ed74aea8c3e09aaee72b4d2ba22f4b1..e6ba4883a6280c3e25b13867dc6e21731f8519a4 100644
+index 3a68e6ff3ed74aea8c3e09aaee72b4d2ba22f4b1..1af9ce8307ca8e77fee52ec50cf0eae81aabd8a8 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-@@ -1,6 +1,7 @@
+@@ -1,12 +1,14 @@
  package dev.mrfishcakes.crunchy.config;
  
  import dev.mrfishcakes.crunchy.commands.CrunchyCommand;
@@ -154,19 +154,31 @@ index 3a68e6ff3ed74aea8c3e09aaee72b4d2ba22f4b1..e6ba4883a6280c3e25b13867dc6e2173
  import dev.mrfishcakes.crunchy.commands.UptimeCommand;
  import net.minecraft.server.MinecraftServer;
  import org.bukkit.Bukkit;
-@@ -56,6 +57,7 @@ public final class CrunchyConfig {
-         commands = new HashMap<>();
+ import org.bukkit.command.Command;
+ import org.bukkit.configuration.InvalidConfigurationException;
+ import org.bukkit.configuration.file.YamlConfiguration;
++import org.bukkit.craftbukkit.CraftServer;
+ import org.jetbrains.annotations.NotNull;
+ import org.jetbrains.annotations.Nullable;
  
-         commands.put("crunchy", new CrunchyCommand());
-+        commands.put("stop", new StopCommand());
-         commands.put("uptime", new UptimeCommand());
+@@ -88,6 +90,11 @@ public final class CrunchyConfig {
+         set("version", 1);
  
-         if (!configFile.exists()) {
-@@ -175,4 +177,19 @@ public final class CrunchyConfig {
+         readConfig(CrunchyConfig.class, null);
++
++        if (CrunchyConfig.stopCommandEnabled) {
++            MinecraftServer.getServer().vanillaCommandDispatcher.getDispatcher().getRoot().removeCommand("stop"); // This unregisters minecraft:stop
++            commands.put("stop", new StopCommand());
++        }
+     }
+ 
+     public static void registerCommands() {
+@@ -175,4 +182,21 @@ public final class CrunchyConfig {
          uptimeCommandOutput = getString("commands.uptime-output", "<white>The server has been up for: <green><days><white>, <green><hours><white>, <green><minutes>");
      }
  
 +    // Stop Command
++    public static boolean stopCommandEnabled;
 +    public static String stopCommandNotScheduled;
 +    public static String stopCommandCancelFail;
 +    public static String stopCommandCancelled;
@@ -174,6 +186,7 @@ index 3a68e6ff3ed74aea8c3e09aaee72b4d2ba22f4b1..e6ba4883a6280c3e25b13867dc6e2173
 +    public static String stopCommandSuccess;
 +
 +    private static void stopCommandSettings() {
++        stopCommandEnabled = getBoolean("commands.stop.enabled", false);
 +        stopCommandNotScheduled = getString("commands.stop.not-scheduled", "<red>There is no server stop scheduled, use ''/stop [time] [unit]''");
 +        stopCommandCancelFail = getString("commands.stop.cancel-fail", "<red>An error occurred when trying to deactivate the timer. The stop MIGHT still occur!");
 +        stopCommandCancelled = getString("commands.stop.cancelled", "<green>The server stop has been cancelled!");
