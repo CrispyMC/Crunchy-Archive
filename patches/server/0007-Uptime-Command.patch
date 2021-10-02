@@ -6,21 +6,19 @@ Subject: [PATCH] Uptime Command
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/commands/UptimeCommand.java b/src/main/java/dev/mrfishcakes/crunchy/commands/UptimeCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..b9914a10076ef06c1e35aa1eeb7f25d5ab16595a
+index 0000000000000000000000000000000000000000..90d7478fa1c3734c72ecd95fa99e346cd24a07de
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/commands/UptimeCommand.java
-@@ -0,0 +1,74 @@
+@@ -0,0 +1,72 @@
 +package dev.mrfishcakes.crunchy.commands;
 +
 +import dev.mrfishcakes.crunchy.CrunchyUtil;
 +import dev.mrfishcakes.crunchy.config.CrunchyConfig;
 +import net.kyori.adventure.text.minimessage.MiniMessage;
-+import net.minecraft.server.MinecraftServer;
 +import org.bukkit.Bukkit;
 +import org.bukkit.ChatColor;
 +import org.bukkit.command.Command;
 +import org.bukkit.command.CommandSender;
-+import org.bukkit.craftbukkit.CraftServer;
 +import org.jetbrains.annotations.NotNull;
 +
 +import java.time.Duration;
@@ -62,15 +60,15 @@ index 0000000000000000000000000000000000000000..b9914a10076ef06c1e35aa1eeb7f25d5
 +
 +        Duration duration = Duration.ofMillis(elapsedTime);
 +        if (hasDays) {
-+            placeholders.put("<days>", String.valueOf(duration.toDaysPart()));
++            placeholders.put("days", String.valueOf(duration.toDaysPart()));
 +        }
 +
 +        if (hasHours) {
-+            placeholders.put("<hours>", String.valueOf(duration.toHoursPart()));
++            placeholders.put("hours", String.valueOf(duration.toHoursPart()));
 +        }
 +
 +        if (hasMinutes) {
-+            placeholders.put("<minutes>", String.valueOf(duration.toMinutesPart()));
++            placeholders.put("minutes", String.valueOf(duration.toMinutesPart()));
 +        }
 +
 +        CrunchyUtil.sendMessage(MiniMessage.get(), placeholders, sender, output);
