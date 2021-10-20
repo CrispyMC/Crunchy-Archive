@@ -83,7 +83,7 @@ index 0000000000000000000000000000000000000000..90d7478fa1c3734c72ecd95fa99e346c
 +
 +}
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-index 34ef541aa609de545e12614d7dc91e569f314380..3a68e6ff3ed74aea8c3e09aaee72b4d2ba22f4b1 100644
+index 34ef541aa609de545e12614d7dc91e569f314380..e6ae1a15c85140da68a39f3010a8dc217fe0f9f4 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 @@ -1,6 +1,7 @@
@@ -110,7 +110,7 @@ index 34ef541aa609de545e12614d7dc91e569f314380..3a68e6ff3ed74aea8c3e09aaee72b4d2
 +    public static String uptimeCommandOutput;
 +
 +    private static void uptimeCommandSettings() {
-+        uptimeCommandOutput = getString("commands.uptime-output", "<white>The server has been up for: <green><days><white>, <green><hours><white>, <green><minutes>");
++        uptimeCommandOutput = getString("commands.uptime-output", "<white>The server has been up for: <green><days><white> days, <green><hours><white> hours, <green><minutes><white> minutes");
 +    }
 +
  }

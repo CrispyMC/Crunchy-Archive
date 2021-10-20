@@ -5,10 +5,10 @@ Subject: [PATCH] Crunchy Branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index b3687f632bbf06c933a6ef04dc2236ccf3c030b8..79cec346ddff46d1c13ae8e30534e1de1831a78e 100644
+index 13f89bdaf1ada33060b1ee4d6f2860ec194b68a4..9d312ff8b0e38aa2cb189f3fed2e10e0e5687e8d 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -29,8 +29,8 @@ repositories {
+@@ -25,8 +25,8 @@ repositories {
  }
  
  dependencies {
@@ -19,7 +19,7 @@ index b3687f632bbf06c933a6ef04dc2236ccf3c030b8..79cec346ddff46d1c13ae8e30534e1de
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.12.1")
      implementation("net.minecrell:terminalconsoleappender:1.2.0")
-@@ -82,7 +82,7 @@ tasks.jar {
+@@ -78,7 +78,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
@@ -51,10 +51,10 @@ index 218f5bafeed8551b55b91c7fccaf6935c8b631ca..fa239a1fdf90b4840edbfca43a009e1d
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
                      Map<String, Map<String, Integer>> map = new HashMap<>();
 diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-index 580bae0d414d371a07a6bfeefc41fdd989dc0083..31a6e7259df2bb2fd77eff29b7f7540842f3c214 100644
+index ece77f5ea4b14bbed7c070131b3251ea86764538..fc5f18c93fdc06485566f42c32f2e7405a248492 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-@@ -29,8 +29,8 @@ public class PaperVersionFetcher implements VersionFetcher {
+@@ -31,8 +31,8 @@ public class PaperVersionFetcher implements VersionFetcher {
      @Nonnull
      @Override
      public Component getVersionMessage(@Nonnull String serverVersion) {
@@ -79,7 +79,7 @@ index e0b1f0671d16ddddcb6725acd25a1d1d69e42701..e47669d699f29c224d7e2e46eed5a980
                  .completer(new ConsoleCommandCompleter(this.server))
                  .option(LineReader.Option.COMPLETE_IN_WORD, true);
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 1d7c26354eee1dff5e66b6234d408ed8f800415c..53507b55e94d4235d510e09e1ec589b6be9c19ba 100644
+index c8876b000a03f18e7a140167ed4505a9843a8d14..503b124f3b3b1c5bbd84ff96f4d2fba30b662076 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1721,7 +1721,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -92,10 +92,10 @@ index 1d7c26354eee1dff5e66b6234d408ed8f800415c..53507b55e94d4235d510e09e1ec589b6
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index c1fc309411c277f7b7450686543a6a7a7fe2fdb1..75c14bbbff7774112de7eea1a27909d15b6be75b 100644
+index 0adb686d690e1be0c5540625efbecc46bac5d045..cd6bf53165473bc43fc74c53e69b448563d0abb5 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -246,7 +246,7 @@ import javax.annotation.Nullable; // Paper
+@@ -251,7 +251,7 @@ import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {

@@ -5,10 +5,10 @@ Subject: [PATCH] Crunchy Config
 
 
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 83870d54a5ff1017ad7455e9c931fdee54354434..83fa8d2d901898c20e9a3c8018feeeaff0ee6b57 100644
+index 1db87711dd9b67bcba42e731c8c1a81502abf56c..a6ccb4a5821566ee4e9b3685783df3b4de4846cf 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1679,6 +1679,14 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1715,6 +1715,14 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
          }
          // Paper end
  

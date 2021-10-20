@@ -1,0 +1,169 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <finlayoxby@outlook.com>
+Date: Mon, 4 Oct 2021 18:11:57 +0100
+Subject: [PATCH] Custom Enchantment API
+
+
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/enchantment/CustomEnchantment.java b/src/main/java/dev/mrfishcakes/crunchy/enchantment/CustomEnchantment.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..8631a0ab816972f54a5a698f9f07fd1f79e354bb
+--- /dev/null
++++ b/src/main/java/dev/mrfishcakes/crunchy/enchantment/CustomEnchantment.java
+@@ -0,0 +1,104 @@
++package dev.mrfishcakes.crunchy.enchantment;
++
++import net.kyori.adventure.text.Component;
++import net.kyori.adventure.text.format.NamedTextColor;
++import org.bukkit.Keyed;
++import org.bukkit.NamespacedKey;
++import org.bukkit.enchantments.Enchantment;
++import org.bukkit.entity.EntityCategory;
++import org.bukkit.entity.Player;
++import org.bukkit.event.block.BlockBreakEvent;
++import org.bukkit.inventory.EquipmentSlot;
++import org.bukkit.inventory.ItemStack;
++import org.jetbrains.annotations.NotNull;
++
++import java.util.EnumSet;
++import java.util.Locale;
++import java.util.Set;
++
++/**
++ * Plugin provided custom enchantment
++ * <p>
++ * Credit goes to the DeepSlate repository for (most of) this class
++ * For some reason patches wouldn't compile when adding them so here we are manually
++ *
++ * @author MrFishCakes
++ * @author nickcpt
++ */
++public abstract class CustomEnchantment extends Enchantment implements Keyed {
++
++    protected CustomEnchantment(@NotNull final NamespacedKey namespacedKey) {
++        super(namespacedKey);
++    }
++
++    public void onBlockBreak(BlockBreakEvent event, int level, Player player, ItemStack itemStack) {}
++
++    @NotNull
++    public abstract Component displayName();
++
++    @NotNull
++    @Override
++    public final String getName() {
++        return "CRUNCHY_CUSTOM_" + getKey().getNamespace().toUpperCase(Locale.ROOT) + "_" + getKey().getKey().toUpperCase(Locale.ROOT);
++    }
++
++    @Override
++    public boolean isTreasure() {
++        return false;
++    }
++
++    @Override
++    public boolean isCursed() {
++        return false;
++    }
++
++    @Override
++    public boolean conflictsWith(@NotNull Enchantment other) {
++        return false;
++    }
++
++    @NotNull
++    @Override
++    public Component displayName(int level) {
++        Component component = displayName();
++
++        if (level != 1 || getMaxLevel() != 1) {
++            component = component.append(Component.space()).append(Component.translatable("enchantment.level." + level));
++        }
++
++        if (isCursed()) {
++            component = component.color(NamedTextColor.RED);
++        } else {
++            component = component.color(NamedTextColor.GRAY);
++        }
++
++        return component;
++    }
++
++    @Override
++    public boolean isTradeable() {
++        return true;
++    }
++
++    @Override
++    public boolean isDiscoverable() {
++        return true;
++    }
++
++    @Override
++    public float getDamageIncrease(int level, @NotNull EntityCategory entityCategory) {
++        return 0F;
++    }
++
++    @NotNull
++    @Override
++    public Set<EquipmentSlot> getActiveSlots() {
++        return EnumSet.allOf(EquipmentSlot.class);
++    }
++
++    @NotNull
++    @Override
++    public String translationKey() {
++        return getName();
++    }
++}
+diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
+index e4d104195dbf92c5ffbcf8fb77cd960725054e44..2f19002fd42abe7d386fd6bade7173b3091ed26b 100644
+--- a/src/main/java/org/bukkit/Bukkit.java
++++ b/src/main/java/org/bukkit/Bukkit.java
+@@ -2131,6 +2131,17 @@ public final class Bukkit {
+     }
+     // Crunchy end - Uptime API
+ 
++    // Crunchy start - Custom enchantment API
++    /**
++     * Register a custom enchantment to the server
++     *
++     * @param enchantment Enchantment to register
++     */
++    public static void registerEnchantment(@NotNull final dev.mrfishcakes.crunchy.enchantment.CustomEnchantment enchantment) {
++        server.registerEnchantment(enchantment);
++    }
++    // Crunchy end - Custom enchantment API
++
+     @NotNull
+     public static Server.Spigot spigot() {
+         return server.spigot();
+diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
+index 28f78bc820dec173ae48c65e66c464c6392cfc91..386576545a67791f551c4f230ebfe90e59b75338 100644
+--- a/src/main/java/org/bukkit/Server.java
++++ b/src/main/java/org/bukkit/Server.java
+@@ -1860,4 +1860,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+      */
+     long getUptimeStart();
+     // Crunchy end - Uptime API
++
++    // Crunchy start - Custom enchantment API
++    /**
++     * Register a custom enchantment to the server
++     *
++     * @param enchantment Enchantment to register
++     */
++    void registerEnchantment(@NotNull final dev.mrfishcakes.crunchy.enchantment.CustomEnchantment enchantment);
++    // Crunchy end - Custom enchantment API
+ }
+diff --git a/src/main/java/org/bukkit/enchantments/Enchantment.java b/src/main/java/org/bukkit/enchantments/Enchantment.java
+index 1e1c5a9d9a769018c4604e6e44fc5ed2312981e9..6da51bfbd569f384ffb13a1e3be845ebe6fed1e2 100644
+--- a/src/main/java/org/bukkit/enchantments/Enchantment.java
++++ b/src/main/java/org/bukkit/enchantments/Enchantment.java
+@@ -379,7 +379,7 @@ public abstract class Enchantment implements Keyed, net.kyori.adventure.translat
+     public static void registerEnchantment(@NotNull Enchantment enchantment) {
+         if (byKey.containsKey(enchantment.key) || byName.containsKey(enchantment.getName())) {
+             throw new IllegalArgumentException("Cannot set already-set enchantment");
+-        } else if (!isAcceptingRegistrations()) {
++        } else if (!(enchantment instanceof dev.mrfishcakes.crunchy.enchantment.CustomEnchantment) && !isAcceptingRegistrations()) { // Crunchy - Custom enchantment API
+             throw new IllegalStateException("No longer accepting new enchantments (can only be done by the server implementation)");
+         }
+ 

@@ -3,7 +3,7 @@ import io.papermc.paperweight.util.constants.*
 plugins {
     java
     `maven-publish`
-    id("com.github.johnrengelman.shadow") version "7.0.0" apply false
+    id("com.github.johnrengelman.shadow") version "7.1.0" apply false
     id("io.papermc.paperweight.patcher") version "1.1.12"
 }
 
@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    remapper("org.fabricmc:tiny-remapper:0.6.0:fat")
+    remapper("net.fabricmc:tiny-remapper:0.6.0:fat")
     decompiler("net.minecraftforge:forgeflower:1.5.498.12")
     paperclip("io.papermc:paperclip:2.0.1")
 }

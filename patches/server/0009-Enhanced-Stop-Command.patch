@@ -143,7 +143,7 @@ index 0000000000000000000000000000000000000000..426792df5815a3d611ac4662209a2966
 +
 +}
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-index 3a68e6ff3ed74aea8c3e09aaee72b4d2ba22f4b1..1af9ce8307ca8e77fee52ec50cf0eae81aabd8a8 100644
+index e6ae1a15c85140da68a39f3010a8dc217fe0f9f4..bfe821e6e26e1ec8a51727443821dd558e0b755f 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 @@ -1,12 +1,14 @@
@@ -174,7 +174,7 @@ index 3a68e6ff3ed74aea8c3e09aaee72b4d2ba22f4b1..1af9ce8307ca8e77fee52ec50cf0eae8
  
      public static void registerCommands() {
 @@ -175,4 +182,21 @@ public final class CrunchyConfig {
-         uptimeCommandOutput = getString("commands.uptime-output", "<white>The server has been up for: <green><days><white>, <green><hours><white>, <green><minutes>");
+         uptimeCommandOutput = getString("commands.uptime-output", "<white>The server has been up for: <green><days><white> days, <green><hours><white> hours, <green><minutes><white> minutes");
      }
  
 +    // Stop Command

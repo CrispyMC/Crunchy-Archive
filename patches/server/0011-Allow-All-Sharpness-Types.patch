@@ -5,10 +5,10 @@ Subject: [PATCH] Allow All Sharpness Types
 
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-index 318bc0ac8b4591d04192eff2bde6272aaeca8972..a1aed92cd6601e235442ab5bea7c92db00d1fcb0 100644
+index 4816748505809ee108ab47e5db00c6fc7f37b146..30030da3b5b633b086cb86eef95921cf898d3b14 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-@@ -166,10 +166,12 @@ public final class CrunchyConfig {
+@@ -171,10 +171,12 @@ public final class CrunchyConfig {
      // Enchantment Settings
      public static boolean enhancedMending;
      public static boolean infinityMending;

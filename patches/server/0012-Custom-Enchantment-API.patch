@@ -1,0 +1,307 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <finlayoxby@outlook.com>
+Date: Mon, 4 Oct 2021 18:12:38 +0100
+Subject: [PATCH] Custom Enchantment API
+
+
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/enchantment/CraftCustomEnchantment.java b/src/main/java/dev/mrfishcakes/crunchy/enchantment/CraftCustomEnchantment.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..d4f4040db1639952d6778a946f8be86252da179b
+--- /dev/null
++++ b/src/main/java/dev/mrfishcakes/crunchy/enchantment/CraftCustomEnchantment.java
+@@ -0,0 +1,122 @@
++package dev.mrfishcakes.crunchy.enchantment;
++
++import io.papermc.paper.adventure.PaperAdventure;
++import io.papermc.paper.enchantments.EnchantmentRarity;
++import net.kyori.adventure.text.format.TextColor;
++import net.minecraft.core.Registry;
++import net.minecraft.network.chat.Component;
++import net.minecraft.resources.ResourceLocation;
++import net.minecraft.world.entity.EquipmentSlot;
++import net.minecraft.world.item.ItemStack;
++import net.minecraft.world.item.enchantment.Enchantment;
++import net.minecraft.world.item.enchantment.EnchantmentCategory;
++import org.bukkit.craftbukkit.CraftEquipmentSlot;
++import org.bukkit.craftbukkit.inventory.CraftItemStack;
++import org.bukkit.craftbukkit.util.CraftNamespacedKey;
++import org.bukkit.enchantments.EnchantmentTarget;
++import org.bukkit.enchantments.EnchantmentWrapper;
++import org.jetbrains.annotations.NotNull;
++
++/**
++ * Credit goes to the DeepSlate repository for (most of) this class
++ * For some reason patches wouldn't compile when adding them so here we are manually
++ *
++ * @author nickcpt
++ */
++public class CraftCustomEnchantment extends Enchantment {
++
++    public static final net.kyori.adventure.text.Component MAGIC_SUFFIX = net.kyori.adventure.text.Component.space().color(TextColor.color(0xfa02ff)).append(net.kyori.adventure.text.Component.space().color(TextColor.color(0x26b8ff)));
++
++    public static Rarity asNMSRarity(@NotNull EnchantmentRarity rarity) {
++        return switch (rarity) {
++            case COMMON -> Rarity.COMMON;
++            case UNCOMMON -> Rarity.UNCOMMON;
++            case RARE -> Rarity.RARE;
++            case VERY_RARE -> Rarity.VERY_RARE;
++        };
++    }
++
++    public static EnchantmentCategory asNMSCategory(EnchantmentTarget target) {
++        return switch (target) {
++            case ALL -> throw new IllegalArgumentException(String.format("Unable to convert %s to a enum value of %s.", target, net.minecraft.world.item.enchantment.Enchantment.Rarity.class));
++            case ARMOR -> EnchantmentCategory.ARMOR;
++            case ARMOR_FEET -> EnchantmentCategory.ARMOR_FEET;
++            case ARMOR_LEGS -> EnchantmentCategory.ARMOR_LEGS;
++            case ARMOR_TORSO -> EnchantmentCategory.ARMOR_CHEST;
++            case ARMOR_HEAD -> EnchantmentCategory.ARMOR_HEAD;
++            case BOW -> EnchantmentCategory.BOW;
++            case BREAKABLE -> EnchantmentCategory.BREAKABLE;
++            case CROSSBOW -> EnchantmentCategory.CROSSBOW;
++            case FISHING_ROD -> EnchantmentCategory.FISHING_ROD;
++            case TOOL -> EnchantmentCategory.TOOL;
++            case TRIDENT -> EnchantmentCategory.TRIDENT;
++            case VANISHABLE -> EnchantmentCategory.VANISHABLE;
++            case WEAPON -> EnchantmentCategory.WEAPON;
++            case WEARABLE -> EnchantmentCategory.WEARABLE;
++        };
++    }
++
++    private final CustomEnchantment customEnchantment;
++
++    public CraftCustomEnchantment(@NotNull final CustomEnchantment enchantment) {
++        super(asNMSRarity(enchantment.getRarity()), asNMSCategory(enchantment.getItemTarget()), enchantment.getActiveSlots().stream().map(CraftEquipmentSlot::getNMS).toArray(EquipmentSlot[]::new));
++        this.customEnchantment = enchantment;
++    }
++
++    public CustomEnchantment getCustomEnchantment() {
++        return customEnchantment;
++    }
++
++    @Override
++    public int getMinLevel() {
++        return customEnchantment.getStartLevel();
++    }
++
++    @Override
++    public int getMaxLevel() {
++        return customEnchantment.getMaxLevel();
++    }
++
++    @Override
++    protected boolean checkCompatibility(@NotNull Enchantment other) {
++        org.bukkit.enchantments.Enchantment bukkitEnchantment = null;
++
++        if (other instanceof CraftCustomEnchantment custom) {
++            bukkitEnchantment = custom.getCustomEnchantment();
++        } else {
++            ResourceLocation enchantmentKey = Registry.ENCHANTMENT.getKey(other);
++            if (enchantmentKey != null) {
++                bukkitEnchantment = EnchantmentWrapper.getByKey(CraftNamespacedKey.fromMinecraft(enchantmentKey));
++            }
++        }
++
++        return super.checkCompatibility(other) && bukkitEnchantment != null && !customEnchantment.conflictsWith(bukkitEnchantment);
++    }
++
++    @NotNull
++    @Override
++    public Component getFullname(int level) {
++        return PaperAdventure.asVanilla(customEnchantment.displayName(level));
++    }
++
++    @Override
++    public boolean canEnchant(@NotNull ItemStack stack) {
++        return customEnchantment.canEnchantItem(CraftItemStack.asCraftMirror(stack));
++    }
++
++    @Override
++    public boolean isCurse() {
++        return customEnchantment.isCursed();
++    }
++
++    @Override
++    public boolean isTradeable() {
++        return customEnchantment.isTradeable();
++    }
++
++    @Override
++    public boolean isDiscoverable() {
++        return customEnchantment.isDiscoverable();
++    }
++
++}
+diff --git a/src/main/java/net/minecraft/network/FriendlyByteBuf.java b/src/main/java/net/minecraft/network/FriendlyByteBuf.java
+index e3b80334164ba48e83cca0b9a7f3a8ddf05dd598..e4977707b4b073515205e378fb51dd4238739142 100644
+--- a/src/main/java/net/minecraft/network/FriendlyByteBuf.java
++++ b/src/main/java/net/minecraft/network/FriendlyByteBuf.java
+@@ -497,6 +497,22 @@ public class FriendlyByteBuf extends ByteBuf {
+             if (item.canBeDepleted() || item.shouldOverrideMultiplayerNbt()) {
+                 // Spigot start - filter
+                 stack = stack.copy();
++                // Crunchy start - Custom enchantment API
++                if (ItemStack.shouldShowInTooltip(stack.getHideFlags(), ItemStack.TooltipPart.ENCHANTMENTS)) {
++                    java.util.Set<Map.Entry<net.minecraft.world.item.enchantment.Enchantment, Integer>> enchantments = net.minecraft.world.item.enchantment.EnchantmentHelper.deserializeEnchantments(stack.getEnchantmentTags()).entrySet();
++                    for (Map.Entry<net.minecraft.world.item.enchantment.Enchantment, Integer> enchantment : enchantments) {
++                        if (enchantment.getKey() instanceof dev.mrfishcakes.crunchy.enchantment.CraftCustomEnchantment customEnchantment) {
++                            org.bukkit.inventory.ItemStack itemStack = stack.asBukkitMirror();
++                            java.util.List<net.kyori.adventure.text.Component> loreList = itemStack.lore();
++                            if (loreList == null) loreList = new java.util.ArrayList<>();
++
++                            loreList.add(customEnchantment.getCustomEnchantment().displayName(enchantment.getValue()).decoration(net.kyori.adventure.text.format.TextDecoration.ITALIC, false).append(dev.mrfishcakes.crunchy.enchantment.CraftCustomEnchantment.MAGIC_SUFFIX));
++
++                             itemStack.lore(loreList);
++                       }
++                    }
++                }
++                // Crunchy end - Custom enchantment API
+                 // CraftItemStack.setItemMeta(stack, CraftItemStack.getItemMeta(stack)); // Paper - This is no longer needed due to NBT being supported
+                 // Spigot end
+                 nbttagcompound = stack.getTag();
+@@ -538,6 +554,20 @@ public class FriendlyByteBuf extends ByteBuf {
+                 }
+                 // Paper end
+                 // CraftItemStack.setItemMeta(itemstack, CraftItemStack.getItemMeta(itemstack)); // Paper - This is no longer needed due to NBT being supported
++                // Crunchy start - Custom enchantment API
++                org.bukkit.inventory.ItemStack bukkitItemStack = itemstack.asBukkitMirror();
++                org.bukkit.inventory.ItemStack bukkitStackMirror = itemstack.asBukkitMirror();
++                if (ItemStack.shouldShowInTooltip(itemstack.getHideFlags(), ItemStack.TooltipPart.ENCHANTMENTS)) {
++                    java.util.List<net.kyori.adventure.text.Component> loreList = bukkitStackMirror.lore();
++                    if (loreList != null) {
++                        loreList.removeIf(c -> {
++                            net.kyori.adventure.text.Component customEnchantmentMagicSuffix = dev.mrfishcakes.crunchy.enchantment.CraftCustomEnchantment.MAGIC_SUFFIX;
++                            return c.contains(customEnchantmentMagicSuffix, net.kyori.adventure.text.Component.EQUALS);
++                            });
++                        bukkitStackMirror.lore(loreList);
++                    }
++                }
++                // Crunchy end - Custom enchantment API
+             }
+             // CraftBukkit end
+             return itemstack;
+diff --git a/src/main/java/net/minecraft/server/commands/EnchantCommand.java b/src/main/java/net/minecraft/server/commands/EnchantCommand.java
+index 514cc0e8805045549eacde6c280859aa2dc4a91d..cb264fe01847f6809db33a0a39227d9e89d2c5e9 100644
+--- a/src/main/java/net/minecraft/server/commands/EnchantCommand.java
++++ b/src/main/java/net/minecraft/server/commands/EnchantCommand.java
+@@ -33,10 +33,16 @@ public class EnchantCommand {
+     });
+     private static final SimpleCommandExceptionType ERROR_NOTHING_HAPPENED = new SimpleCommandExceptionType(new TranslatableComponent("commands.enchant.failed"));
+ 
++    // Crunchy start - Custom enchantment API
++    private static final com.mojang.brigadier.suggestion.SuggestionProvider<CommandSourceStack> SUGGEST_ENCHANTMENTS = (context, builder) -> {
++        return net.minecraft.commands.SharedSuggestionProvider.suggestResource(net.minecraft.core.Registry.ENCHANTMENT.keySet(), builder);
++    };
++    // Crunchy end - Custom enchantment API
++
+     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+         dispatcher.register(Commands.literal("enchant").requires((source) -> {
+             return source.hasPermission(2);
+-        }).then(Commands.argument("targets", EntityArgument.entities()).then(Commands.argument("enchantment", ItemEnchantmentArgument.enchantment()).executes((context) -> {
++        }).then(Commands.argument("targets", EntityArgument.entities()).then(Commands.argument("enchantment", ItemEnchantmentArgument.enchantment()).suggests(SUGGEST_ENCHANTMENTS).executes((context) -> { // Crunchy - Custom enchantment APIgit
+             return enchant(context.getSource(), EntityArgument.getEntities(context, "targets"), ItemEnchantmentArgument.getEnchantment(context, "enchantment"), 1);
+         }).then(Commands.argument("level", IntegerArgumentType.integer(0)).executes((context) -> {
+             return enchant(context.getSource(), EntityArgument.getEntities(context, "targets"), ItemEnchantmentArgument.getEnchantment(context, "enchantment"), IntegerArgumentType.getInteger(context, "level"));
+diff --git a/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java b/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java
+index 12998d0e9ae0e148a155faa4468b0f78b8462cc9..894ec5bdb14fd5964dc6394b9ccd91651f874af2 100644
+--- a/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java
++++ b/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java
+@@ -400,7 +400,7 @@ public class ServerPlayerGameMode {
+             }
+ 
+             this.level.getCraftServer().getPluginManager().callEvent(event);
+-
++            net.minecraft.world.item.enchantment.EnchantmentHelper.handleCustomEnchantmentEvent(event, itemstack, player); // Crunchy - Custom enchantment API
+             if (event.isCancelled()) {
+                 if (isSwordNoBreak) {
+                     return false;
+diff --git a/src/main/java/net/minecraft/world/item/ItemStack.java b/src/main/java/net/minecraft/world/item/ItemStack.java
+index 174a16977562230b0c1cf1fa19928630c11fb6e4..9a4143e2d105dbdb7ec88fac4e140aa165aed78e 100644
+--- a/src/main/java/net/minecraft/world/item/ItemStack.java
++++ b/src/main/java/net/minecraft/world/item/ItemStack.java
+@@ -1044,11 +1044,11 @@ public final class ItemStack {
+         return list;
+     }
+ 
+-    private static boolean shouldShowInTooltip(int flags, ItemStack.TooltipPart tooltipSection) {
++    public static boolean shouldShowInTooltip(int flags, ItemStack.TooltipPart tooltipSection) { // Crunchy
+         return (flags & tooltipSection.getMask()) == 0;
+     }
+ 
+-    private int getHideFlags() {
++    public int getHideFlags() { // Crunchy
+         return this.hasTag() && this.tag.contains("HideFlags", 99) ? this.tag.getInt("HideFlags") : 0;
+     }
+ 
+diff --git a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentCategory.java b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentCategory.java
+index 6f6106ca4d74d50a7b74b086adc96c58c7906cb6..a1c478a10bc999163850f7d671f53e56fb173275 100644
+--- a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentCategory.java
++++ b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentCategory.java
+@@ -62,6 +62,14 @@ public enum EnchantmentCategory {
+             return item instanceof FishingRodItem;
+         }
+     },
++    // Crunchy start - Custom enchantment API
++    TOOL {
++        @Override
++        public boolean canEnchant(Item item) {
++            return item instanceof net.minecraft.world.item.ShovelItem || item instanceof net.minecraft.world.item.PickaxeItem || item instanceof net.minecraft.world.item.HoeItem || item instanceof net.minecraft.world.item.AxeItem;
++        }
++    },
++    // Crunchy end - Custom enchantment API
+     TRIDENT {
+         @Override
+         public boolean canEnchant(Item item) {
+diff --git a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
+index 6de50b822b52b06643649be2c9f85018daea1455..9b82661bb867a774cdce7c768203bbd09e70e550 100644
+--- a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
++++ b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
+@@ -431,6 +431,21 @@ public class EnchantmentHelper {
+     }
+     // Crunchy end - Enhanced mending
+ 
++    // Crunchy start - Custom enchantment API
++    public static void handleCustomEnchantmentEvent(org.bukkit.event.Event event, ItemStack itemStack, Player player) {
++        runIterationOnItem((enchantment, level) -> {
++            if (enchantment instanceof dev.mrfishcakes.crunchy.enchantment.CraftCustomEnchantment customEnchantment) {
++                dev.mrfishcakes.crunchy.enchantment.CustomEnchantment bukkitEnchantment = customEnchantment.getCustomEnchantment();
++                if (!(player.getBukkitEntity() instanceof org.bukkit.entity.Player bukkitPlayer)) return;
++
++                if (event instanceof org.bukkit.event.block.BlockBreakEvent blockBreakEvent) {
++                    bukkitEnchantment.onBlockBreak(blockBreakEvent, level, bukkitPlayer, itemStack.getBukkitStack());
++                }
++            }
++        }, itemStack);
++    }
++    // Crunchy end - Custom enchantment API
++
+     @FunctionalInterface
+     interface EnchantmentVisitor {
+         void accept(Enchantment enchantment, int level);
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index 507337b6891ffc8e79d32206a92f9fcdb9b9911f..2a6f65a2213e5a8e19935a2302607ce0550843a4 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -241,6 +241,7 @@ import org.bukkit.scheduler.BukkitWorker;
+ import org.bukkit.structure.StructureManager;
+ import org.bukkit.util.StringUtil;
+ import org.bukkit.util.permissions.DefaultPermissions;
++import org.jetbrains.annotations.NotNull;
+ import org.yaml.snakeyaml.Yaml;
+ import org.yaml.snakeyaml.constructor.SafeConstructor;
+ import org.yaml.snakeyaml.error.MarkedYAMLException;
+@@ -2725,4 +2726,14 @@ public final class CraftServer implements Server {
+         return MinecraftServer.START_MILLIS;
+     }
+     // Crunchy end - Uptime API
++
++    // Crunchy start - Custom enchantment API
++    @Override
++    public void registerEnchantment(@NotNull dev.mrfishcakes.crunchy.enchantment.CustomEnchantment enchantment) {
++        dev.mrfishcakes.crunchy.enchantment.CraftCustomEnchantment craftCustomEnchantment = new dev.mrfishcakes.crunchy.enchantment.CraftCustomEnchantment(enchantment);
++
++        Registry.register(Registry.ENCHANTMENT, CraftNamespacedKey.toMinecraft(enchantment.getKey()), craftCustomEnchantment);
++        org.bukkit.enchantments.Enchantment.registerEnchantment(enchantment);
++    }
++    // Crunchy end - Custom enchantment API
+ }
