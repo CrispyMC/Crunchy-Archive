@@ -216,10 +216,10 @@ index 12998d0e9ae0e148a155faa4468b0f78b8462cc9..894ec5bdb14fd5964dc6394b9ccd9165
                  if (isSwordNoBreak) {
                      return false;
 diff --git a/src/main/java/net/minecraft/world/item/ItemStack.java b/src/main/java/net/minecraft/world/item/ItemStack.java
-index 174a16977562230b0c1cf1fa19928630c11fb6e4..9a4143e2d105dbdb7ec88fac4e140aa165aed78e 100644
+index 7331af1a473c33537b1832accd51fcac79b77db5..0a9a875f62f75efc82f6bbf516fde8b4daf1a82b 100644
 --- a/src/main/java/net/minecraft/world/item/ItemStack.java
 +++ b/src/main/java/net/minecraft/world/item/ItemStack.java
-@@ -1044,11 +1044,11 @@ public final class ItemStack {
+@@ -1046,11 +1046,11 @@ public final class ItemStack {
          return list;
      }
  
@@ -279,7 +279,7 @@ index 6de50b822b52b06643649be2c9f85018daea1455..9b82661bb867a774cdce7c768203bbd0
      interface EnchantmentVisitor {
          void accept(Enchantment enchantment, int level);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 507337b6891ffc8e79d32206a92f9fcdb9b9911f..2a6f65a2213e5a8e19935a2302607ce0550843a4 100644
+index b77d7493fa95985a4d94e1db865fa5c8ebf84bff..81f2e402b6565b6fc32da27d8afe82f0b596ee8c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -241,6 +241,7 @@ import org.bukkit.scheduler.BukkitWorker;
@@ -290,7 +290,7 @@ index 507337b6891ffc8e79d32206a92f9fcdb9b9911f..2a6f65a2213e5a8e19935a2302607ce0
  import org.yaml.snakeyaml.Yaml;
  import org.yaml.snakeyaml.constructor.SafeConstructor;
  import org.yaml.snakeyaml.error.MarkedYAMLException;
-@@ -2725,4 +2726,14 @@ public final class CraftServer implements Server {
+@@ -2742,4 +2743,14 @@ public final class CraftServer implements Server {
          return MinecraftServer.START_MILLIS;
      }
      // Crunchy end - Uptime API
