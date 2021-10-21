@@ -1,0 +1,49 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <finlayoxby@outlook.com>
+Date: Wed, 20 Oct 2021 22:11:59 +0100
+Subject: [PATCH] Toggle Reload Command
+
+
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
+index de9f016c043c7bd7a7e719cc64b0bbea9de4c53b..c3eada03e1fc4deaeb2a8fa28682813411e7e55c 100644
+--- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
++++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
+@@ -214,4 +214,11 @@ public final class CrunchyConfig {
+         smeltRawIronBlock = getBoolean("recipes.smelt-raw-iron-block", true);
+     }
+ 
++    // Disable Reload Command
++    public static boolean disableReloadCommand;
++
++    private static void disableReloadCommand() {
++        disableReloadCommand = getBoolean("commands.disable-reload-command", false);
++    }
++
+ }
+diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
+index b7c24a7ff4dc50d03f74b21a0b353d0ce559b4d4..b1b8d72e52772356c779cbca607845f171e7431a 100644
+--- a/src/main/java/net/minecraft/commands/Commands.java
++++ b/src/main/java/net/minecraft/commands/Commands.java
+@@ -101,6 +101,7 @@ import net.minecraft.server.commands.WhitelistCommand;
+ import net.minecraft.server.commands.WorldBorderCommand;
+ import net.minecraft.server.commands.data.DataCommands;
+ import net.minecraft.server.level.ServerPlayer;
++import org.apache.logging.log4j.Level;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+ 
+@@ -156,7 +157,13 @@ public class Commands {
+         MsgCommand.register(this.dispatcher);
+         ParticleCommand.register(this.dispatcher);
+         PlaySoundCommand.register(this.dispatcher);
+-        ReloadCommand.register(this.dispatcher);
++        // Crunchy start - Toggle reload command
++        if (dev.mrfishcakes.crunchy.config.CrunchyConfig.disableReloadCommand) {
++            LOGGER.log(Level.WARN, "The /reload command is disabled by Crunchy. It will not register nor work!");
++        } else {
++            ReloadCommand.register(this.dispatcher);
++        }
++        // Crunchy end - Toggle reload command
+         RecipeCommand.register(this.dispatcher);
+         SayCommand.register(this.dispatcher);
+         ScheduleCommand.register(this.dispatcher);

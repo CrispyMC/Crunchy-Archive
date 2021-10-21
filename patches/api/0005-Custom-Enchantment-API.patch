@@ -115,10 +115,10 @@ index 0000000000000000000000000000000000000000..8631a0ab816972f54a5a698f9f07fd1f
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index e4d104195dbf92c5ffbcf8fb77cd960725054e44..2f19002fd42abe7d386fd6bade7173b3091ed26b 100644
+index 5168e38cddb7f6883f9da5470132210eff0122d3..43ecfcb8116ee18782357254bc492be6a3c62fe5 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2131,6 +2131,17 @@ public final class Bukkit {
+@@ -2145,6 +2145,17 @@ public final class Bukkit {
      }
      // Crunchy end - Uptime API
  
@@ -137,10 +137,10 @@ index e4d104195dbf92c5ffbcf8fb77cd960725054e44..2f19002fd42abe7d386fd6bade7173b3
      public static Server.Spigot spigot() {
          return server.spigot();
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 28f78bc820dec173ae48c65e66c464c6392cfc91..386576545a67791f551c4f230ebfe90e59b75338 100644
+index 69df225c9db941a4487d16ecb1f47e6010fb4d1f..25d45bb81b280af402daf862fd7f01040af4294b 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1860,4 +1860,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1872,4 +1872,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       */
      long getUptimeStart();
      // Crunchy end - Uptime API

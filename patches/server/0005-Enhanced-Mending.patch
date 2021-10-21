@@ -34,10 +34,10 @@ index ec7d011fa5df0b4775bedc01632ba549d3803693..a40ceb29f1d98c79614a232c780013ce
          if (entry != null) {
              ItemStack itemstack = (ItemStack) entry.getValue();
 diff --git a/src/main/java/net/minecraft/world/item/ItemStack.java b/src/main/java/net/minecraft/world/item/ItemStack.java
-index 3e5e358e24bd84a05785a9391526f316475e95ff..174a16977562230b0c1cf1fa19928630c11fb6e4 100644
+index 7695a5ec88023720d873f81fc36f78ad60fb9589..7331af1a473c33537b1832accd51fcac79b77db5 100644
 --- a/src/main/java/net/minecraft/world/item/ItemStack.java
 +++ b/src/main/java/net/minecraft/world/item/ItemStack.java
-@@ -1349,6 +1349,16 @@ public final class ItemStack {
+@@ -1351,6 +1351,16 @@ public final class ItemStack {
          return this.getItem().getEquipSound();
      }
  
