@@ -1,0 +1,165 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <finlayoxby@outlook.com>
+Date: Mon, 25 Oct 2021 15:13:45 +0100
+Subject: [PATCH] Fly Command
+
+
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/commands/FlyCommand.java b/src/main/java/dev/mrfishcakes/crunchy/commands/FlyCommand.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..fee55e41d00c1568a15904b48c9b2c9fd69b530a
+--- /dev/null
++++ b/src/main/java/dev/mrfishcakes/crunchy/commands/FlyCommand.java
+@@ -0,0 +1,104 @@
++package dev.mrfishcakes.crunchy.commands;
++
++import dev.mrfishcakes.crunchy.CrunchyUtil;
++import dev.mrfishcakes.crunchy.config.CrunchyConfig;
++import net.kyori.adventure.text.minimessage.MiniMessage;
++import org.bukkit.Bukkit;
++import org.bukkit.ChatColor;
++import org.bukkit.command.Command;
++import org.bukkit.command.CommandSender;
++import org.bukkit.entity.Player;
++import org.bukkit.util.StringUtil;
++import org.jetbrains.annotations.NotNull;
++
++import java.util.*;
++
++public class FlyCommand extends Command {
++
++    private final MiniMessage message;
++
++    public FlyCommand() {
++        super("fly");
++        this.description = "Toggle flight for a player";
++        this.usageMessage = "/fly [player]";
++        this.setPermission("bukkit.command.fly");
++        this.setAliases(Collections.singletonList("flight"));
++        this.message = MiniMessage.get();
++    }
++
++    @Override
++    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
++        if (!testPermission(sender)) return true;
++
++        if (!(sender instanceof Player)) {
++            CrunchyUtil.sendMessage(message, sender, CrunchyConfig.flyCommandPlayerOnly);
++            return true;
++        }
++
++        if (args.length == 0) {
++            Player player = (Player) sender;
++
++            if (player.getAllowFlight()) {
++                player.setFlying(false);
++                player.setAllowFlight(false);
++
++                CrunchyUtil.sendMessage(message, sender, CrunchyConfig.flyCommandDisabledSelf);
++            } else {
++                player.setFlying(true);
++                player.setAllowFlight(true);
++
++                CrunchyUtil.sendMessage(message, sender, CrunchyConfig.flyCommandEnabledSelf);
++            }
++
++            return true;
++        } else if (args.length == 1) {
++            Player target = Bukkit.getPlayer(args[0]);
++
++            final Map<String, String> name = Map.of("player", target == null ? args[0] : target.getName());
++
++            if (target == null) {
++                CrunchyUtil.sendMessage(message, name, sender, CrunchyConfig.flyCommandDisabledSelf);
++                return true;
++            }
++
++            if (target.getAllowFlight()) {
++                target.setFlying(false);
++                target.setAllowFlight(false);
++
++                CrunchyUtil.sendMessage(message, name, target, CrunchyConfig.flyCommandDisabledOther);
++                CrunchyUtil.sendMessage(message, name, sender, CrunchyConfig.flyCommandDisabledOther);
++            } else {
++                target.setFlying(true);
++                target.setAllowFlight(true);
++
++                CrunchyUtil.sendMessage(message, name, target, CrunchyConfig.flyCommandEnabledOther);
++                CrunchyUtil.sendMessage(message, name, sender, CrunchyConfig.flyCommandEnabledOther);
++            }
++
++            return true;
++        } else {
++            CrunchyUtil.sendMessage(sender, ChatColor.RED + "Usage: " + usageMessage);
++            return true;
++        }
++    }
++
++    @Override
++    @NotNull
++    public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
++        if (testPermissionSilent(sender) && args.length == 1) {
++            final Set<String> names = new TreeSet<>();
++
++            if (sender instanceof Player player) {
++                Bukkit.getOnlinePlayers().forEach(online -> {
++                    if (player.canSee(online)) names.add(online.getName());
++                });
++            } else {
++                Bukkit.getOnlinePlayers().forEach(online -> names.add(online.getName()));
++            }
++
++            return StringUtil.copyPartialMatches(args[0], names, new ArrayList<>());
++        }
++
++        return Collections.emptyList();
++    }
++}
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
+index 50553bda2dd09f06b00535c7bdb2c7da5344d4ba..421955bacf9e6e912c62f7749761af3b69258cc9 100644
+--- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
++++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
+@@ -1,6 +1,7 @@
+ package dev.mrfishcakes.crunchy.config;
+ 
+ import dev.mrfishcakes.crunchy.commands.CrunchyCommand;
++import dev.mrfishcakes.crunchy.commands.FlyCommand;
+ import dev.mrfishcakes.crunchy.commands.StopCommand;
+ import dev.mrfishcakes.crunchy.commands.UptimeCommand;
+ import net.minecraft.core.Registry;
+@@ -61,6 +62,10 @@ public final class CrunchyConfig {
+         commands.put("crunchy", new CrunchyCommand());
+         commands.put("uptime", new UptimeCommand());
+ 
++        if (CrunchyConfig.flyCommandEnabled) {
++            commands.put("fly", new FlyCommand());
++        }
++
+         if (!configFile.exists()) {
+             try {
+                 configFile.createNewFile();
+@@ -204,6 +209,25 @@ public final class CrunchyConfig {
+         stopCommandSuccess = getString("commands.stop.success", "<green>The stop has been successfully scheduled!");
+     }
+ 
++    // Fly Command
++    public static boolean flyCommandEnabled;
++    public static String flyCommandPlayerOnly;
++    public static String flyCommandTargetOffline;
++    public static String flyCommandEnabledSelf;
++    public static String flyCommandEnabledOther;
++    public static String flyCommandDisabledSelf;
++    public static String flyCommandDisabledOther;
++
++    private static void flyCommandSettings() {
++        flyCommandEnabled = getBoolean("commands.fly.enabled", true);
++        flyCommandPlayerOnly = getString("commands.fly.player-only", "<red>Sorry, only players can use this command!");
++        flyCommandTargetOffline = getString("commands.fly.target-offline", "<white><player> <red>is offline!");
++        flyCommandEnabledSelf = getString("commands.fly.enabled.self", "<white>Flight has been enabled!");
++        flyCommandEnabledOther = getString("commands.fly.enabled.other", "<white>Flight has been enabled for <green><player><white>!");
++        flyCommandDisabledSelf = getString("commands.fly.disabled.self", "<white>Flight has been disabled!");
++        flyCommandDisabledOther = getString("commands.fly.disabled.other", "<white>Flight has been disabled for <green><player><white>!");
++    }
++
+     // Smelt Raw Blocks
+     public static boolean smeltRawCopperBlock;
+     public static boolean smeltRawGoldBlock;
