@@ -1,0 +1,123 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <finlayoxby@outlook.com>
+Date: Fri, 22 Oct 2021 18:14:55 +0100
+Subject: [PATCH] Chance to Behead Players
+
+
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
+index c3eada03e1fc4deaeb2a8fa28682813411e7e55c..50553bda2dd09f06b00535c7bdb2c7da5344d4ba 100644
+--- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
++++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
+@@ -3,21 +3,22 @@ package dev.mrfishcakes.crunchy.config;
+ import dev.mrfishcakes.crunchy.commands.CrunchyCommand;
+ import dev.mrfishcakes.crunchy.commands.StopCommand;
+ import dev.mrfishcakes.crunchy.commands.UptimeCommand;
++import net.minecraft.core.Registry;
++import net.minecraft.resources.ResourceLocation;
+ import net.minecraft.server.MinecraftServer;
++import net.minecraft.world.item.Item;
++import net.minecraft.world.item.Items;
+ import org.bukkit.Bukkit;
+ import org.bukkit.command.Command;
+ import org.bukkit.configuration.InvalidConfigurationException;
+ import org.bukkit.configuration.file.YamlConfiguration;
+-import org.bukkit.craftbukkit.CraftServer;
+ import org.jetbrains.annotations.NotNull;
+ import org.jetbrains.annotations.Nullable;
+ 
+ import java.io.File;
+ import java.lang.reflect.Method;
+ import java.lang.reflect.Modifier;
+-import java.util.HashMap;
+-import java.util.List;
+-import java.util.Map;
++import java.util.*;
+ import java.util.logging.Level;
+ 
+ /**
+@@ -221,4 +222,24 @@ public final class CrunchyConfig {
+         disableReloadCommand = getBoolean("commands.disable-reload-command", false);
+     }
+ 
++    // Beheading Settings
++    public static boolean beheadingEnabled;
++    public static List<Item> beheadingItems;
++    public static String beheadingDisplayName;
++    public static double beheadingChance;
++
++    private static void beheadingSettings() {
++        beheadingEnabled = getBoolean("gameplay.beheading.enabled", false);
++        beheadingItems = new ArrayList<>();
++        getList("gameplay.beheading.items", Arrays.asList(
++                "minecraft:diamond_axe", "minecraft:diamond_sword",
++                "minecraft:netherite_axe", "minecraft:netherite_sword"
++        )).forEach(key -> {
++            Item item = Registry.ITEM.get(new ResourceLocation(key.toString()));
++            if (item != Items.AIR) beheadingItems.add(item);
++        });
++        beheadingDisplayName = getString("gameplay.beheading.item-name", "<red><player><white> Skull");
++        beheadingChance = getDouble("gameplay.beheading.chance", 0.03D);
++    }
++
+ }
+diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
+index 94e76e295dbd0f3bac4b30a3e7338cd56a971207..e08070657069f6cd02f7e6b938c95c00e74d3efa 100644
+--- a/src/main/java/net/minecraft/world/entity/player/Player.java
++++ b/src/main/java/net/minecraft/world/entity/player/Player.java
+@@ -2340,4 +2340,56 @@ public abstract class Player extends LivingEntity {
+             return this.message;
+         }
+     }
++    // Crunchy start - Player beheading chance
++    @Override
++    protected void dropCustomDeathLoot(net.minecraft.world.damagesource.DamageSource source, int lootingMultiplier, boolean allowDrops) {
++        super.dropCustomDeathLoot(source, lootingMultiplier, allowDrops);
++
++        Entity entity = source.getEntity();
++        if (entity instanceof Player player) {
++            if (dev.mrfishcakes.crunchy.config.CrunchyConfig.beheadingEnabled) {
++                handleBeheading(player);
++            }
++        }
++    }
++
++    private void handleBeheading(Player player) {
++        final double beheadingChance = dev.mrfishcakes.crunchy.config.CrunchyConfig.beheadingChance;
++        if (beheadingChance > 0D && this.random.nextDouble() <= beheadingChance) {
++            if (!dev.mrfishcakes.crunchy.config.CrunchyConfig.beheadingItems.contains(
++                    player.getItemInHand(InteractionHand.MAIN_HAND).getItem())) return;
++
++            org.bukkit.inventory.ItemStack headItem = new org.bukkit.inventory.ItemStack(org.bukkit.Material.PLAYER_HEAD);
++            org.bukkit.inventory.meta.SkullMeta skullMeta = (org.bukkit.inventory.meta.SkullMeta) headItem.getItemMeta();
++            skullMeta.setPlayerProfile(com.destroystokyo.paper.profile.CraftPlayerProfile.asBukkitMirror(this.getGameProfile()));
++
++            String nameAsString = this.getName().getString();
++            if (nameAsString.endsWith("s")) {
++                nameAsString = nameAsString + "'";
++            } else {
++                nameAsString = nameAsString + "'s";
++            }
++
++            skullMeta.displayName(net.kyori.adventure.text.minimessage.MiniMessage.get().
++                    parse(dev.mrfishcakes.crunchy.config.CrunchyConfig.beheadingDisplayName, Map.of("player", nameAsString)));
++            headItem.setItemMeta(skullMeta);
++
++            // Taken from the CraftWorld#dropItemNaturally method
++            double xs = (this.level.random.nextFloat() * 0.5F) + 0.25D;
++            double ys = (this.level.random.nextFloat() * 0.5F) + 0.25D;
++            double zs = (this.level.random.nextFloat() * 0.5F) + 0.25D;
++
++            org.bukkit.Location location = this.getBukkitEntity().getLocation().clone();
++            location.setX(xs + location.getX());
++            location.setY(ys + location.getY());
++            location.setZ(zs + location.getZ());
++
++            ItemEntity itemEntity = new ItemEntity(level, location.getX(), location.getY(), location.getZ(),
++                    org.bukkit.craftbukkit.inventory.CraftItemStack.asNMSCopy(headItem));
++            itemEntity.pickupDelay = 10;
++
++            this.level.addEntity(itemEntity, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.CUSTOM);
++        }
++    }
++    // Crunchy end - Player beheading chance
+ }
