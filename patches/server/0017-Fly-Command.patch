@@ -6,7 +6,7 @@ Subject: [PATCH] Fly Command
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/commands/FlyCommand.java b/src/main/java/dev/mrfishcakes/crunchy/commands/FlyCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..fee55e41d00c1568a15904b48c9b2c9fd69b530a
+index 0000000000000000000000000000000000000000..981727348dcd9ccaa1e08fd0ff7fccf5c28cf971
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/commands/FlyCommand.java
 @@ -0,0 +1,104 @@
@@ -69,7 +69,7 @@ index 0000000000000000000000000000000000000000..fee55e41d00c1568a15904b48c9b2c9f
 +            final Map<String, String> name = Map.of("player", target == null ? args[0] : target.getName());
 +
 +            if (target == null) {
-+                CrunchyUtil.sendMessage(message, name, sender, CrunchyConfig.flyCommandDisabledSelf);
++                CrunchyUtil.sendMessage(message, name, sender, CrunchyConfig.flyCommandTargetOffline);
 +                return true;
 +            }
 +
