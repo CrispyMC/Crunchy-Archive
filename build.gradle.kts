@@ -33,11 +33,11 @@ allprojects {
     publishing {
         repositories {
             maven {
-                name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/mrfishcakes/crunchy")
+                url = uri("http://138.201.100.162:81/dashboard/releases") // TODO Update to use domain name when I have more time :)
+                isAllowInsecureProtocol = true
                 credentials {
-                    username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
-                    password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+                    username = project.findProperty("repo.user") as String? ?: System.getenv("USERNAME")
+                    password = project.findProperty("repo.key") as String? ?: System.getenv("TOKEN")
                 }
             }
         }
