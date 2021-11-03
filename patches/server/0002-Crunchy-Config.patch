@@ -113,7 +113,7 @@ index 0000000000000000000000000000000000000000..30e6da894a7d861538cee9816e20bbea
 +}
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..8ce3f94f41e759ec81eebefd694a6c91ff6f06c3
+index 0000000000000000000000000000000000000000..822933f7d0aa5c358256fb13357ed21fa4b1cbdd
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 @@ -0,0 +1,162 @@
@@ -158,7 +158,7 @@ index 0000000000000000000000000000000000000000..8ce3f94f41e759ec81eebefd694a6c91
 +
 +    public static YamlConfiguration config;
 +
-+    static int version = 1;
++    static int version = 2;
 +    static boolean verbose = false; // Debug logging
 +
 +    public static boolean verbose() {
@@ -201,8 +201,8 @@ index 0000000000000000000000000000000000000000..8ce3f94f41e759ec81eebefd694a6c91
 +        config.options().header(HEADER);
 +
 +        verbose = getBoolean("verbose", false);
-+        version = getInt("version", 1);
-+        set("version", 1);
++        version = getInt("version", 2);
++        set("version", 2);
 +
 +        readConfig(CrunchyConfig.class, null);
 +    }

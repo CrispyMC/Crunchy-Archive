@@ -5,7 +5,7 @@ Subject: [PATCH] Server Reload Events
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index dfaaf03818340356c56a1360deb52a25d7c9965f..a672202dec6d2c4257b2f004a4f5d8e8baeaa607 100644
+index 9e525fe34236018185d3b0fbcf8f5773096e1c29..5ff09c9f3122d3ddc7cf91537fbe0365820b641f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -888,6 +888,7 @@ public final class CraftServer implements Server {
@@ -16,7 +16,7 @@ index dfaaf03818340356c56a1360deb52a25d7c9965f..a672202dec6d2c4257b2f004a4f5d8e8
          this.reloadCount++;
          this.configuration = YamlConfiguration.loadConfiguration(this.getConfigFile());
          this.commandsConfiguration = YamlConfiguration.loadConfiguration(this.getCommandsConfigFile());
-@@ -1012,6 +1013,7 @@ public final class CraftServer implements Server {
+@@ -1011,6 +1012,7 @@ public final class CraftServer implements Server {
          this.enablePlugins(PluginLoadOrder.POSTWORLD);
          this.getPluginManager().callEvent(new ServerLoadEvent(ServerLoadEvent.LoadType.RELOAD));
          org.spigotmc.WatchdogThread.hasStarted = true; // Paper - Disable watchdog early timeout on reload

@@ -5,11 +5,11 @@ Subject: [PATCH] Toggle Reload Command
 
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-index de9f016c043c7bd7a7e719cc64b0bbea9de4c53b..c3eada03e1fc4deaeb2a8fa28682813411e7e55c 100644
+index af327165b6dae50ffef57741abe105eb48b3b327..0d0fe483b26639031eb26ce7d94883551bf2041c 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-@@ -214,4 +214,11 @@ public final class CrunchyConfig {
-         smeltRawIronBlock = getBoolean("recipes.smelt-raw-iron-block", true);
+@@ -272,4 +272,11 @@ public final class CrunchyConfig {
+         }
      }
  
 +    // Disable Reload Command

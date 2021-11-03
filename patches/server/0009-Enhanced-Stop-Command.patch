@@ -143,7 +143,7 @@ index 0000000000000000000000000000000000000000..426792df5815a3d611ac4662209a2966
 +
 +}
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-index e6ae1a15c85140da68a39f3010a8dc217fe0f9f4..bfe821e6e26e1ec8a51727443821dd558e0b755f 100644
+index 23ba7225a0c4639d6babbb13de4171a7cff502b9..555ae6b06e49a75688f8617420effdebf662bc20 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 @@ -1,12 +1,14 @@
@@ -162,7 +162,7 @@ index e6ae1a15c85140da68a39f3010a8dc217fe0f9f4..bfe821e6e26e1ec8a51727443821dd55
  import org.jetbrains.annotations.Nullable;
  
 @@ -88,6 +90,11 @@ public final class CrunchyConfig {
-         set("version", 1);
+         set("version", 2);
  
          readConfig(CrunchyConfig.class, null);
 +

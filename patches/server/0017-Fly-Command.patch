@@ -115,7 +115,7 @@ index 0000000000000000000000000000000000000000..981727348dcd9ccaa1e08fd0ff7fccf5
 +    }
 +}
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-index 50553bda2dd09f06b00535c7bdb2c7da5344d4ba..421955bacf9e6e912c62f7749761af3b69258cc9 100644
+index 87d5607864c73f99ca867d19bcb25aba1df5c171..a3a486cc9663418d84285ad7de26ac80dfe1feeb 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 @@ -1,6 +1,7 @@
@@ -161,5 +161,5 @@ index 50553bda2dd09f06b00535c7bdb2c7da5344d4ba..421955bacf9e6e912c62f7749761af3b
 +    }
 +
      // Smelt Raw Blocks
-     public static boolean smeltRawCopperBlock;
-     public static boolean smeltRawGoldBlock;
+     public static RawBlockData smeltRawCopperBlock;
+     public static RawBlockData smeltRawGoldBlock;

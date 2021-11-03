@@ -5,7 +5,7 @@ Subject: [PATCH] Chance to Behead Players
 
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-index c3eada03e1fc4deaeb2a8fa28682813411e7e55c..50553bda2dd09f06b00535c7bdb2c7da5344d4ba 100644
+index 0d0fe483b26639031eb26ce7d94883551bf2041c..87d5607864c73f99ca867d19bcb25aba1df5c171 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 @@ -3,21 +3,22 @@ package dev.mrfishcakes.crunchy.config;
@@ -35,7 +35,7 @@ index c3eada03e1fc4deaeb2a8fa28682813411e7e55c..50553bda2dd09f06b00535c7bdb2c7da
  import java.util.logging.Level;
  
  /**
-@@ -221,4 +222,24 @@ public final class CrunchyConfig {
+@@ -279,4 +280,24 @@ public final class CrunchyConfig {
          disableReloadCommand = getBoolean("commands.disable-reload-command", false);
      }
  

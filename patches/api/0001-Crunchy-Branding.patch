@@ -5,7 +5,7 @@ Subject: [PATCH] Crunchy Branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 02f80c9a34a23c2285a1e05b41f53b4bafc28c5a..6e3d765cd20d0aeda6d987e953fbd21e2ad4c21a 100644
+index 92b612126a6bac0b89198a92bbb73b742ec9d064..67f50e22213c90096e88c941b3536ba12f600ede 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -39,6 +39,8 @@ dependencies {
@@ -17,7 +17,7 @@ index 02f80c9a34a23c2285a1e05b41f53b4bafc28c5a..6e3d765cd20d0aeda6d987e953fbd21e
  
      implementation("org.ow2.asm:asm:9.1")
      implementation("org.ow2.asm:asm-commons:9.1")
-@@ -102,5 +104,6 @@ tasks.withType<Javadoc>().configureEach {
+@@ -111,5 +113,6 @@ tasks.withType<Javadoc> {
          "https://jd.adventure.kyori.net/text-serializer-legacy/$adventureVersion/",
          "https://jd.adventure.kyori.net/text-serializer-plain/$adventureVersion/",
          // Paper end
