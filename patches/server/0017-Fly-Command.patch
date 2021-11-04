@@ -115,7 +115,7 @@ index 0000000000000000000000000000000000000000..981727348dcd9ccaa1e08fd0ff7fccf5
 +    }
 +}
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-index 87d5607864c73f99ca867d19bcb25aba1df5c171..a3a486cc9663418d84285ad7de26ac80dfe1feeb 100644
+index 87d5607864c73f99ca867d19bcb25aba1df5c171..d3a789f75d3348175ded662c0afb4e894d6bd5f0 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 @@ -1,6 +1,7 @@
@@ -151,7 +151,7 @@ index 87d5607864c73f99ca867d19bcb25aba1df5c171..a3a486cc9663418d84285ad7de26ac80
 +    public static String flyCommandDisabledOther;
 +
 +    private static void flyCommandSettings() {
-+        flyCommandEnabled = getBoolean("commands.fly.enabled", true);
++        flyCommandEnabled = getBoolean("commands.fly.enable", true);
 +        flyCommandPlayerOnly = getString("commands.fly.player-only", "<red>Sorry, only players can use this command!");
 +        flyCommandTargetOffline = getString("commands.fly.target-offline", "<white><player> <red>is offline!");
 +        flyCommandEnabledSelf = getString("commands.fly.enabled.self", "<white>Flight has been enabled!");
