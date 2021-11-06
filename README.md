@@ -1,4 +1,5 @@
-Crunchy [![Crunchy Build Status](https://img.shields.io/github/workflow/status/MrFishCakes/Crunchy/Build%20Crunchy)](https://github.com/MrFishCakes/Crunchy/actions) [![Maven Version](https://img.shields.io/maven-metadata/v?metadataUrl=http%3A%2F%2F138.201.100.162%3A81%2Freleases%2Fdashboard%2Freleases%2Fdev%2Fmrfishcakes%2Fcrunchy%2Fcrunchy-api%2Fmaven-metadata.xml)](https://mrfishcakes.dev) [![Discord](https://img.shields.io/discord/891090110140022875.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/xkSa7Jj2Ak)
+
+Crunchy [![Crunchy Build Status](https://img.shields.io/github/workflow/status/MrFishCakes/Crunchy/Build%20Crunchy)](https://github.com/MrFishCakes/Crunchy/actions) [![Maven Version](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fmaven.mrfishcakes.dev%2Freleases%2Fdev%2Fmrfishcakes%2Fcrunchy%2Fcrunchy-api%2Fmaven-metadata.xml)](https://maven.mrfishcakes.dev) [![Discord](https://img.shields.io/discord/891090110140022875.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/xkSa7Jj2Ak)
 ===========
 
 A fork of [Paper](https://github.com/PaperMC/Paper/) built to enhance gameplay features, make quality of life better for owners and developers where possible.
@@ -21,7 +22,7 @@ How To (Plugin Developers)
 ```xml
 <repository>
     <id>mrfishcakes</id>
-    <url>http://138.201.100.162:81/releases/dashboard/releases/</url>
+    <url>https://maven.mrfishcakes.dev/</url>
 </repository>
 ```
 * Artifact Information:
@@ -40,7 +41,7 @@ How To (Plugin Developers)
 ```kotlin
 repositories {
     maven {
-        url = uri("http://138.201.100.162:81/releases/dashboard/releases/")
+        url = uri("https://maven.mrfishcakes.dev/")
     }
 }
 
