@@ -33,8 +33,7 @@ allprojects {
     publishing {
         repositories {
             maven {
-                url = uri("http://138.201.100.162:81/dashboard/releases") // TODO Update to use domain name when I have more time :)
-                isAllowInsecureProtocol = true
+                url = uri("https://maven.mrfishcakes.dev/")
                 credentials {
                     username = project.findProperty("repo.user") as String? ?: System.getenv("USERNAME")
                     password = project.findProperty("repo.key") as String? ?: System.getenv("TOKEN")
