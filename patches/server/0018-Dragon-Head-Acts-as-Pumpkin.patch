@@ -1,0 +1,37 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <finlayoxby@outlook.com>
+Date: Sun, 7 Nov 2021 18:05:14 +0000
+Subject: [PATCH] Dragon Head Acts as Pumpkin
+
+
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
+index db1ffeaf64e66f94055987ad270d1813a997c820..22b044600115d9a6b15e42c29c85df05af2f7632 100644
+--- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
++++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
+@@ -113,6 +113,13 @@ public final class CrunchyWorldConfig {
+         this.nuclearCreeperShowName = getBoolean("mobs.creeper.nuclear.show-name", true);
+     }
+ 
++    // Enderman Settings
++    public boolean dragonHeadBypass;
++
++    private void endermanSettings() {
++        dragonHeadBypass = getBoolean("mobs.enderman.dragon-head-bypass", false);
++    }
++
+     // Observer Settings
+     public boolean disableObserverClocks;
+ 
+diff --git a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
+index b27e2e1e2270a7a2f3e36b90a19237e39e4175b8..8c49d21a41460563b3ccb7c2eeae80d46bd3f21d 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
++++ b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
+@@ -231,7 +231,7 @@ public class EnderMan extends Monster implements NeutralMob {
+         // Paper end
+         ItemStack itemstack = (ItemStack) player.getInventory().armor.get(3);
+ 
+-        if (itemstack.is(Blocks.CARVED_PUMPKIN.asItem())) {
++        if (itemstack.is(Blocks.CARVED_PUMPKIN.asItem()) || (this.level.crunchyConfig.dragonHeadBypass && itemstack.is(net.minecraft.world.item.Items.DRAGON_HEAD))) { // Crunchy - Dragon head acts as pumpkin
+             return false;
+         } else {
+             Vec3 vec3d = player.getViewVector(1.0F).normalize();
