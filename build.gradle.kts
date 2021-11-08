@@ -4,7 +4,7 @@ plugins {
     java
     `maven-publish`
     id("com.github.johnrengelman.shadow") version "7.1.0" apply false
-    id("io.papermc.paperweight.patcher") version "1.1.12"
+    id("io.papermc.paperweight.patcher") version "1.1.14"
 }
 
 repositories {
@@ -57,12 +57,7 @@ subprojects {
 
     repositories {
         mavenCentral()
-        maven("https://oss.sonatype.org/content/groups/public/")
         maven("https://papermc.io/repo/repository/maven-public/")
-        maven("https://ci.emc.gs/nexus/content/groups/aikar/")
-        maven("https://repo.aikar.co/content/groups/aikar")
-        maven("https://repo.md-5.net/content/repositories/releases/")
-        maven("https://hub.spigotmc.org/nexus/content/groups/public/")
     }
 }
 
