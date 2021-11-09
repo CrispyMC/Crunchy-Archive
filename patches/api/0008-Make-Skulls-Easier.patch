@@ -1,0 +1,42 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <finlayoxby@outlook.com>
+Date: Tue, 9 Nov 2021 22:39:34 +0000
+Subject: [PATCH] Make Skulls Easier
+
+
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/CrunchyUtil.java b/src/main/java/dev/mrfishcakes/crunchy/CrunchyUtil.java
+index 6eb404f228c7353c2a4b02d979f85eb6fa3ba54f..0b231487a5e59424f21a4dc9c803f8d5c4303d61 100644
+--- a/src/main/java/dev/mrfishcakes/crunchy/CrunchyUtil.java
++++ b/src/main/java/dev/mrfishcakes/crunchy/CrunchyUtil.java
+@@ -1,9 +1,14 @@
+ package dev.mrfishcakes.crunchy;
+ 
++import com.destroystokyo.paper.profile.PlayerProfile;
+ import net.kyori.adventure.text.minimessage.MiniMessage;
+ import org.bukkit.ChatColor;
++import org.bukkit.Material;
+ import org.bukkit.command.CommandSender;
++import org.bukkit.inventory.ItemStack;
++import org.bukkit.inventory.meta.SkullMeta;
+ import org.jetbrains.annotations.NotNull;
++import org.jetbrains.annotations.Nullable;
+ 
+ import java.util.Map;
+ 
+@@ -30,4 +35,16 @@ public final class CrunchyUtil {
+         sender.sendMessage(miniMessage.parse(message.replaceAll("''", "'"), placeholders));
+     }
+ 
++    @NotNull
++    public static ItemStack createSkull(@NotNull PlayerProfile profile) {
++        ItemStack skullItem = new ItemStack(Material.PLAYER_HEAD);
++        SkullMeta skullMeta = (SkullMeta) skullItem.getItemMeta();
++
++        skullMeta.setPlayerProfile(profile);
++
++        skullItem.setItemMeta(skullMeta);
++
++        return skullItem;
++    }
++
+ }
