@@ -17,7 +17,7 @@ index 30e6da894a7d861538cee9816e20bbea747efe51..abfbfef25b197219f4c074feee517787
  import net.minecraft.server.level.ServerLevel;
  import org.bukkit.ChatColor;
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-index 6410f4a48c12974e0964cdaf10655ad15b15b9b1..af327165b6dae50ffef57741abe105eb48b3b327 100644
+index 6410f4a48c12974e0964cdaf10655ad15b15b9b1..69156dba8fc49154180ef288eb39fee582bbec6d 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 @@ -203,4 +203,73 @@ public final class CrunchyConfig {
@@ -47,9 +47,9 @@ index 6410f4a48c12974e0964cdaf10655ad15b15b9b1..af327165b6dae50ffef57741abe105eb
 +            smeltRawCopperBlock = RawBlockData.fromValues(getBoolean(copperRoot + "enabled", true), (float) getDouble(copperRoot + "experience", 6.3D),
 +                    getInt(copperRoot + "cook-time", 800), getInt(copperRoot + "blast-cook-time", 500));
 +            smeltRawGoldBlock = RawBlockData.fromValues(getBoolean(goldRoot + "enabled", true), (float) getDouble(goldRoot + "experience", 9.0D),
-+                    getInt(goldRoot + "cook-time", 800), getInt(copperRoot + "blast-cook-time", 500));
-+            smeltRawIronBlock = RawBlockData.fromValues(getBoolean(copperRoot + "enabled", true), (float) getDouble(copperRoot + "experience", 6.3D),
-+                    getInt(copperRoot + "cook-time", 800), getInt(copperRoot + "blast-cook-time", 500));
++                    getInt(goldRoot + "cook-time", 800), getInt(goldRoot + "blast-cook-time", 500));
++            smeltRawIronBlock = RawBlockData.fromValues(getBoolean(ironRoot + "enabled", true), (float) getDouble(ironRoot + "experience", 6.3D),
++                    getInt(ironRoot + "cook-time", 800), getInt(ironRoot + "blast-cook-time", 500));
 +        }
 +    }
 +
@@ -277,10 +277,10 @@ index 0000000000000000000000000000000000000000..0acadd183b514cbe24cab2bd2db9d7a7
 +
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 4cbb1d293163c64c7e349c4712a5047e18271c21..6b1cabc2a92ad13edd6461c055d51e8fa466645b 100644
+index 1e0a1de5f1ffe0fbd8ec1b17ddd7192f3e3ac0b5..63fc3e7a9358ff21f7bc28a9c1bdb71f43b1655e 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1233,7 +1233,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1234,7 +1234,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                  String doneTime = String.format(java.util.Locale.ROOT, "%.3fs", (double) (Util.getNanos() - serverStartTime) / 1.0E9D);
                  LOGGER.info("Done ({})! For help, type \"help\"", doneTime);
                  // Paper end
@@ -290,7 +290,7 @@ index 4cbb1d293163c64c7e349c4712a5047e18271c21..6b1cabc2a92ad13edd6461c055d51e8f
                  org.spigotmc.WatchdogThread.hasStarted = true; // Paper
                  Arrays.fill( recentTps, 20 );
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 81f2e402b6565b6fc32da27d8afe82f0b596ee8c..9e525fe34236018185d3b0fbcf8f5773096e1c29 100644
+index 7a2c1b190c1f6323419c7f5fa1ef9064eed85d9e..1f07dae6b1b36bf0a85101ab563be13930d5f6cd 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -4,7 +4,6 @@ import com.google.common.base.Charsets;
