@@ -277,10 +277,10 @@ index 0000000000000000000000000000000000000000..0acadd183b514cbe24cab2bd2db9d7a7
 +
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index ce7eec26bc6a45ad5be696a3856d08f6d5a846af..bf11fa5e41f78432bf8b59c6f55a2e113a258b45 100644
+index 7569360006c46a5b62b9b228e7c388dc947a8bda..744294335fbc2c603f96b264a3dfc9b9dcf0d340 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1236,7 +1236,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1217,7 +1217,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                  String doneTime = String.format(java.util.Locale.ROOT, "%.3fs", (double) (Util.getNanos() - serverStartTime) / 1.0E9D);
                  LOGGER.info("Done ({})! For help, type \"help\"", doneTime);
                  // Paper end
@@ -290,7 +290,7 @@ index ce7eec26bc6a45ad5be696a3856d08f6d5a846af..bf11fa5e41f78432bf8b59c6f55a2e11
                  org.spigotmc.WatchdogThread.hasStarted = true; // Paper
                  Arrays.fill( recentTps, 20 );
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 7a2c1b190c1f6323419c7f5fa1ef9064eed85d9e..1f07dae6b1b36bf0a85101ab563be13930d5f6cd 100644
+index 4342d94d419a8b6a40b3cef3a190458ce7609908..536489ac1d56636a7eac00285a4c54edf42db6e5 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -4,7 +4,6 @@ import com.google.common.base.Charsets;

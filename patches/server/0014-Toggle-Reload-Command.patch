@@ -5,7 +5,7 @@ Subject: [PATCH] Toggle Reload Command
 
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-index af327165b6dae50ffef57741abe105eb48b3b327..0d0fe483b26639031eb26ce7d94883551bf2041c 100644
+index 69156dba8fc49154180ef288eb39fee582bbec6d..767421b4de69e87bb0eb3be4c278b68a614b80ff 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 @@ -272,4 +272,11 @@ public final class CrunchyConfig {
@@ -21,18 +21,18 @@ index af327165b6dae50ffef57741abe105eb48b3b327..0d0fe483b26639031eb26ce7d9488355
 +
  }
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
-index b7c24a7ff4dc50d03f74b21a0b353d0ce559b4d4..b1b8d72e52772356c779cbca607845f171e7431a 100644
+index edc202d60ac3e8ac13b61d8c2c82d587567e9c05..007e9cfbfb0f5db5e91afa5ee3aeca165dfbbbe6 100644
 --- a/src/main/java/net/minecraft/commands/Commands.java
 +++ b/src/main/java/net/minecraft/commands/Commands.java
-@@ -101,6 +101,7 @@ import net.minecraft.server.commands.WhitelistCommand;
+@@ -103,6 +103,7 @@ import net.minecraft.server.commands.WhitelistCommand;
  import net.minecraft.server.commands.WorldBorderCommand;
  import net.minecraft.server.commands.data.DataCommands;
  import net.minecraft.server.level.ServerPlayer;
-+import org.apache.logging.log4j.Level;
++import org.apache.logging.log4j.Level; // Crunchy
+ import net.minecraft.util.profiling.jfr.JvmProfiler;
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
- 
-@@ -156,7 +157,13 @@ public class Commands {
+@@ -159,7 +160,13 @@ public class Commands {
          MsgCommand.register(this.dispatcher);
          ParticleCommand.register(this.dispatcher);
          PlaySoundCommand.register(this.dispatcher);

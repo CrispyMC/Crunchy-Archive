@@ -5,10 +5,10 @@ Subject: [PATCH] Uptime API
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index cc39da4ac13bd0ac28234ff4cdbc9079acf1b258..4cbb1d293163c64c7e349c4712a5047e18271c21 100644
+index e98a5aa7b0c61af05d9752b6ce10a4ffa9c0a270..7569360006c46a5b62b9b228e7c388dc947a8bda 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -313,6 +313,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -310,6 +310,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      public volatile Thread shutdownThread; // Paper
      public volatile boolean abnormalExit = false; // Paper
  
@@ -18,10 +18,10 @@ index cc39da4ac13bd0ac28234ff4cdbc9079acf1b258..4cbb1d293163c64c7e349c4712a5047e
          AtomicReference<S> atomicreference = new AtomicReference();
          Thread thread = new Thread(() -> {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 90a3b59538ff89a2b6af14f08f98b643fd5fe173..b77d7493fa95985a4d94e1db865fa5c8ebf84bff 100644
+index d7fca4eb14a8046d807ba743bd6b5a8ddfb3805d..0825b3020b70a36d7471a1953a492d2c1e910ae1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -2730,4 +2730,16 @@ public final class CraftServer implements Server {
+@@ -2714,4 +2714,16 @@ public final class CraftServer implements Server {
      }
  
      // Paper end

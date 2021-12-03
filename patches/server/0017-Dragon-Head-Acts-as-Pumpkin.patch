@@ -23,10 +23,10 @@ index db1ffeaf64e66f94055987ad270d1813a997c820..22b044600115d9a6b15e42c29c85df05
      public boolean disableObserverClocks;
  
 diff --git a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
-index b27e2e1e2270a7a2f3e36b90a19237e39e4175b8..8c49d21a41460563b3ccb7c2eeae80d46bd3f21d 100644
+index cfdb631500962ec19007db55bd4453687b91c2f8..4a9ec8d0449f54e24ceb05cae642d1af6c876c4a 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
-@@ -231,7 +231,7 @@ public class EnderMan extends Monster implements NeutralMob {
+@@ -237,7 +237,7 @@ public class EnderMan extends Monster implements NeutralMob {
          // Paper end
          ItemStack itemstack = (ItemStack) player.getInventory().armor.get(3);
  

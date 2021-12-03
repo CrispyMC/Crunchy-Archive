@@ -5,10 +5,10 @@ Subject: [PATCH] Server Reload Events
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 9e525fe34236018185d3b0fbcf8f5773096e1c29..5ff09c9f3122d3ddc7cf91537fbe0365820b641f 100644
+index 536489ac1d56636a7eac00285a4c54edf42db6e5..923d109c84dad19cf76afaa16f73855ea7fecd09 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -888,6 +888,7 @@ public final class CraftServer implements Server {
+@@ -897,6 +897,7 @@ public final class CraftServer implements Server {
      @Override
      public void reload() {
          org.spigotmc.WatchdogThread.hasStarted = false; // Paper - Disable watchdog early timeout on reload
@@ -16,7 +16,7 @@ index 9e525fe34236018185d3b0fbcf8f5773096e1c29..5ff09c9f3122d3ddc7cf91537fbe0365
          this.reloadCount++;
          this.configuration = YamlConfiguration.loadConfiguration(this.getConfigFile());
          this.commandsConfiguration = YamlConfiguration.loadConfiguration(this.getCommandsConfigFile());
-@@ -1011,6 +1012,7 @@ public final class CraftServer implements Server {
+@@ -1020,6 +1021,7 @@ public final class CraftServer implements Server {
          this.enablePlugins(PluginLoadOrder.POSTWORLD);
          this.getPluginManager().callEvent(new ServerLoadEvent(ServerLoadEvent.LoadType.RELOAD));
          org.spigotmc.WatchdogThread.hasStarted = true; // Paper - Disable watchdog early timeout on reload

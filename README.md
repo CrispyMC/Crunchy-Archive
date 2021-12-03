@@ -30,7 +30,7 @@ How To (Plugin Developers)
 <dependency>
     <groupId>dev.mrfishcakes.crunchy</groupId>
     <artifactId>crunchy-api</artifactId>
-    <version>1.17.1-R0.1-SNAPSHOT</version>
+    <version>1.18-R0.1-SNAPSHOT</version>
     <scope>provided</scope>
 </dependency>
  ```
@@ -46,18 +46,18 @@ repositories {
 }
 
 dependencies {
-    compileOnly("dev.mrfishcakes.crunchy:crunchy-api:1.17.1-R0.1-SNAPSHOT")
+    compileOnly("dev.mrfishcakes.crunchy:crunchy-api:1.18-R0.1-SNAPSHOT")
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(16))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 ```
 How to compile from source
 ------
-To compile Crunchy, you need JDK 16 (Or later) and an internet connection.
+To compile Crunchy, you need JDK 17 (Or later) and an internet connection.
 
-Clone this repository and run `./gradlew applyPatches`, then `./gradlew reobfJar` from your terminal. You can find the compiled jar in `Crunchy-Server/build/libs` directory.
+Clone this repository and run `./gradlew applyPatches`, then `./gradlew createReobfBundlerJar` from your terminal. You can find the compiled jar in `build/libs` directory.
 
 View a full list of tasks by running `./gradlew tasks`.
 

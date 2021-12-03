@@ -5,7 +5,7 @@ Subject: [PATCH] Enhanced Mending
 
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-index 8ce3f94f41e759ec81eebefd694a6c91ff6f06c3..34ef541aa609de545e12614d7dc91e569f314380 100644
+index 822933f7d0aa5c358256fb13357ed21fa4b1cbdd..7428b3add87ead3a3a30c8decfedeb64ff377acc 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 @@ -159,4 +159,11 @@ public final class CrunchyConfig {
@@ -21,23 +21,23 @@ index 8ce3f94f41e759ec81eebefd694a6c91ff6f06c3..34ef541aa609de545e12614d7dc91e56
 +
  }
 diff --git a/src/main/java/net/minecraft/world/entity/ExperienceOrb.java b/src/main/java/net/minecraft/world/entity/ExperienceOrb.java
-index ec7d011fa5df0b4775bedc01632ba549d3803693..a40ceb29f1d98c79614a232c780013ce181966dc 100644
+index 8be7a3527018f9f6ecb91576c928c255b3089342..42f8f28c03f3f55e00218a9213827798cf071ed7 100644
 --- a/src/main/java/net/minecraft/world/entity/ExperienceOrb.java
 +++ b/src/main/java/net/minecraft/world/entity/ExperienceOrb.java
 @@ -319,7 +319,7 @@ public class ExperienceOrb extends Entity {
      }
  
      private int repairPlayerItems(Player player, int amount) {
--        Entry<EquipmentSlot, ItemStack> entry = EnchantmentHelper.getRandomItemWith(Enchantments.MENDING, (LivingEntity) player, ItemStack::isDamaged);
+-        Entry<EquipmentSlot, ItemStack> entry = EnchantmentHelper.getRandomItemWith(Enchantments.MENDING, player, ItemStack::isDamaged);
 +        Entry<EquipmentSlot, ItemStack> entry = dev.mrfishcakes.crunchy.config.CrunchyConfig.enhancedMending ? EnchantmentHelper.getMostDamagedItem(Enchantments.MENDING, player) : EnchantmentHelper.getRandomItemWith(Enchantments.MENDING, player, ItemStack::isDamaged); // Crunchy - Enhanced mending
  
          if (entry != null) {
              ItemStack itemstack = (ItemStack) entry.getValue();
 diff --git a/src/main/java/net/minecraft/world/item/ItemStack.java b/src/main/java/net/minecraft/world/item/ItemStack.java
-index 7695a5ec88023720d873f81fc36f78ad60fb9589..7331af1a473c33537b1832accd51fcac79b77db5 100644
+index 8f2f516b1f473ce18a07e9f130b49b795dd6b46e..3d75fa700da03c0b0adcf372f3532b765c02e4ec 100644
 --- a/src/main/java/net/minecraft/world/item/ItemStack.java
 +++ b/src/main/java/net/minecraft/world/item/ItemStack.java
-@@ -1351,6 +1351,16 @@ public final class ItemStack {
+@@ -1307,6 +1307,16 @@ public final class ItemStack {
          return this.getItem().getEquipSound();
      }
  
@@ -55,7 +55,7 @@ index 7695a5ec88023720d873f81fc36f78ad60fb9589..7331af1a473c33537b1832accd51fcac
  
          ENCHANTMENTS, MODIFIERS, UNBREAKABLE, CAN_DESTROY, CAN_PLACE, ADDITIONAL, DYE;
 diff --git a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
-index d439e8ce87bf7da03683a336941c7673b8b166e4..6de50b822b52b06643649be2c9f85018daea1455 100644
+index 7bc5aa35b52de0027cf58a6127a9903464ccaf47..f0eef5eaef85d0e5c852949c4f15c58eb0612926 100644
 --- a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
 +++ b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
 @@ -408,6 +408,29 @@ public class EnchantmentHelper {
