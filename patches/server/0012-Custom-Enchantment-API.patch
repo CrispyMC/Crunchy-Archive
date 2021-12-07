@@ -203,7 +203,7 @@ index 514cc0e8805045549eacde6c280859aa2dc4a91d..cb264fe01847f6809db33a0a39227d9e
          }).then(Commands.argument("level", IntegerArgumentType.integer(0)).executes((context) -> {
              return enchant(context.getSource(), EntityArgument.getEntities(context, "targets"), ItemEnchantmentArgument.getEnchantment(context, "enchantment"), IntegerArgumentType.getInteger(context, "level"));
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java b/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java
-index dd92cc53f0e6247508c6ce494dd45b4829344b2a..0ba005d1d745565c76732df8a5b1e9c886cf3fe3 100644
+index 3125af569ec2bb1cd613a9dd96c3a181d723006d..437c64e23470407d7b8df6bb2bde579499ccaedf 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayerGameMode.java
 @@ -398,7 +398,7 @@ public class ServerPlayerGameMode {
@@ -216,7 +216,7 @@ index dd92cc53f0e6247508c6ce494dd45b4829344b2a..0ba005d1d745565c76732df8a5b1e9c8
                  if (isSwordNoBreak) {
                      return false;
 diff --git a/src/main/java/net/minecraft/world/item/ItemStack.java b/src/main/java/net/minecraft/world/item/ItemStack.java
-index 3d75fa700da03c0b0adcf372f3532b765c02e4ec..404a7fca230f782c1e2d648319cf859d5b3a1228 100644
+index 16c18fb44f5fec5b52adfd10b739964a59d5ab36..d3d7d494e2833b9b2164a592b2d9b865b3e6ca48 100644
 --- a/src/main/java/net/minecraft/world/item/ItemStack.java
 +++ b/src/main/java/net/minecraft/world/item/ItemStack.java
 @@ -1048,11 +1048,11 @@ public final class ItemStack {
@@ -279,10 +279,10 @@ index f0eef5eaef85d0e5c852949c4f15c58eb0612926..4b14f9fe11fcacf916316434ce93fe5d
      interface EnchantmentVisitor {
          void accept(Enchantment enchantment, int level);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 0825b3020b70a36d7471a1953a492d2c1e910ae1..4342d94d419a8b6a40b3cef3a190458ce7609908 100644
+index 21884a6338847907d7496dcf87b16e8675015f9c..e4bc6acd78a457fd0e9340646fde6d61a3fd2bfc 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -245,6 +245,7 @@ import org.bukkit.scheduler.BukkitWorker;
+@@ -243,6 +243,7 @@ import org.bukkit.scheduler.BukkitWorker;
  import org.bukkit.structure.StructureManager;
  import org.bukkit.util.StringUtil;
  import org.bukkit.util.permissions.DefaultPermissions;
@@ -290,7 +290,7 @@ index 0825b3020b70a36d7471a1953a492d2c1e910ae1..4342d94d419a8b6a40b3cef3a190458c
  import org.yaml.snakeyaml.Yaml;
  import org.yaml.snakeyaml.constructor.SafeConstructor;
  import org.yaml.snakeyaml.error.MarkedYAMLException;
-@@ -2726,4 +2727,14 @@ public final class CraftServer implements Server {
+@@ -2824,4 +2825,14 @@ public final class CraftServer implements Server {
          return MinecraftServer.START_MILLIS;
      }
      // Crunchy end - Uptime API

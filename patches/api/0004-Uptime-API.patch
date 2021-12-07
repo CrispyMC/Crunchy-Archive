@@ -5,10 +5,10 @@ Subject: [PATCH] Uptime API
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index eb0aa2a2a9def0270341ee15d8a7a0629a67a823..accf26efbf63febbc046cf5f29f5d130c6f820ff 100644
+index b7c45aa5d5f79fd16e59401acfa9c2bed0a5d78c..f4b304684a7e37bd44476e0e5b01eb2c9ccce057 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2116,6 +2116,37 @@ public final class Bukkit {
+@@ -2134,6 +2134,37 @@ public final class Bukkit {
      }
      // Paper end
  
@@ -47,10 +47,10 @@ index eb0aa2a2a9def0270341ee15d8a7a0629a67a823..accf26efbf63febbc046cf5f29f5d130
      public static Server.Spigot spigot() {
          return server.spigot();
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 63c6525cadd30e26cdab9a56d087e850d0c1c99b..c518930c98bc78931a18180538c9a16fe0aa0a92 100644
+index e863599539b84980bdefd8ba8d59e66d062b3c28..486941b322d97be877b51f3bf727f8bc42bb8a16 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1845,4 +1845,31 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1861,4 +1861,31 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      @NotNull
      io.papermc.paper.datapack.DatapackManager getDatapackManager();
      // Paper end
