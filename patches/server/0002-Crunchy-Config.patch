@@ -454,10 +454,10 @@ index c09c76591222f8e53713ce3651ea2de1d8f94f21..d673683be47884f6a7bbf232d80c81da
          public void restart() {
              org.spigotmc.RestartCommand.restart();
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 450518903c0a10301b177d8dd7fe05aca3b8b37e..fe332eac8d2c36262af908285d697d8b7f6a533e 100644
+index deb33456b5b194a662cbdbacf17752c87f2cecaf..eb199075f7f686847d719a03468b50eeb5722e8e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -153,6 +153,14 @@ public class Main {
+@@ -155,6 +155,14 @@ public class Main {
                          .describedAs("Jar file");
                  // Paper end
  
