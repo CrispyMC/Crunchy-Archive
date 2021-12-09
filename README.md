@@ -1,5 +1,5 @@
 
-Crunchy [![Crunchy Build Status](https://img.shields.io/github/workflow/status/MrFishCakes/Crunchy/Build%20Crunchy)](https://github.com/MrFishCakes/Crunchy/actions) [![Maven Version](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fmaven.mrfishcakes.dev%2Freleases%2Fdev%2Fmrfishcakes%2Fcrunchy%2Fcrunchy-api%2Fmaven-metadata.xml)](https://maven.mrfishcakes.dev) [![Discord](https://img.shields.io/discord/891090110140022875.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/xkSa7Jj2Ak)
+Crunchy [![Crunchy Build Status](https://img.shields.io/github/workflow/status/MrFishCakes/Crunchy/Build%20Crunchy)](https://github.com/MrFishCakes/Crunchy/actions) [![Discord](https://img.shields.io/discord/891090110140022875.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/xkSa7Jj2Ak)
 ===========
 
 A fork of [Paper](https://github.com/PaperMC/Paper/) built to enhance gameplay features, make quality of life better for owners and developers where possible.
