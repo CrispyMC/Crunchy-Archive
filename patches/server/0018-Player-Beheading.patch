@@ -5,10 +5,10 @@ Subject: [PATCH] Player Beheading
 
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
-index 22b044600115d9a6b15e42c29c85df05af2f7632..82525657169efc8e2917363d725e22eaf9ef352c 100644
+index 22b044600115d9a6b15e42c29c85df05af2f7632..cc4fef22a0453b12f20f7c706b527f5e4c0bc302 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
-@@ -1,8 +1,18 @@
+@@ -1,8 +1,16 @@
  package dev.mrfishcakes.crunchy.config;
  
 +import net.minecraft.core.Registry;
@@ -18,16 +18,14 @@ index 22b044600115d9a6b15e42c29c85df05af2f7632..82525657169efc8e2917363d725e22ea
  import org.bukkit.configuration.ConfigurationSection;
 +import org.bukkit.craftbukkit.inventory.CraftItemStack;
 +import org.bukkit.entity.Player;
-+import org.bukkit.inventory.ItemStack;
  import org.jetbrains.annotations.NotNull;
 +import org.jetbrains.annotations.Nullable;
  
 +import java.util.ArrayList;
-+import java.util.Arrays;
  import java.util.List;
  import java.util.logging.Level;
  
-@@ -81,6 +91,30 @@ public final class CrunchyWorldConfig {
+@@ -81,6 +89,30 @@ public final class CrunchyWorldConfig {
          return config.getList(namedPath + path, config.getList(defaultPath + path));
      }
  
@@ -59,7 +57,7 @@ index 22b044600115d9a6b15e42c29c85df05af2f7632..82525657169efc8e2917363d725e22ea
      public boolean chickenAvoidFox;
      public float chickenAvoidFoxDistance;
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index b6f9c99d580d985f2b84efaa655d9ae40073e72b..70e9bbc887343e4b509df1c3cb3c84a209401a06 100644
+index 7b23535a680d2a8534dcb8dd87770f66fb982c13..eab2e4530aab757eace8a116fd29fb451fd0a827 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -869,7 +869,19 @@ public class ServerPlayer extends Player {
