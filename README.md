@@ -62,3 +62,13 @@ Clone this repository and run `./gradlew applyPatches`, then `./gradlew createRe
 View a full list of tasks by running `./gradlew tasks`.
 
 Note for Windows users: Using GitBash is suggested, but you can use the  `gradlew.bat` file provided.
+
+Included Libraries/APIs
+------
+Crunchy includes some different libraries and APIs that aren't bundled into CraftBukkit, Spigot or Paper. They can be found below with a link to the source code and license (Where applicable).
+
+|     Name    |                               Source Code                              |  License |
+|:-----------:|:----------------------------------------------------------------------:|:--------:|
+| H2 Database |                https://github.com/h2database/h2database                |  MPL 2.0 |
+|   HikariCP  |               https://github.com/brettwooldridge/HikariCP              | Apache 2 |
+| MiniMessage | https://github.com/KyoriPowered/adventure/tree/master/text-minimessage |    MIT   |
