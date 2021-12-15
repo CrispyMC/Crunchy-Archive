@@ -30,7 +30,7 @@ How To (Plugin Developers)
 <dependency>
     <groupId>dev.mrfishcakes.crunchy</groupId>
     <artifactId>crunchy-api</artifactId>
-    <version>1.18-R0.1-SNAPSHOT</version>
+    <version>1.18.1-R0.1-SNAPSHOT</version>
     <scope>provided</scope>
 </dependency>
  ```
@@ -46,7 +46,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("dev.mrfishcakes.crunchy:crunchy-api:1.18-R0.1-SNAPSHOT")
+    compileOnly("dev.mrfishcakes.crunchy:crunchy-api:1.18.1-R0.1-SNAPSHOT")
 }
 
 java {
