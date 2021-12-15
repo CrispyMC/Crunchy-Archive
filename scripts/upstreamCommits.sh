@@ -4,7 +4,8 @@
 
 # upstreamCommit <baseHash>
 # param: bashHash - the commit hash to use for comparing commits (baseHash...HEAD)
-#
+
+# Big thanks to Purpur for this script that actually works!
 
 (
 set -e
