@@ -1,0 +1,22 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <fishcake007@outlook.com>
+Date: Wed, 15 Dec 2021 22:40:35 +0000
+Subject: [PATCH] Enhanced Plugins Command
+
+
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
+index 8912a1de792c4a65a6ae98dbd46b6dd0d230cf88..42b38f4f3f22f8ba45cf49d39c4bccb5ab24494f 100644
+--- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
++++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
+@@ -303,4 +303,11 @@ public final class CrunchyConfig {
+         disableReloadCommand = getBoolean("commands.disable-reload-command", false);
+     }
+ 
++    // Enhanced Plugins Command
++    public static boolean enhancedPluginsCommand;
++
++    private static void enhancedPluginsCommand() {
++        enhancedPluginsCommand = getBoolean("commands.enhanced-plugins", true);
++    }
++
+ }

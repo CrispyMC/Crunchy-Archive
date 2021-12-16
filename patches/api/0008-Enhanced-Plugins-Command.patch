@@ -1,0 +1,120 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <fishcake007@outlook.com>
+Date: Wed, 15 Dec 2021 22:40:13 +0000
+Subject: [PATCH] Enhanced Plugins Command
+
+
+diff --git a/src/main/java/org/bukkit/command/defaults/PluginsCommand.java b/src/main/java/org/bukkit/command/defaults/PluginsCommand.java
+index 1aa58c59e1e8738bbdc77752885ff3b18b29de42..ae756aea0ac9839b2bde60aeca0a0c8eca0f5f99 100644
+--- a/src/main/java/org/bukkit/command/defaults/PluginsCommand.java
++++ b/src/main/java/org/bukkit/command/defaults/PluginsCommand.java
+@@ -5,11 +5,16 @@ import java.util.Collections;
+ import java.util.List;
+ import java.util.Map;
+ import java.util.TreeMap;
+-
++// Crunchy start - Enhanced plugin information
++import net.kyori.adventure.text.Component;
++import net.kyori.adventure.text.event.HoverEvent;
++import net.kyori.adventure.text.format.NamedTextColor;
++// Crunchy end - Enhanced plugin information
+ import org.bukkit.Bukkit;
+ import org.bukkit.ChatColor;
+ import org.bukkit.command.CommandSender;
+ import org.bukkit.plugin.Plugin;
++import org.bukkit.plugin.PluginDescriptionFile; // Crunchy - Enhanced plugin information
+ import org.jetbrains.annotations.NotNull;
+ 
+ public class PluginsCommand extends BukkitCommand {
+@@ -24,7 +29,11 @@ public class PluginsCommand extends BukkitCommand {
+     @Override
+     public boolean execute(@NotNull CommandSender sender, @NotNull String currentAlias, @NotNull String[] args) {
+         if (!testPermission(sender)) return true;
+-
++        // Crunchy start - Enhanced plugin information
++        if (Bukkit.spigot().getCrunchyConfig().getBoolean("commands.enhanced-plugins"))
++            sender.sendMessage(getEnhancedPluginList());
++        else
++        // Crunchy end - Enhanced plugin information
+         sender.sendMessage("Plugins " + getPluginList());
+         return true;
+     }
+@@ -34,7 +43,78 @@ public class PluginsCommand extends BukkitCommand {
+     public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
+         return Collections.emptyList();
+     }
++    // Crunchy start - Enhanced plugin information
++    @NotNull
++    private Component getEnhancedPluginList() {
++        Component base = Component.text("Plugins ");
++        final TreeMap<String, Plugin> plugins = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
++
++        for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
++            plugins.put(plugin.getDescription().getName(), plugin);
++        }
++
++        boolean firstIteration = true;
++        base = base.append(Component.text("(" + plugins.size() + "): "));
++        for (Map.Entry<String, Plugin> entry : plugins.entrySet()) {
++
++            Plugin plugin = entry.getValue();
++            PluginDescriptionFile pdf = plugin.getDescription();
++            String pluginName = pdf.getName();
++
++            if (org.bukkit.UnsafeValues.isLegacyPlugin(plugin)) {
++                pluginName += "*"; // Keeping Paper legacy notification
++            }
++
++            Component pluginInfo = Component.text(pluginName).color(plugin.isEnabled() ? NamedTextColor.GREEN : NamedTextColor.RED);
+ 
++            // Include website on click
++            if (pdf.getWebsite() != null) {
++                pluginInfo = pluginInfo.clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl(pdf.getWebsite()));
++            }
++
++            // Include description on hover
++            Component hover = null;
++            if (pdf.getDescription() != null) {
++                hover = Component.text(pdf.getDescription());
++            }
++
++            // Include authors on hover
++            final java.util.List<String> authors = pdf.getAuthors();
++            if (!authors.isEmpty()) {
++                boolean firstAuthor = true;
++                Component authorComponent = Component.text(authors.size() > 1 ? "Authors: " : "Author: ");
++
++                for (String author : authors) {
++                    if (!firstAuthor) {
++                        authorComponent = authorComponent.append(Component.text(", "));
++                    } else {
++                        firstAuthor = false;
++                    }
++
++                    authorComponent = authorComponent.append(Component.text(author));
++                }
++
++                if (hover != null) {
++                    hover = hover.append(Component.newline()).append(authorComponent);
++                } else {
++                    hover = authorComponent;
++                }
++            }
++
++            if (hover != null) pluginInfo = pluginInfo.hoverEvent(HoverEvent.showText(hover));
++
++            if (!firstIteration) {
++                base = base.append(Component.text(", ").color(NamedTextColor.WHITE)); // Just to reset any formatting
++            } else {
++                firstIteration = false;
++            }
++
++            base = base.append(pluginInfo);
++        }
++
++        return base;
++    }
++    // Crunchy end - Enhanced plugin information
+     @NotNull
+     private String getPluginList() {
+         // Paper start
