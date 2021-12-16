@@ -57,7 +57,7 @@ How to compile from source
 ------
 To compile Crunchy, you need JDK 17 (Or later) and an internet connection.
 
-Clone this repository and run `./gradlew applyPatches`, then `./gradlew createReobfBundlerJar` from your terminal. You can find the compiled jar in `build/libs` directory.
+Clone this repository and run `./gradlew applyPatches`, then `./gradlew createReobfPaperclipJar` from your terminal. You can find the compiled jar in `build/libs` directory.
 
 View a full list of tasks by running `./gradlew tasks`.
 
