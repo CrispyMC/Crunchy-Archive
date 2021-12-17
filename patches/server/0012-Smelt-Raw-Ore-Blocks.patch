@@ -17,19 +17,19 @@ index 30e6da894a7d861538cee9816e20bbea747efe51..abfbfef25b197219f4c074feee517787
  import net.minecraft.server.level.ServerLevel;
  import org.bukkit.ChatColor;
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-index 6410f4a48c12974e0964cdaf10655ad15b15b9b1..69156dba8fc49154180ef288eb39fee582bbec6d 100644
+index 093ae867a144b829ba46b769f00ef87d89302a6c..5e32de77a0615123858551870f27a454d6a2cdb4 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-@@ -203,4 +203,73 @@ public final class CrunchyConfig {
-         stopCommandSuccess = getString("commands.stop.success", "<green>The stop has been successfully scheduled!");
+@@ -179,4 +179,73 @@ public final class CrunchyConfig {
+         uptimeCommandOutput = getString("commands.uptime-output", "<white>The server has been up for: <green><days><white> days, <green><hours><white> hours, <green><minutes><white> minutes");
      }
  
-+    // Smelt Raw Blocks
++    // Recipe Settings
 +    public static RawBlockData smeltRawCopperBlock;
 +    public static RawBlockData smeltRawGoldBlock;
 +    public static RawBlockData smeltRawIronBlock;
 +
-+    private static void smeltRawBlocks() {
++    private static void recipeSettings() {
 +        final String copperRoot = "recipes.smelting.raw-copper-block.";
 +        final String goldRoot = "recipes.smelting.raw-gold-block.";
 +        final String ironRoot = "recipes.smelting.raw-iron-block.";
@@ -290,7 +290,7 @@ index 9587902be86c44c861b08a45a4d90c5d248c6adb..5953d55bae815ccc956296d1fa9cff5e
                  org.spigotmc.WatchdogThread.hasStarted = true; // Paper
                  Arrays.fill( recentTps, 20 );
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index e4bc6acd78a457fd0e9340646fde6d61a3fd2bfc..e59e87e112df53705085db57b078854e393ff059 100644
+index 09a4bd6ce7ae8db45bb40d872b7fea897b33e92b..014a6f80ffacccef0d036627892fa6f6550ddc93 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -4,7 +4,6 @@ import com.google.common.base.Charsets;

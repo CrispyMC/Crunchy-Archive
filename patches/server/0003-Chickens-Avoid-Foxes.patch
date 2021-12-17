@@ -5,14 +5,14 @@ Subject: [PATCH] Chickens Avoid Foxes
 
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
-index d79711985c4a92ce2ffc6e38c992b4f96d3fc03c..89a26d6531411fbb75dcedd08e06faa1e22509fb 100644
+index d79711985c4a92ce2ffc6e38c992b4f96d3fc03c..6568b4cbe90481beb686403a4f3f19b4cda99777 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
 @@ -81,4 +81,17 @@ public final class CrunchyWorldConfig {
          return config.getList(namedPath + path, config.getList(defaultPath + path));
      }
  
-+    // Chicken Settings
++    // Animal Settings
 +    public boolean chickenAvoidFox;
 +    public float chickenAvoidFoxDistance;
 +    public double chickenAvoidFoxSlow;
@@ -27,7 +27,7 @@ index d79711985c4a92ce2ffc6e38c992b4f96d3fc03c..89a26d6531411fbb75dcedd08e06faa1
 +
  }
 diff --git a/src/main/java/net/minecraft/world/entity/animal/Chicken.java b/src/main/java/net/minecraft/world/entity/animal/Chicken.java
-index cece07e000a4355e88aef7848fd264191521484e..de4c8fda202b61f222969962f3095390130bd386 100644
+index aa373560120684a037ac02d8df196b97b791bd85..a5dbc356124d7c00c12b47b33d484fc086814d6a 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/Chicken.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/Chicken.java
 @@ -16,6 +16,7 @@ import net.minecraft.world.entity.Mob;

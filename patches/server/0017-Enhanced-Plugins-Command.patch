@@ -5,18 +5,18 @@ Subject: [PATCH] Enhanced Plugins Command
 
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-index 8912a1de792c4a65a6ae98dbd46b6dd0d230cf88..42b38f4f3f22f8ba45cf49d39c4bccb5ab24494f 100644
+index 5e32de77a0615123858551870f27a454d6a2cdb4..793e708662f715a4ec686641c351c35b678805e2 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-@@ -303,4 +303,11 @@ public final class CrunchyConfig {
-         disableReloadCommand = getBoolean("commands.disable-reload-command", false);
+@@ -174,9 +174,11 @@ public final class CrunchyConfig {
+ 
+     // Command Settings
+     public static String uptimeCommandOutput;
++    public static boolean enhancedPluginsCommand;
+ 
+     private static void commandSettings() {
+         uptimeCommandOutput = getString("commands.uptime-output", "<white>The server has been up for: <green><days><white> days, <green><hours><white> hours, <green><minutes><white> minutes");
++        enhancedPluginsCommand = getBoolean("commands.enhanced-plugins", true);
      }
  
-+    // Enhanced Plugins Command
-+    public static boolean enhancedPluginsCommand;
-+
-+    private static void enhancedPluginsCommand() {
-+        enhancedPluginsCommand = getBoolean("commands.enhanced-plugins", true);
-+    }
-+
- }
+     // Recipe Settings

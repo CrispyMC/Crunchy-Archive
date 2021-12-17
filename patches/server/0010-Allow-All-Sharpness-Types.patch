@@ -5,10 +5,10 @@ Subject: [PATCH] Allow All Sharpness Types
 
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-index 4816748505809ee108ab47e5db00c6fc7f37b146..30030da3b5b633b086cb86eef95921cf898d3b14 100644
+index 523c8ea04d3ffb51151ab86e5c5165d7b67d5926..093ae867a144b829ba46b769f00ef87d89302a6c 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-@@ -171,10 +171,12 @@ public final class CrunchyConfig {
+@@ -164,10 +164,12 @@ public final class CrunchyConfig {
      // Enchantment Settings
      public static boolean enhancedMending;
      public static boolean infinityMending;
@@ -20,7 +20,7 @@ index 4816748505809ee108ab47e5db00c6fc7f37b146..30030da3b5b633b086cb86eef95921cf
 +        sharpnessAllTypes = getBoolean("enchantments.allow-all-sharpness-types", false);
      }
  
-     // Uptime Command
+     // Command Settings
 diff --git a/src/main/java/net/minecraft/world/item/enchantment/DamageEnchantment.java b/src/main/java/net/minecraft/world/item/enchantment/DamageEnchantment.java
 index d6c354856c71d9629828e2ddbe316306bfaf6ea6..de6bcda050f76f2080ddebc7ff840113d7869bc3 100644
 --- a/src/main/java/net/minecraft/world/item/enchantment/DamageEnchantment.java

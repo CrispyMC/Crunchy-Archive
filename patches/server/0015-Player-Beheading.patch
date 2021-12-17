@@ -5,7 +5,7 @@ Subject: [PATCH] Player Beheading
 
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
-index 22b044600115d9a6b15e42c29c85df05af2f7632..cc4fef22a0453b12f20f7c706b527f5e4c0bc302 100644
+index 7127455c0527e42abf5ce0b91927fe4aa7fe9c12..ba6bda4b95ec86173c96304f9e337cd79c76aef5 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
 @@ -1,8 +1,16 @@
@@ -25,19 +25,20 @@ index 22b044600115d9a6b15e42c29c85df05af2f7632..cc4fef22a0453b12f20f7c706b527f5e
  import java.util.List;
  import java.util.logging.Level;
  
-@@ -81,6 +89,30 @@ public final class CrunchyWorldConfig {
-         return config.getList(namedPath + path, config.getList(defaultPath + path));
-     }
+@@ -120,8 +128,29 @@ public final class CrunchyWorldConfig {
+     // World Settings
+     public boolean disableObserverClocks;
  
-+    // Beheading Settings
 +    public boolean beheadingEnabled;
 +    public double beheadingChance;
 +    public List<Item> beheadingItems;
 +
-+    private void beheadingSettings() {
-+        beheadingEnabled = getBoolean("beheading.enabled", false);
-+        beheadingChance = getDouble("beheading.chance", 0.03D);
-+        beheadingItems = new ArrayList<>();
+     private void worldSettings() {
+         this.disableObserverClocks = getBoolean("blocks.observer.disable-clocks", true);
++
++        this.beheadingEnabled = getBoolean("beheading.enabled", false);
++        this.beheadingChance = getDouble("beheading.chance", 0.03D);
++        this.beheadingItems = new ArrayList<>();
 +        getList("beheading.items", List.of(
 +                "minecraft:diamond_axe",
 +                "minecraft:netherite_axe",
@@ -51,11 +52,9 @@ index 22b044600115d9a6b15e42c29c85df05af2f7632..cc4fef22a0453b12f20f7c706b527f5e
 +
 +    public boolean isValidBeheadingItem(@Nullable Player player) {
 +        return player != null && beheadingItems.contains(CraftItemStack.asNMSCopy(player.getInventory().getItemInMainHand()).getItem());
-+    }
-+
-     // Chicken Settings
-     public boolean chickenAvoidFox;
-     public float chickenAvoidFoxDistance;
+     }
+ 
+ }
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 index 7b23535a680d2a8534dcb8dd87770f66fb982c13..eab2e4530aab757eace8a116fd29fb451fd0a827 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java

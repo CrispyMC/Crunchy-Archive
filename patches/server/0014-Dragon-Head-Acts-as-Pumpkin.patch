@@ -5,25 +5,29 @@ Subject: [PATCH] Dragon Head Acts as Pumpkin
 
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
-index db1ffeaf64e66f94055987ad270d1813a997c820..22b044600115d9a6b15e42c29c85df05af2f7632 100644
+index 077ed729b1339f7d2694710a8685ec32716fd095..7127455c0527e42abf5ce0b91927fe4aa7fe9c12 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
-@@ -113,6 +113,13 @@ public final class CrunchyWorldConfig {
-         this.nuclearCreeperShowName = getBoolean("mobs.creeper.nuclear.show-name", true);
-     }
+@@ -103,6 +103,8 @@ public final class CrunchyWorldConfig {
+     public String nuclearCreeperName;
+     public boolean nuclearCreeperShowName;
  
-+    // Enderman Settings
 +    public boolean dragonHeadBypass;
 +
-+    private void endermanSettings() {
-+        dragonHeadBypass = getBoolean("mobs.enderman.dragon-head-bypass", false);
-+    }
+     private void mobSettings() {
+         this.nuclearCreeperEnabled = getBoolean("mobs.creeper.nuclear.enabled", false);
+         this.nuclearCreeperChanceEasy = getDouble("mobs.creeper.nuclear.easy-spawn-chance", 0.0D);
+@@ -111,6 +113,8 @@ public final class CrunchyWorldConfig {
+         this.nuclearCreeperPower = (float) getDouble("mobs.creeper.nuclear.power", 3.5D);
+         this.nuclearCreeperName = getString("mobs.creeper.nuclear.name", "<#2cfa1f>Nuclear Creeper");
+         this.nuclearCreeperShowName = getBoolean("mobs.creeper.nuclear.show-name", true);
 +
-     // Observer Settings
-     public boolean disableObserverClocks;
++        this.dragonHeadBypass = getBoolean("mobs.enderman.dragon-head-bypass", false);
+     }
  
+     // World Settings
 diff --git a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
-index cfdb631500962ec19007db55bd4453687b91c2f8..4a9ec8d0449f54e24ceb05cae642d1af6c876c4a 100644
+index d47002d45dabd66f38d25d398d8943f4b911cdc5..23bc2d1ddc060ff929cb7b86b6c0667c256f41da 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
 @@ -237,7 +237,7 @@ public class EnderMan extends Monster implements NeutralMob {

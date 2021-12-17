@@ -5,26 +5,27 @@ Subject: [PATCH] Iron Golems Attack Creepers
 
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
-index cc4fef22a0453b12f20f7c706b527f5e4c0bc302..172efc9a50d6534268fe75c9535d2ff50de745f6 100644
+index ba6bda4b95ec86173c96304f9e337cd79c76aef5..5b2f8a2fc813b5d38c91ec06476b6f0418eaed4a 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyWorldConfig.java
-@@ -134,6 +134,7 @@ public final class CrunchyWorldConfig {
-     public float nuclearCreeperPower;
-     public String nuclearCreeperName;
-     public boolean nuclearCreeperShowName;
-+    public boolean ironGolemsAttackCreepers;
+@@ -113,6 +113,8 @@ public final class CrunchyWorldConfig {
  
-     private void creeperSettings() {
-         this.nuclearCreeper = getBoolean("mobs.creeper.nuclear.enabled", false);
-@@ -143,6 +144,8 @@ public final class CrunchyWorldConfig {
-         this.nuclearCreeperPower = (float) getDouble("mobs.creeper.nuclear.power", 3.5D);
-         this.nuclearCreeperName = getString("mobs.creeper.nuclear.name", "<#2cfa1f>Nuclear Creeper");
+     public boolean dragonHeadBypass;
+ 
++    public boolean ironGolemsAttackCreepers;
++
+     private void mobSettings() {
+         this.nuclearCreeperEnabled = getBoolean("mobs.creeper.nuclear.enabled", false);
+         this.nuclearCreeperChanceEasy = getDouble("mobs.creeper.nuclear.easy-spawn-chance", 0.0D);
+@@ -123,6 +125,8 @@ public final class CrunchyWorldConfig {
          this.nuclearCreeperShowName = getBoolean("mobs.creeper.nuclear.show-name", true);
+ 
+         this.dragonHeadBypass = getBoolean("mobs.enderman.dragon-head-bypass", false);
 +
 +        this.ironGolemsAttackCreepers = getBoolean("mobs.iron-golem.attack-creepers", false);
      }
  
-     // Enderman Settings
+     // World Settings
 diff --git a/src/main/java/net/minecraft/world/entity/animal/IronGolem.java b/src/main/java/net/minecraft/world/entity/animal/IronGolem.java
 index d6bff18a60e1b0b507a3797742bfafff2fad10d2..5d1d5982b279aca56f2fef7ba93f29d9b708867c 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/IronGolem.java

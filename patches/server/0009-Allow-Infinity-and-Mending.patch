@@ -5,10 +5,10 @@ Subject: [PATCH] Allow Infinity and Mending
 
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-index 1af9ce8307ca8e77fee52ec50cf0eae81aabd8a8..d0166d9e5520eabdd6e74a43c3ded1cb6f2bafa5 100644
+index f43186bdbb0d7344ca29915e7e35f781d9f95365..523c8ea04d3ffb51151ab86e5c5165d7b67d5926 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-@@ -170,9 +170,11 @@ public final class CrunchyConfig {
+@@ -163,9 +163,11 @@ public final class CrunchyConfig {
  
      // Enchantment Settings
      public static boolean enhancedMending;
@@ -19,7 +19,7 @@ index 1af9ce8307ca8e77fee52ec50cf0eae81aabd8a8..d0166d9e5520eabdd6e74a43c3ded1cb
 +        infinityMending = getBoolean("enchantments.allow-infinity-mending", true);
      }
  
-     // Uptime Command
+     // Command Settings
 diff --git a/src/main/java/net/minecraft/world/item/enchantment/ArrowInfiniteEnchantment.java b/src/main/java/net/minecraft/world/item/enchantment/ArrowInfiniteEnchantment.java
 index 3aece8245060dd1ba269c08d226c84247a6f0a83..6443a32d844c0fbd01b583c260b962a8dba96e47 100644
 --- a/src/main/java/net/minecraft/world/item/enchantment/ArrowInfiniteEnchantment.java

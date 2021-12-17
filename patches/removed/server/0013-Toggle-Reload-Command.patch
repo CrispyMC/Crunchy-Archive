@@ -5,10 +5,10 @@ Subject: [PATCH] Toggle Reload Command
 
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-index 69156dba8fc49154180ef288eb39fee582bbec6d..767421b4de69e87bb0eb3be4c278b68a614b80ff 100644
+index 37f14a3cfde61a7384faf53b9805b4454a558ab1..7459b9239aedf1a0e763e67319c293d5e704f3bb 100644
 --- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
 +++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
-@@ -272,4 +272,11 @@ public final class CrunchyConfig {
+@@ -247,4 +247,11 @@ public final class CrunchyConfig {
          }
      }
  
@@ -21,7 +21,7 @@ index 69156dba8fc49154180ef288eb39fee582bbec6d..767421b4de69e87bb0eb3be4c278b68a
 +
  }
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
-index edc202d60ac3e8ac13b61d8c2c82d587567e9c05..007e9cfbfb0f5db5e91afa5ee3aeca165dfbbbe6 100644
+index f6b73f8c6638ddf79e45042f5c8902ea1f271f5c..2b23f19a6c85c68dddef8e43e81539ac7aa25cc9 100644
 --- a/src/main/java/net/minecraft/commands/Commands.java
 +++ b/src/main/java/net/minecraft/commands/Commands.java
 @@ -103,6 +103,7 @@ import net.minecraft.server.commands.WhitelistCommand;
