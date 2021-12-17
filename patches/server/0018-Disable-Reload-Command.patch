@@ -1,0 +1,23 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <fishcake007@outlook.com>
+Date: Fri, 17 Dec 2021 15:09:32 +0000
+Subject: [PATCH] Disable Reload Command
+
+
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
+index 793e708662f715a4ec686641c351c35b678805e2..446b33e45f75c5dba3418dbaff6dd80c7cc6f0f1 100644
+--- a/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
++++ b/src/main/java/dev/mrfishcakes/crunchy/config/CrunchyConfig.java
+@@ -175,10 +175,12 @@ public final class CrunchyConfig {
+     // Command Settings
+     public static String uptimeCommandOutput;
+     public static boolean enhancedPluginsCommand;
++    public static boolean disableReloadCommand;
+ 
+     private static void commandSettings() {
+         uptimeCommandOutput = getString("commands.uptime-output", "<white>The server has been up for: <green><days><white> days, <green><hours><white> hours, <green><minutes><white> minutes");
+         enhancedPluginsCommand = getBoolean("commands.enhanced-plugins", true);
++        disableReloadCommand = getBoolean("commands.disable-reload", true);
+     }
+ 
+     // Recipe Settings

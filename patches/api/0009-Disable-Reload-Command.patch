@@ -1,0 +1,36 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <fishcake007@outlook.com>
+Date: Fri, 17 Dec 2021 15:09:49 +0000
+Subject: [PATCH] Disable Reload Command
+
+
+diff --git a/src/main/java/org/bukkit/command/defaults/ReloadCommand.java b/src/main/java/org/bukkit/command/defaults/ReloadCommand.java
+index 0c7ba0718de2b93d013968ca0fec34ffd423990f..feb8122b2b40716fc442cf76f59c7003306d06b8 100644
+--- a/src/main/java/org/bukkit/command/defaults/ReloadCommand.java
++++ b/src/main/java/org/bukkit/command/defaults/ReloadCommand.java
+@@ -21,7 +21,16 @@ public class ReloadCommand extends BukkitCommand {
+     @Override
+     public boolean execute(@NotNull CommandSender sender, @NotNull String currentAlias, @NotNull String[] args) { // Paper
+         if (!testPermission(sender)) return true;
+-
++        // Crunchy start - Disable reload command
++        if (Bukkit.spigot().getCrunchyConfig().getBoolean("commands.disable-reload")) {
++            sender.sendMessage(net.kyori.adventure.text.Component.text(
++                            "The /" + currentAlias + " command has been disabled in 'crunchy.yml'. Use /restart as an alternative")
++                    .hoverEvent(net.kyori.adventure.text.event.HoverEvent.showText(net.kyori.adventure.text.Component.text("Click for more info...")))
++                    .clickEvent(net.kyori.adventure.text.event.ClickEvent.openUrl("https://madelinemiller.dev/blog/problem-with-reload/"))
++                    .color(net.kyori.adventure.text.format.NamedTextColor.RED));
++            return true;
++        }
++        // Crunchy end - Disable reload command
+         // Paper start - Reload permissions.yml & require confirm
+         boolean confirmed = System.getProperty("LetMeReload") != null;
+         if (args.length == 1) {
+@@ -60,6 +69,6 @@ public class ReloadCommand extends BukkitCommand {
+     @NotNull
+     @Override
+     public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
+-        return com.google.common.collect.Lists.newArrayList("permissions", "commands"); // Paper
++        return Bukkit.spigot().getCrunchyConfig().getBoolean("commands.disable-reload") ? Collections.emptyList() : com.google.common.collect.Lists.newArrayList("permissions", "commands"); // Crunchy - Disable reload command // Paper
+     }
+ }
