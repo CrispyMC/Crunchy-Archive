@@ -412,10 +412,10 @@ index 4247dcb003626535dbb997f48ad9f61380bd17e9..0b02008417d79f4c9378dae78f39b39d
          this.world = new CraftWorld((ServerLevel) this, gen, biomeProvider, env);
          this.ticksPerAnimalSpawns = this.getCraftServer().getTicksPerAnimalSpawns(); // CraftBukkit
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 0a788504ca9dea0782bb0d23b8ed7a806b2c40fc..5d0bff7fa0e4c94f6f61d4ae1630c7d05bd7c6ed 100644
+index b9a522fec1d416772e5baae58cce3c09f5d49e3e..832478142b0c7d5e5831c2f2e9ef0ce302e98b71 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -931,6 +931,7 @@ public final class CraftServer implements Server {
+@@ -952,6 +952,7 @@ public final class CraftServer implements Server {
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
@@ -423,7 +423,7 @@ index 0a788504ca9dea0782bb0d23b8ed7a806b2c40fc..5d0bff7fa0e4c94f6f61d4ae1630c7d0
          for (ServerLevel world : this.console.getAllLevels()) {
              // world.serverLevelData.setDifficulty(config.difficulty); // Paper - per level difficulty
              world.setSpawnSettings(world.serverLevelData.getDifficulty() != Difficulty.PEACEFUL && config.spawnMonsters, config.spawnAnimals); // Paper - per level difficulty (from MinecraftServer#setDifficulty(ServerLevel, Difficulty, boolean))
-@@ -971,6 +972,7 @@ public final class CraftServer implements Server {
+@@ -992,6 +993,7 @@ public final class CraftServer implements Server {
              }
              world.spigotConfig.init(); // Spigot
              world.paperConfig.init(); // Paper
@@ -431,7 +431,7 @@ index 0a788504ca9dea0782bb0d23b8ed7a806b2c40fc..5d0bff7fa0e4c94f6f61d4ae1630c7d0
          }
  
          Plugin[] pluginClone = pluginManager.getPlugins().clone(); // Paper
-@@ -986,6 +988,7 @@ public final class CraftServer implements Server {
+@@ -1007,6 +1009,7 @@ public final class CraftServer implements Server {
          this.reloadData();
          org.spigotmc.SpigotConfig.registerCommands(); // Spigot
          com.destroystokyo.paper.PaperConfig.registerCommands(); // Paper
@@ -439,7 +439,7 @@ index 0a788504ca9dea0782bb0d23b8ed7a806b2c40fc..5d0bff7fa0e4c94f6f61d4ae1630c7d0
          this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
          this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -2641,6 +2644,13 @@ public final class CraftServer implements Server {
+@@ -2662,6 +2665,13 @@ public final class CraftServer implements Server {
              return com.destroystokyo.paper.PaperConfig.config;
          }
  

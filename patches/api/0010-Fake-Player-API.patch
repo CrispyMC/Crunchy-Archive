@@ -152,10 +152,10 @@ index 0000000000000000000000000000000000000000..76760421f91e96ee8072c3ea14e9d2d9
 +
 +}
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 267e4c78a176a7f548612ba04b56db87588f0094..a1b860ff746cead8cf5f1f8d524f05eddef5c558 100644
+index ce3e0d3bc725b9396fb98a5cf01d789ded9889e9..eda9822d6b29dac0ac7e62c5d134909bf580b4c0 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2175,6 +2175,43 @@ public final class Bukkit {
+@@ -2218,6 +2218,43 @@ public final class Bukkit {
          server.registerEnchantment(enchantment);
      }
      // Crunchy end - Custom enchantment API
@@ -200,10 +200,10 @@ index 267e4c78a176a7f548612ba04b56db87588f0094..a1b860ff746cead8cf5f1f8d524f05ed
      @NotNull
      public static Server.Spigot spigot() {
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index a7862032a0871d24a5e729e345503320ef5a5b06..35c498eb34d143f1a7374c9daaae5c47bb2281f8 100644
+index 5de1434f3a738f04f2267eb01034916fa62e905e..0d3ecabbde67a33482575dda283127dbfc9cd8e4 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1897,4 +1897,36 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1932,4 +1932,36 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       */
      void registerEnchantment(@NotNull final dev.mrfishcakes.crunchy.enchantment.CustomEnchantment enchantment);
      // Crunchy end - Custom enchantment API
@@ -241,10 +241,10 @@ index a7862032a0871d24a5e729e345503320ef5a5b06..35c498eb34d143f1a7374c9daaae5c47
 +    // Crunchy end - Fake Player API
  }
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index f5ded992672dde910cd4e1be50c238b142157ff8..f9fcd423566b9853e97c6943db78b170906d9322 100644
+index 1b4b54741719252892a3a51491d49cd5423de499..a2dfccd80d2aff90b86b5c9e6470501ce5e9eeb8 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -2366,4 +2366,38 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -2507,4 +2507,38 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
      @Override
      Spigot spigot();
      // Spigot end
