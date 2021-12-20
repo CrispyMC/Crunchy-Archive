@@ -1,0 +1,285 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <fishcake007@outlook.com>
+Date: Sun, 19 Dec 2021 21:16:07 +0000
+Subject: [PATCH] Fake Player API
+
+
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/event/FakePlayerEvent.java b/src/main/java/dev/mrfishcakes/crunchy/event/FakePlayerEvent.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..27e83d8737fa47f129235d2475bc9c65103cc38b
+--- /dev/null
++++ b/src/main/java/dev/mrfishcakes/crunchy/event/FakePlayerEvent.java
+@@ -0,0 +1,20 @@
++package dev.mrfishcakes.crunchy.event;
++
++import dev.mrfishcakes.crunchy.player.FakePlayer;
++import org.bukkit.event.Event;
++import org.jetbrains.annotations.NotNull;
++
++public abstract class FakePlayerEvent extends Event {
++
++    protected FakePlayer player;
++
++    public FakePlayerEvent(@NotNull FakePlayer who) {
++        this.player = who;
++    }
++
++    @NotNull
++    public FakePlayer getPlayer() {
++        return player;
++    }
++
++}
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/event/FakePlayerJoinEvent.java b/src/main/java/dev/mrfishcakes/crunchy/event/FakePlayerJoinEvent.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..818d4adbbb6bab6cd5ba7daf1a5ae2e04e400369
+--- /dev/null
++++ b/src/main/java/dev/mrfishcakes/crunchy/event/FakePlayerJoinEvent.java
+@@ -0,0 +1,25 @@
++package dev.mrfishcakes.crunchy.event;
++
++import dev.mrfishcakes.crunchy.player.FakePlayer;
++import org.bukkit.event.HandlerList;
++import org.jetbrains.annotations.NotNull;
++
++public class FakePlayerJoinEvent extends FakePlayerEvent {
++
++    private static final HandlerList HANDLERS = new HandlerList();
++
++    @NotNull
++    public static HandlerList getHandlerList() {
++        return HANDLERS;
++    }
++
++    public FakePlayerJoinEvent(@NotNull FakePlayer who) {
++        super(who);
++    }
++
++    @Override
++    public @NotNull HandlerList getHandlers() {
++        return HANDLERS;
++    }
++
++}
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/event/FakePlayerQuitEvent.java b/src/main/java/dev/mrfishcakes/crunchy/event/FakePlayerQuitEvent.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..7abc7f291b35bce96faf83ef4dd51eac850d7993
+--- /dev/null
++++ b/src/main/java/dev/mrfishcakes/crunchy/event/FakePlayerQuitEvent.java
+@@ -0,0 +1,25 @@
++package dev.mrfishcakes.crunchy.event;
++
++import dev.mrfishcakes.crunchy.player.FakePlayer;
++import org.bukkit.event.HandlerList;
++import org.jetbrains.annotations.NotNull;
++
++public class FakePlayerQuitEvent extends FakePlayerEvent {
++
++    private static final HandlerList HANDLERS = new HandlerList();
++
++    @NotNull
++    public static HandlerList getHandlerList() {
++        return HANDLERS;
++    }
++
++    public FakePlayerQuitEvent(@NotNull FakePlayer who) {
++        super(who);
++    }
++
++    @Override
++    public @NotNull HandlerList getHandlers() {
++        return HANDLERS;
++    }
++
++}
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/player/FakePlayer.java b/src/main/java/dev/mrfishcakes/crunchy/player/FakePlayer.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..76760421f91e96ee8072c3ea14e9d2d9dd78b3b3
+--- /dev/null
++++ b/src/main/java/dev/mrfishcakes/crunchy/player/FakePlayer.java
+@@ -0,0 +1,53 @@
++package dev.mrfishcakes.crunchy.player;
++
++import com.destroystokyo.paper.profile.PlayerProfile;
++import net.kyori.adventure.text.Component;
++import org.bukkit.GameMode;
++import org.jetbrains.annotations.NotNull;
++import org.jetbrains.annotations.Nullable;
++
++import java.util.UUID;
++
++public interface FakePlayer {
++
++    void join();
++
++    void quit();
++
++    void update();
++
++    @NotNull
++    PlayerProfile getProfile();
++
++    @NotNull
++    Component getDisplayName();
++
++    int getPing();
++
++    @NotNull
++    GameMode getGameMode();
++
++    @Nullable
++    UUID getUniqueId();
++
++    boolean isJoined();
++
++    default void setPing(int ping) {
++        setPing(ping, true);
++    }
++
++    void setPing(int ping, boolean update);
++
++    default void setDisplayName(@NotNull Component name) {
++        setDisplayName(name, true);
++    }
++
++    void setDisplayName(@NotNull Component name, boolean update);
++
++    default void setGameMode(@NotNull GameMode mode) {
++        setGameMode(mode, true);
++    }
++
++    void setGameMode(GameMode mode, boolean update);
++
++}
+diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
+index 267e4c78a176a7f548612ba04b56db87588f0094..a1b860ff746cead8cf5f1f8d524f05eddef5c558 100644
+--- a/src/main/java/org/bukkit/Bukkit.java
++++ b/src/main/java/org/bukkit/Bukkit.java
+@@ -2175,6 +2175,43 @@ public final class Bukkit {
+         server.registerEnchantment(enchantment);
+     }
+     // Crunchy end - Custom enchantment API
++    // Crunchy start - Fake Player API
++    /**
++     * Check/get if a {@link dev.mrfishcakes.crunchy.player.FakePlayer} exists
++     *
++     * @param uniqueId {@link UUID} of the FakePlayer
++     * @return {@link java.util.Optional} with a FakePlayer (if found) or empty (if not found)
++     */
++    @NotNull
++    public static java.util.Optional<dev.mrfishcakes.crunchy.player.FakePlayer> getFakePlayer(@NotNull UUID uniqueId) {
++        return server.getFakePlayer(uniqueId);
++    }
++
++    /**
++     * Create a new {@link dev.mrfishcakes.crunchy.player.FakePlayer}
++     *
++     * @param profile {@link com.destroystokyo.paper.profile.PlayerProfile} to inherit features from
++     * @param ping Ping for the tablist
++     * @param mode {@link GameMode} for the FakePlayer
++     * @param name Name for the FakePlayer
++     * @return New FakePlayer
++     */
++    @NotNull
++    public static dev.mrfishcakes.crunchy.player.FakePlayer createFakePlayer(@NotNull com.destroystokyo.paper.profile.PlayerProfile profile, int ping, @NotNull GameMode mode,
++                                                                             @NotNull net.kyori.adventure.text.Component name) {
++        return server.createFakePlayer(profile, ping, mode, name);
++    }
++
++    /**
++     * Get a {@link Set} containing all FakePlayers "joined"
++     *
++     * @return Unmodifiable set with all FakePlayers
++     */
++    @NotNull
++    public static java.util.Set<dev.mrfishcakes.crunchy.player.FakePlayer> getJoinedFakePlayers() {
++        return server.getJoinedFakePlayers();
++    }
++    // Crunch end - Fake Player API
+ 
+     @NotNull
+     public static Server.Spigot spigot() {
+diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
+index a7862032a0871d24a5e729e345503320ef5a5b06..35c498eb34d143f1a7374c9daaae5c47bb2281f8 100644
+--- a/src/main/java/org/bukkit/Server.java
++++ b/src/main/java/org/bukkit/Server.java
+@@ -1897,4 +1897,36 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+      */
+     void registerEnchantment(@NotNull final dev.mrfishcakes.crunchy.enchantment.CustomEnchantment enchantment);
+     // Crunchy end - Custom enchantment API
++    // Crunchy start - Fake Player API
++    /**
++     * Check/get if a {@link dev.mrfishcakes.crunchy.player.FakePlayer} exists
++     *
++     * @param uniqueId {@link UUID} of the FakePlayer
++     * @return {@link java.util.Optional} with a FakePlayer (if found) or empty (if not found)
++     */
++    @NotNull
++    java.util.Optional<dev.mrfishcakes.crunchy.player.FakePlayer> getFakePlayer(@NotNull UUID uniqueId);
++
++    /**
++     * Create a new {@link dev.mrfishcakes.crunchy.player.FakePlayer}
++     *
++     * @param profile {@link com.destroystokyo.paper.profile.PlayerProfile} to inherit features from
++     * @param ping Ping for the tablist
++     * @param mode {@link GameMode} for the FakePlayer
++     * @param name Name for the FakePlayer
++     * @return New FakePlayer
++     * @throws IllegalArgumentException Incase error occurs
++     */
++    @NotNull
++    dev.mrfishcakes.crunchy.player.FakePlayer createFakePlayer(@NotNull com.destroystokyo.paper.profile.PlayerProfile profile, int ping, @NotNull GameMode mode,
++                                                               @NotNull net.kyori.adventure.text.Component name) throws IllegalArgumentException;
++
++    /**
++     * Get a {@link Set} containing all FakePlayers "joined"
++     *
++     * @return Unmodifiable set with all FakePlayers
++     */
++    @NotNull
++    Set<dev.mrfishcakes.crunchy.player.FakePlayer> getJoinedFakePlayers();
++    // Crunchy end - Fake Player API
+ }
+diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
+index f5ded992672dde910cd4e1be50c238b142157ff8..f9fcd423566b9853e97c6943db78b170906d9322 100644
+--- a/src/main/java/org/bukkit/entity/Player.java
++++ b/src/main/java/org/bukkit/entity/Player.java
+@@ -2366,4 +2366,38 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+     @Override
+     Spigot spigot();
+     // Spigot end
++    // Crunchy start - Fake Player API
++    /**
++     * Get all FakePlayers that are currently hidden from this player
++     *
++     * @return Unmodifiable {@link java.util.Set} containing all hidden FakePlayers
++     * @see dev.mrfishcakes.crunchy.player.FakePlayer
++     */
++    @NotNull
++    java.util.Set<dev.mrfishcakes.crunchy.player.FakePlayer> getHiddenFakePlayers();
++
++    /**
++     * Check if the player can see a fake player
++     *
++     * @param player {@link dev.mrfishcakes.crunchy.player.FakePlayer} to check
++     * @return True if they can see
++     */
++    boolean canSee(@NotNull dev.mrfishcakes.crunchy.player.FakePlayer player);
++
++    /**
++     * Hide the chosen {@link dev.mrfishcakes.crunchy.player.FakePlayer} from this player
++     *
++     * @param plugin Plugin calling the change
++     * @param player FakePlayer to hide
++     */
++    void hideFakePlayer(@NotNull Plugin plugin, @NotNull dev.mrfishcakes.crunchy.player.FakePlayer player);
++
++    /**
++     * Show the chosen {@link dev.mrfishcakes.crunchy.player.FakePlayer} to this player
++     *
++     * @param plugin Plugin calling the change
++     * @param player FakePlayer to show
++     */
++    void showFakePlayer(@NotNull Plugin plugin, @NotNull dev.mrfishcakes.crunchy.player.FakePlayer player);
++    // Crunchy end - Fake Player API
+ }
