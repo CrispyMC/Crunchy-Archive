@@ -258,10 +258,10 @@ index 180dd6a3094ae029538c55cda41678fdd7f9f201..28dfd00ceb575c5eb623274d46ddc430
 +    // Crunchy end - Fake Player API
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 74acf429b97476974f844a9621d059c935fcb4bd..5ef3e71d1d8194f3a78eea6696957e275dc7ff87 100644
+index 8de4ad9f2120d22b78202981624abd1d2fc70148..6eb7acecc6dbc859d95921e3381af145ec1deba7 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -2588,6 +2588,67 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2603,6 +2603,67 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          return getHandle().connection != null ? getHandle().connection.getClientBrandName() : null;
      }
      // Paper end

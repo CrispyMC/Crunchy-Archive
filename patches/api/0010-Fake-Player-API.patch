@@ -414,10 +414,10 @@ index 5de1434f3a738f04f2267eb01034916fa62e905e..cf3adc889af160ea3cf06f3e8230d232
 +    // Crunchy end - Fake Player API
  }
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 1b4b54741719252892a3a51491d49cd5423de499..a2dfccd80d2aff90b86b5c9e6470501ce5e9eeb8 100644
+index 5e4a9ce5f899624255e806152c59f60664bcf701..fdf1302865de63d3cf60ec53607af8cd17b06081 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -2507,4 +2507,38 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -2603,4 +2603,38 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
      @Override
      Spigot spigot();
      // Spigot end
