@@ -6,10 +6,10 @@ Subject: [PATCH] Fake Player API
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/player/CraftFakePlayer.java b/src/main/java/dev/mrfishcakes/crunchy/player/CraftFakePlayer.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..755c180c636c54716a55a6e3b1338e772844e59a
+index 0000000000000000000000000000000000000000..eb4a6581fabab46cb6dd26f545b4ab87b4fbf4f6
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/player/CraftFakePlayer.java
-@@ -0,0 +1,139 @@
+@@ -0,0 +1,168 @@
 +package dev.mrfishcakes.crunchy.player;
 +
 +import com.destroystokyo.paper.profile.PlayerProfile;
@@ -29,14 +29,24 @@ index 0000000000000000000000000000000000000000..755c180c636c54716a55a6e3b1338e77
 +
 +public class CraftFakePlayer implements FakePlayer {
 +
++    private static PingBar resolveFromInt(int i) {
++        if (i < 0) return PingBar.NONE;
++
++        if (i < 150) return PingBar.FIVE;
++        if (i < 300) return PingBar.FOUR;
++        if (i < 600) return PingBar.THREE;
++        if (i < 1000) return PingBar.TWO;
++
++        return PingBar.ONE;
++    }
++
 +    private final PlayerProfile profile;
 +    private final UUID uniqueId;
 +    private Component name;
-+    private int ping;
++    private PingBar ping;
 +    private GameMode mode;
-+    private boolean sentPacket;
 +
-+    public CraftFakePlayer(@NotNull PlayerProfile profile, @NotNull Component name, int ping, @NotNull GameMode mode) throws IllegalArgumentException {
++    public CraftFakePlayer(@NotNull PlayerProfile profile, @NotNull Component name, PingBar ping, @NotNull GameMode mode) throws IllegalArgumentException {
 +        this.profile = profile;
 +        if (profile.getId() == null) {
 +            throw new IllegalArgumentException("PlayerProfile contains an invalid UUID");
@@ -44,6 +54,18 @@ index 0000000000000000000000000000000000000000..755c180c636c54716a55a6e3b1338e77
 +        this.uniqueId = profile.getId();
 +        this.name = name;
 +        this.ping = ping;
++        this.mode = mode;
++    }
++
++    @Deprecated
++    public CraftFakePlayer(@NotNull PlayerProfile profile, @NotNull Component name, int ping, @NotNull GameMode mode) throws IllegalArgumentException {
++        this.profile = profile;
++        if (profile.getId() == null) {
++            throw new IllegalArgumentException("PlayerProfile contains an invalid UUID");
++        }
++        this.uniqueId = profile.getId();
++        this.name = name;
++        this.ping = resolveFromInt(ping);
 +        this.mode = mode;
 +    }
 +
@@ -108,7 +130,7 @@ index 0000000000000000000000000000000000000000..755c180c636c54716a55a6e3b1338e77
 +    }
 +
 +    @Override
-+    public int getPing() {
++    public PingBar getPingBar() {
 +        return ping;
 +    }
 +
@@ -129,7 +151,14 @@ index 0000000000000000000000000000000000000000..755c180c636c54716a55a6e3b1338e77
 +
 +    @Override
 +    public void setPing(int ping, boolean update) {
-+        this.ping = ping;
++        this.ping = resolveFromInt(ping);
++
++        if (update) sendUpdatePacket(ClientboundPlayerInfoPacket.Action.UPDATE_LATENCY);
++    }
++
++    @Override
++    public void setPing(@NotNull PingBar bar, boolean update) {
++        this.ping = bar;
 +
 +        if (update) sendUpdatePacket(ClientboundPlayerInfoPacket.Action.UPDATE_LATENCY);
 +    }
@@ -150,7 +179,7 @@ index 0000000000000000000000000000000000000000..755c180c636c54716a55a6e3b1338e77
 +
 +}
 diff --git a/src/main/java/net/minecraft/network/protocol/game/ClientboundPlayerInfoPacket.java b/src/main/java/net/minecraft/network/protocol/game/ClientboundPlayerInfoPacket.java
-index 420cc7ab5f7245f31dd5b333eacf4e306fc6e7c1..9642a25b64a66f7197b3581a2453ae707127de1d 100644
+index 420cc7ab5f7245f31dd5b333eacf4e306fc6e7c1..732bf54e8d37a4228de9dcdfcd832d65f4f6241a 100644
 --- a/src/main/java/net/minecraft/network/protocol/game/ClientboundPlayerInfoPacket.java
 +++ b/src/main/java/net/minecraft/network/protocol/game/ClientboundPlayerInfoPacket.java
 @@ -17,7 +17,18 @@ import net.minecraft.world.level.GameType;
@@ -164,7 +193,7 @@ index 420cc7ab5f7245f31dd5b333eacf4e306fc6e7c1..9642a25b64a66f7197b3581a2453ae70
  
 +        for (dev.mrfishcakes.crunchy.player.FakePlayer fakePlayer : fakePlayers) {
 +            entries.add(new ClientboundPlayerInfoPacket.PlayerUpdate(
-+                    com.destroystokyo.paper.profile.CraftPlayerProfile.asAuthlib(fakePlayer.getProfile()), fakePlayer.getPing(),
++                    com.destroystokyo.paper.profile.CraftPlayerProfile.asAuthlib(fakePlayer.getProfile()), fakePlayer.getPingBar().asInteger(),
 +                    GameType.byId(fakePlayer.getGameMode().getValue()), io.papermc.paper.adventure.PaperAdventure.asVanilla(fakePlayer.getDisplayName())));
 +        }
 +    }
@@ -192,10 +221,10 @@ index 042be2cf60a9d01698808d84f2e537a5eb952079..6e4c1fe0e8fca9c15c16968716b84cb9
          ClientboundPlayerInfoPacket packet = new ClientboundPlayerInfoPacket(ClientboundPlayerInfoPacket.Action.ADD_PLAYER, player);
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 180dd6a3094ae029538c55cda41678fdd7f9f201..9a975e96f96a836b61027d0b5781dbdf90a2a075 100644
+index 180dd6a3094ae029538c55cda41678fdd7f9f201..28dfd00ceb575c5eb623274d46ddc4305e382527 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -2850,4 +2850,26 @@ public final class CraftServer implements Server {
+@@ -2850,4 +2850,32 @@ public final class CraftServer implements Server {
          org.bukkit.enchantments.Enchantment.registerEnchantment(enchantment);
      }
      // Crunchy end - Custom enchantment API
@@ -212,6 +241,12 @@ index 180dd6a3094ae029538c55cda41678fdd7f9f201..9a975e96f96a836b61027d0b5781dbdf
 +    @NotNull
 +    public dev.mrfishcakes.crunchy.player.FakePlayer createFakePlayer(@NotNull com.destroystokyo.paper.profile.PlayerProfile profile, int ping, @NotNull GameMode mode,
 +                                                               @NotNull net.kyori.adventure.text.Component name) throws IllegalArgumentException {
++        return new dev.mrfishcakes.crunchy.player.CraftFakePlayer(profile, name, ping, mode);
++    }
++
++    @NotNull
++    @Override
++    public dev.mrfishcakes.crunchy.player.FakePlayer createFakePlayer(@NotNull com.destroystokyo.paper.profile.PlayerProfile profile, @NotNull dev.mrfishcakes.crunchy.player.FakePlayer.PingBar ping, @NotNull GameMode mode, @NotNull net.kyori.adventure.text.Component name) throws IllegalArgumentException {
 +        return new dev.mrfishcakes.crunchy.player.CraftFakePlayer(profile, name, ping, mode);
 +    }
 +

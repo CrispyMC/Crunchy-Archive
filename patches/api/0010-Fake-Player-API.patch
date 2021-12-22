@@ -94,10 +94,10 @@ index 0000000000000000000000000000000000000000..7abc7f291b35bce96faf83ef4dd51eac
 +}
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/player/FakePlayer.java b/src/main/java/dev/mrfishcakes/crunchy/player/FakePlayer.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..76760421f91e96ee8072c3ea14e9d2d9dd78b3b3
+index 0000000000000000000000000000000000000000..4ffbed7957d11e1c1e03e8b3aa2734fdeb03bf19
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/player/FakePlayer.java
-@@ -0,0 +1,53 @@
+@@ -0,0 +1,189 @@
 +package dev.mrfishcakes.crunchy.player;
 +
 +import com.destroystokyo.paper.profile.PlayerProfile;
@@ -108,54 +108,190 @@ index 0000000000000000000000000000000000000000..76760421f91e96ee8072c3ea14e9d2d9
 +
 +import java.util.UUID;
 +
++/**
++ * Interface for interacting with a {@link FakePlayer} at an API level
++ *
++ * @author MrFishCakes
++ */
 +public interface FakePlayer {
 +
++    /**
++     * Enum to represent different ping bar levels
++     */
++    enum PingBar {
++
++        ONE(1000),
++        TWO(999),
++        THREE(599),
++        FOUR(299),
++        FIVE(149),
++        NONE(-1);
++
++        private final int ping;
++
++        PingBar(int ping) {
++            this.ping = ping;
++        }
++
++        public int asInteger() {
++            return ping;
++        }
++
++    }
++
++    /**
++     * Have the FakePlayer join the server
++     */
 +    void join();
 +
++    /**
++     * Have the FakePlayer quit the server
++     */
 +    void quit();
 +
++    /**
++     * Forcefully update the tab settings for the FakePlayer
++     */
 +    void update();
 +
++    /**
++     * Get the {@link PlayerProfile} of the FakePlayer
++     *
++     * @return The profile being used
++     */
 +    @NotNull
 +    PlayerProfile getProfile();
 +
++    /**
++     * Get the display name of the FakePlayer
++     *
++     * @return Display name
++     * @see Component
++     */
 +    @NotNull
 +    Component getDisplayName();
 +
-+    int getPing();
++    /**
++     * Get the ping of the FakePlayer
++     *
++     * @return Current ping
++     * @deprecated Use {@link FakePlayer#getPingBar()}
++     */
++    @Deprecated
++    default int getPing() {
++        return getPingBar().asInteger();
++    }
 +
++    /**
++     * Get the {@link PingBar} of the FakePlayer
++     *
++     * @return Ping bar
++     */
++    PingBar getPingBar();
++
++    /**
++     * Get the current {@link GameMode} of the FakePlayer
++     *
++     * @return Current gamemode
++     */
 +    @NotNull
 +    GameMode getGameMode();
 +
++    /**
++     * Get the {@link UUID} of the FakePlayer
++     *
++     * @return UUID
++     */
 +    @Nullable
 +    UUID getUniqueId();
 +
++    /**
++     * Check if the FakePlayer is joined to the server
++     *
++     * @return True if joined, false otherwise
++     */
 +    boolean isJoined();
 +
++    /**
++     * Set the ping of the FakePlayer
++     *
++     * @param ping Ping to set
++     * @deprecated Use {@link PingBar} enum/methods instead
++     */
++    @Deprecated
 +    default void setPing(int ping) {
 +        setPing(ping, true);
 +    }
 +
++    /**
++     * Set the ping of the FakePlayer
++     *
++     * @param ping   Ping to set
++     * @param update Update the tablist
++     * @deprecated Use {@link PingBar} enum/methods instead
++     */
++    @Deprecated
 +    void setPing(int ping, boolean update);
 +
++    /**
++     * Set the ping of the FakePlayer
++     *
++     * @param bar {@link PingBar} value
++     */
++    default void setPing(@NotNull PingBar bar) {
++        setPing(bar, true);
++    }
++
++    /**
++     * Set the ping of the FakePlayer
++     *
++     * @param bar {@link PingBar} value
++     * @param update Update the tablist
++     */
++    void setPing(@NotNull PingBar bar, boolean update);
++
++    /**
++     * Set the display name of the FakePlayer
++     *
++     * @param name Name to set
++     * @see Component
++     */
 +    default void setDisplayName(@NotNull Component name) {
 +        setDisplayName(name, true);
 +    }
 +
++    /**
++     * Set the display name of the FakePlayer
++     *
++     * @param name   Name to set
++     * @param update Update the tablist
++     * @see Component
++     */
 +    void setDisplayName(@NotNull Component name, boolean update);
 +
++    /**
++     * Set the {@link GameMode} of the FakePlayer
++     *
++     * @param mode GameMode to set
++     */
 +    default void setGameMode(@NotNull GameMode mode) {
 +        setGameMode(mode, true);
 +    }
 +
++    /**
++     * Set the {@link GameMode} of the FakePlayer
++     *
++     * @param mode   GameMode to set
++     * @param update Update the tablist
++     */
 +    void setGameMode(GameMode mode, boolean update);
 +
 +}
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index ce3e0d3bc725b9396fb98a5cf01d789ded9889e9..eda9822d6b29dac0ac7e62c5d134909bf580b4c0 100644
+index ce3e0d3bc725b9396fb98a5cf01d789ded9889e9..4e8bd1e848931d381d1b19ef6a630f0f1031d8f6 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2218,6 +2218,43 @@ public final class Bukkit {
+@@ -2218,6 +2218,62 @@ public final class Bukkit {
          server.registerEnchantment(enchantment);
      }
      // Crunchy end - Custom enchantment API
@@ -172,7 +308,26 @@ index ce3e0d3bc725b9396fb98a5cf01d789ded9889e9..eda9822d6b29dac0ac7e62c5d134909b
 +    }
 +
 +    /**
-+     * Create a new {@link dev.mrfishcakes.crunchy.player.FakePlayer}
++     * Create a new {@link dev.mrfishcakes.crunchy.player.FakePlayer}. The {@link com.destroystokyo.paper.profile.PlayerProfile PlayerProfile} must contain a
++     * username else the server will error when a real player connects!
++     *
++     * @param profile {@link com.destroystokyo.paper.profile.PlayerProfile} to inherit features from
++     * @param ping Ping for the tablist
++     * @param mode {@link GameMode} for the FakePlayer
++     * @param name Name for the FakePlayer
++     * @return New FakePlayer
++     * @deprecated Use {@link Bukkit#createFakePlayer(com.destroystokyo.paper.profile.PlayerProfile, dev.mrfishcakes.crunchy.player.FakePlayer.PingBar, GameMode, net.kyori.adventure.text.Component)}
++     */
++    @Deprecated
++    @NotNull
++    public static dev.mrfishcakes.crunchy.player.FakePlayer createFakePlayer(@NotNull com.destroystokyo.paper.profile.PlayerProfile profile, int ping, @NotNull GameMode mode,
++                                                                             @NotNull net.kyori.adventure.text.Component name) {
++        return server.createFakePlayer(profile, ping, mode, name);
++    }
++
++    /**
++     * Create a new {@link dev.mrfishcakes.crunchy.player.FakePlayer}. The {@link com.destroystokyo.paper.profile.PlayerProfile PlayerProfile} must contain a
++     * username else the server will error when a real player connects!
 +     *
 +     * @param profile {@link com.destroystokyo.paper.profile.PlayerProfile} to inherit features from
 +     * @param ping Ping for the tablist
@@ -181,8 +336,8 @@ index ce3e0d3bc725b9396fb98a5cf01d789ded9889e9..eda9822d6b29dac0ac7e62c5d134909b
 +     * @return New FakePlayer
 +     */
 +    @NotNull
-+    public static dev.mrfishcakes.crunchy.player.FakePlayer createFakePlayer(@NotNull com.destroystokyo.paper.profile.PlayerProfile profile, int ping, @NotNull GameMode mode,
-+                                                                             @NotNull net.kyori.adventure.text.Component name) {
++    dev.mrfishcakes.crunchy.player.FakePlayer createFakePlayer(@NotNull com.destroystokyo.paper.profile.PlayerProfile profile, @NotNull dev.mrfishcakes.crunchy.player.FakePlayer.PingBar ping, @NotNull GameMode mode,
++                                                               @NotNull net.kyori.adventure.text.Component name) {
 +        return server.createFakePlayer(profile, ping, mode, name);
 +    }
 +
@@ -200,10 +355,10 @@ index ce3e0d3bc725b9396fb98a5cf01d789ded9889e9..eda9822d6b29dac0ac7e62c5d134909b
      @NotNull
      public static Server.Spigot spigot() {
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 5de1434f3a738f04f2267eb01034916fa62e905e..0d3ecabbde67a33482575dda283127dbfc9cd8e4 100644
+index 5de1434f3a738f04f2267eb01034916fa62e905e..cf3adc889af160ea3cf06f3e8230d232f055b8eb 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1932,4 +1932,36 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1932,4 +1932,54 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       */
      void registerEnchantment(@NotNull final dev.mrfishcakes.crunchy.enchantment.CustomEnchantment enchantment);
      // Crunchy end - Custom enchantment API
@@ -218,17 +373,35 @@ index 5de1434f3a738f04f2267eb01034916fa62e905e..0d3ecabbde67a33482575dda283127db
 +    java.util.Optional<dev.mrfishcakes.crunchy.player.FakePlayer> getFakePlayer(@NotNull UUID uniqueId);
 +
 +    /**
-+     * Create a new {@link dev.mrfishcakes.crunchy.player.FakePlayer}
++     * Create a new {@link dev.mrfishcakes.crunchy.player.FakePlayer}. The {@link com.destroystokyo.paper.profile.PlayerProfile PlayerProfile} must contain a
++     * username else the server will error when a real player connects!
 +     *
 +     * @param profile {@link com.destroystokyo.paper.profile.PlayerProfile} to inherit features from
 +     * @param ping Ping for the tablist
 +     * @param mode {@link GameMode} for the FakePlayer
 +     * @param name Name for the FakePlayer
 +     * @return New FakePlayer
-+     * @throws IllegalArgumentException Incase error occurs
++     * @throws IllegalArgumentException Incase profile UUID is null
++     * @deprecated Use {@link Server#createFakePlayer(com.destroystokyo.paper.profile.PlayerProfile, dev.mrfishcakes.crunchy.player.FakePlayer.PingBar, GameMode, net.kyori.adventure.text.Component)}
 +     */
++    @Deprecated
 +    @NotNull
 +    dev.mrfishcakes.crunchy.player.FakePlayer createFakePlayer(@NotNull com.destroystokyo.paper.profile.PlayerProfile profile, int ping, @NotNull GameMode mode,
++                                                               @NotNull net.kyori.adventure.text.Component name) throws IllegalArgumentException;
++
++    /**
++     * Create a new {@link dev.mrfishcakes.crunchy.player.FakePlayer}. The {@link com.destroystokyo.paper.profile.PlayerProfile PlayerProfile} must contain a
++     * username else the server will error when a real player connects!
++     *
++     * @param profile {@link com.destroystokyo.paper.profile.PlayerProfile} to inherit features from
++     * @param ping Ping for the tablist
++     * @param mode {@link GameMode} for the FakePlayer
++     * @param name Name for the FakePlayer
++     * @return New FakePlayer
++     * @throws IllegalArgumentException Incase profile UUID is null
++     */
++    @NotNull
++    dev.mrfishcakes.crunchy.player.FakePlayer createFakePlayer(@NotNull com.destroystokyo.paper.profile.PlayerProfile profile, @NotNull dev.mrfishcakes.crunchy.player.FakePlayer.PingBar ping, @NotNull GameMode mode,
 +                                                               @NotNull net.kyori.adventure.text.Component name) throws IllegalArgumentException;
 +
 +    /**
