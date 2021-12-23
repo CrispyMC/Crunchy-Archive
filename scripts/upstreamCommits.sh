@@ -2,16 +2,23 @@
 
 # requires curl & jq
 
-# upstreamCommit <baseHash>
-# param: bashHash - the commit hash to use for comparing commits (baseHash...HEAD)
-
 # Big thanks to Purpur for this script that actually works!
+# To use the script properly, run it from the project root
+GRADLE_PROPERTIES_FILE=gradle.properties
+function getProperty() {
+  PROP_KEY=$1
+  PROP_VALUE=$(cat $GRADLE_PROPERTIES_FILE | grep "$PROP_KEY" | cut -d'=' -f2)
+  echo $PROP_VALUE
+}
 
 (
 set -e
 PS1="$"
+OLD_PAPER_COMMIT=$(getProperty "oldPaperCommit")
+CURRENT_PAPER_COMMIT=$(getProperty "paperCommit")
 
-paper=$(curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/PaperMC/Paper/compare/$1...HEAD | jq -r '.commits[] | "PaperMC/Paper@\(.sha[:7]) \(.commit.message | split("\r\n")[0] | split("\n")[0])"')
+paper=$(curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/PaperMC/Paper/compare/$OLD_PAPER_COMMIT...$CURRENT_PAPER_COMMIT | jq -r '.commits[] | "PaperMC/Paper@\(.sha[:7]) \(.commit.message | split("\r\n")[0] | split("\n")[0])"')
+# By changing the line above to accept any hash instead of HEAD, people have more freedom in updating
 
 updated=""
 logsuffix=""
