@@ -1,0 +1,26 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <fishcake007@outlook.com>
+Date: Thu, 23 Dec 2021 23:02:15 +0000
+Subject: [PATCH] Easier command/listener registration
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/scheduler/MinecraftInternalPlugin.java b/src/main/java/org/bukkit/craftbukkit/scheduler/MinecraftInternalPlugin.java
+index 909b2c98e7a9117d2f737245e4661792ffafb744..c736033ed0e214408b0d207614907654c04983be 100644
+--- a/src/main/java/org/bukkit/craftbukkit/scheduler/MinecraftInternalPlugin.java
++++ b/src/main/java/org/bukkit/craftbukkit/scheduler/MinecraftInternalPlugin.java
+@@ -137,4 +137,15 @@ public class MinecraftInternalPlugin extends PluginBase {
+     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+         throw new UnsupportedOperationException("Not supported.");
+     }
++    // Crunchy end - Easier command/listener registration
++    @Override
++    public boolean registerCommand(@NotNull String name, @NotNull org.bukkit.command.CommandExecutor executor, @Nullable org.bukkit.command.TabCompleter completer) {
++        throw new UnsupportedOperationException("Not supported.");
++    }
++
++    @Override
++    public void registerListener(@NotNull org.bukkit.event.Listener listener) {
++        throw new UnsupportedOperationException("Not supported.");
++    }
++    // Crunchy end - Easier command/listener registration
+ }
