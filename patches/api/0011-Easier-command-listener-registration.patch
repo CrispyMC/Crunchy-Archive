@@ -1,0 +1,94 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <fishcake007@outlook.com>
+Date: Thu, 23 Dec 2021 18:03:58 +0000
+Subject: [PATCH] Easier command/listener registration
+
+
+diff --git a/src/main/java/org/bukkit/plugin/Plugin.java b/src/main/java/org/bukkit/plugin/Plugin.java
+index c25fc646be750d3a3b2f4fb3f1c53daee5254107..f2751c5f8fe867fe93b06d1dd410888b448d6628 100644
+--- a/src/main/java/org/bukkit/plugin/Plugin.java
++++ b/src/main/java/org/bukkit/plugin/Plugin.java
+@@ -201,4 +201,32 @@ public interface Plugin extends TabExecutor {
+      */
+     @NotNull
+     public String getName();
++    // Crunchy start - Easier command/listener registration
++    /**
++     * Easily register a {@link TabExecutor} to the server
++     *
++     * @param name Command name
++     * @param executor {@link TabExecutor} to register
++     * @return True if registered, otherwise false
++     */
++    default boolean registerCommand(@NotNull String name, @NotNull TabExecutor executor) {
++        return registerCommand(name, executor, executor);
++    }
++    /**
++     * Easily register a {@link org.bukkit.command.CommandExecutor} to the server
++     *
++     * @param name Command name
++     * @param executor Command to register
++     * @param completer {@link org.bukkit.command.TabCompleter} TabCompleter to register
++     * @return True if registered, otherwise false
++     */
++    boolean registerCommand(@NotNull String name, @NotNull org.bukkit.command.CommandExecutor executor, @Nullable org.bukkit.command.TabCompleter completer);
++
++    /**
++     * Easily register a {@link org.bukkit.event.Listener} to the server
++     *
++     * @param listener Listener to register
++     */
++    void registerListener(@NotNull org.bukkit.event.Listener listener);
++    // Crunchy end - Easier command/listener registration
+ }
+diff --git a/src/main/java/org/bukkit/plugin/java/JavaPlugin.java b/src/main/java/org/bukkit/plugin/java/JavaPlugin.java
+index c943bd801b54519ba6cf5d45aec593d7b7438f99..00d74cd88a8e0cd3a69c302ee996147cb9f96ba3 100644
+--- a/src/main/java/org/bukkit/plugin/java/JavaPlugin.java
++++ b/src/main/java/org/bukkit/plugin/java/JavaPlugin.java
+@@ -367,6 +367,46 @@ public abstract class JavaPlugin extends PluginBase {
+     public String toString() {
+         return description.getFullName();
+     }
++    // Crunchy start - Easier command/listener registration
++    /**
++     * Easily register a {@link org.bukkit.command.CommandExecutor} to the server
++     *
++     * @param name Command name
++     * @param executor Command to register
++     * @param completer {@link org.bukkit.command.TabCompleter} TabCompleter to register
++     * @return True if registered, otherwise false
++     */
++    @Override
++    public boolean registerCommand(@NotNull String name, @NotNull org.bukkit.command.CommandExecutor executor, @Nullable org.bukkit.command.TabCompleter completer) {
++        if (name == null || name.isBlank()) throw new IllegalArgumentException("Command name cannot be null or empty");
++
++        try {
++            final PluginCommand command = getCommand(name);
++
++            if (command == null) return false;
++
++            command.setExecutor(executor);
++            if (completer != null) {
++                command.setTabCompleter(completer);
++            }
++
++            return true;
++        } catch (final Exception ex) { // To account for thread errors, plugin errors, etc...
++            getServer().getLogger().log(Level.SEVERE, String.format("There was an error trying to register '%s' command to '%s'", name, getName()), ex);
++            return false;
++        }
++    }
++
++    /**
++     * Easily register a {@link org.bukkit.event.Listener} to the server
++     *
++     * @param listener Listener to register
++     */
++    @Override
++    public void registerListener(@NotNull org.bukkit.event.Listener listener) {
++        getServer().getPluginManager().registerEvents(listener, this);
++    }
++    // Crunchy end - Easier command/listener registration
+ 
+     /**
+      * This method provides fast access to the plugin that has {@link
