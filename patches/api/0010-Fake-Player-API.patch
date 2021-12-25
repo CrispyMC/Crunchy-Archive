@@ -4,13 +4,13 @@ Date: Sun, 19 Dec 2021 21:16:07 +0000
 Subject: [PATCH] Fake Player API
 
 
-diff --git a/src/main/java/dev/mrfishcakes/crunchy/event/FakePlayerEvent.java b/src/main/java/dev/mrfishcakes/crunchy/event/FakePlayerEvent.java
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/event/player/FakePlayerEvent.java b/src/main/java/dev/mrfishcakes/crunchy/event/player/FakePlayerEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..27e83d8737fa47f129235d2475bc9c65103cc38b
+index 0000000000000000000000000000000000000000..006013bbcae75ca9f8601658642b32cdf35ca1aa
 --- /dev/null
-+++ b/src/main/java/dev/mrfishcakes/crunchy/event/FakePlayerEvent.java
++++ b/src/main/java/dev/mrfishcakes/crunchy/event/player/FakePlayerEvent.java
 @@ -0,0 +1,20 @@
-+package dev.mrfishcakes.crunchy.event;
++package dev.mrfishcakes.crunchy.event.player;
 +
 +import dev.mrfishcakes.crunchy.player.FakePlayer;
 +import org.bukkit.event.Event;
@@ -30,13 +30,13 @@ index 0000000000000000000000000000000000000000..27e83d8737fa47f129235d2475bc9c65
 +    }
 +
 +}
-diff --git a/src/main/java/dev/mrfishcakes/crunchy/event/FakePlayerJoinEvent.java b/src/main/java/dev/mrfishcakes/crunchy/event/FakePlayerJoinEvent.java
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/event/player/FakePlayerJoinEvent.java b/src/main/java/dev/mrfishcakes/crunchy/event/player/FakePlayerJoinEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..818d4adbbb6bab6cd5ba7daf1a5ae2e04e400369
+index 0000000000000000000000000000000000000000..0e8e483509c84bb3fe235dbb4609aee81e77643a
 --- /dev/null
-+++ b/src/main/java/dev/mrfishcakes/crunchy/event/FakePlayerJoinEvent.java
-@@ -0,0 +1,25 @@
-+package dev.mrfishcakes.crunchy.event;
++++ b/src/main/java/dev/mrfishcakes/crunchy/event/player/FakePlayerJoinEvent.java
+@@ -0,0 +1,26 @@
++package dev.mrfishcakes.crunchy.event.player;
 +
 +import dev.mrfishcakes.crunchy.player.FakePlayer;
 +import org.bukkit.event.HandlerList;
@@ -46,28 +46,29 @@ index 0000000000000000000000000000000000000000..818d4adbbb6bab6cd5ba7daf1a5ae2e0
 +
 +    private static final HandlerList HANDLERS = new HandlerList();
 +
-+    @NotNull
-+    public static HandlerList getHandlerList() {
-+        return HANDLERS;
-+    }
-+
 +    public FakePlayerJoinEvent(@NotNull FakePlayer who) {
 +        super(who);
 +    }
 +
 +    @Override
-+    public @NotNull HandlerList getHandlers() {
++    @NotNull
++    public HandlerList getHandlers() {
++        return HANDLERS;
++    }
++
++    @NotNull
++    public static HandlerList getHandlerList() {
 +        return HANDLERS;
 +    }
 +
 +}
-diff --git a/src/main/java/dev/mrfishcakes/crunchy/event/FakePlayerQuitEvent.java b/src/main/java/dev/mrfishcakes/crunchy/event/FakePlayerQuitEvent.java
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/event/player/FakePlayerQuitEvent.java b/src/main/java/dev/mrfishcakes/crunchy/event/player/FakePlayerQuitEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..7abc7f291b35bce96faf83ef4dd51eac850d7993
+index 0000000000000000000000000000000000000000..e8d5509a507cb661744828e92baab7727deb0316
 --- /dev/null
-+++ b/src/main/java/dev/mrfishcakes/crunchy/event/FakePlayerQuitEvent.java
-@@ -0,0 +1,25 @@
-+package dev.mrfishcakes.crunchy.event;
++++ b/src/main/java/dev/mrfishcakes/crunchy/event/player/FakePlayerQuitEvent.java
+@@ -0,0 +1,26 @@
++package dev.mrfishcakes.crunchy.event.player;
 +
 +import dev.mrfishcakes.crunchy.player.FakePlayer;
 +import org.bukkit.event.HandlerList;
@@ -77,17 +78,18 @@ index 0000000000000000000000000000000000000000..7abc7f291b35bce96faf83ef4dd51eac
 +
 +    private static final HandlerList HANDLERS = new HandlerList();
 +
-+    @NotNull
-+    public static HandlerList getHandlerList() {
-+        return HANDLERS;
-+    }
-+
 +    public FakePlayerQuitEvent(@NotNull FakePlayer who) {
 +        super(who);
 +    }
 +
 +    @Override
-+    public @NotNull HandlerList getHandlers() {
++    @NotNull
++    public HandlerList getHandlers() {
++        return HANDLERS;
++    }
++
++    @NotNull
++    public static HandlerList getHandlerList() {
 +        return HANDLERS;
 +    }
 +

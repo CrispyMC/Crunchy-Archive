@@ -1,0 +1,58 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <fishcake007@outlook.com>
+Date: Sat, 25 Dec 2021 16:13:18 +0000
+Subject: [PATCH] Add PlayerBeheadEvent
+
+
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/event/player/PlayerBeheadEvent.java b/src/main/java/dev/mrfishcakes/crunchy/event/player/PlayerBeheadEvent.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..b3d15cd8adc0f595ecb6c799a298d0b52a3409ab
+--- /dev/null
++++ b/src/main/java/dev/mrfishcakes/crunchy/event/player/PlayerBeheadEvent.java
+@@ -0,0 +1,46 @@
++package dev.mrfishcakes.crunchy.event.player;
++
++import org.bukkit.entity.Player;
++import org.bukkit.event.Event;
++import org.bukkit.event.HandlerList;
++import org.bukkit.inventory.ItemStack;
++import org.jetbrains.annotations.NotNull;
++
++public class PlayerBeheadEvent extends Event {
++
++    private static final HandlerList HANDLERS = new HandlerList();
++
++    private final Player killer;
++    private final Player victim;
++    private final ItemStack headItem;
++
++    public PlayerBeheadEvent(@NotNull Player killer, @NotNull Player victim, @NotNull ItemStack headItem) {
++        this.killer = killer;
++        this.victim = victim;
++        this.headItem = headItem;
++    }
++
++    public Player getKiller() {
++        return killer;
++    }
++
++    public Player getVictim() {
++        return victim;
++    }
++
++    public ItemStack getItemStack() {
++        return headItem;
++    }
++
++    @Override
++    @NotNull
++    public HandlerList getHandlers() {
++        return HANDLERS;
++    }
++
++    @NotNull
++    public static HandlerList getHandlerList() {
++        return HANDLERS;
++    }
++
++}

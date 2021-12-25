@@ -6,15 +6,15 @@ Subject: [PATCH] Fake Player API
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/player/CraftFakePlayer.java b/src/main/java/dev/mrfishcakes/crunchy/player/CraftFakePlayer.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..eb4a6581fabab46cb6dd26f545b4ab87b4fbf4f6
+index 0000000000000000000000000000000000000000..9141b4c48e86abcb51fd27a2dd0a2712f31ed9f6
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/player/CraftFakePlayer.java
 @@ -0,0 +1,168 @@
 +package dev.mrfishcakes.crunchy.player;
 +
 +import com.destroystokyo.paper.profile.PlayerProfile;
-+import dev.mrfishcakes.crunchy.event.FakePlayerJoinEvent;
-+import dev.mrfishcakes.crunchy.event.FakePlayerQuitEvent;
++import dev.mrfishcakes.crunchy.event.player.FakePlayerJoinEvent;
++import dev.mrfishcakes.crunchy.event.player.FakePlayerQuitEvent;
 +import net.kyori.adventure.text.Component;
 +import net.minecraft.network.protocol.game.ClientboundPlayerInfoPacket;
 +import net.minecraft.server.MinecraftServer;
@@ -221,7 +221,7 @@ index 042be2cf60a9d01698808d84f2e537a5eb952079..6e4c1fe0e8fca9c15c16968716b84cb9
          ClientboundPlayerInfoPacket packet = new ClientboundPlayerInfoPacket(ClientboundPlayerInfoPacket.Action.ADD_PLAYER, player);
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 180dd6a3094ae029538c55cda41678fdd7f9f201..28dfd00ceb575c5eb623274d46ddc4305e382527 100644
+index 043dc5cfff9ec2d13289cfcbcb6ed9ad0f8ff7ef..eedda0a58168c50a9d853dccaf06b68028628213 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -2850,4 +2850,32 @@ public final class CraftServer implements Server {
