@@ -69,7 +69,7 @@ index 218f5bafeed8551b55b91c7fccaf6935c8b631ca..fa239a1fdf90b4840edbfca43a009e1d
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
                      Map<String, Map<String, Integer>> map = new HashMap<>();
 diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-index ece77f5ea4b14bbed7c070131b3251ea86764538..fb1367cc862185925997add3f19ef3df35cfeb40 100644
+index ece77f5ea4b14bbed7c070131b3251ea86764538..afe9b313e2701f4935c851dac54c1959dd514cc3 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 @@ -20,7 +20,7 @@ import java.util.stream.StreamSupport;
@@ -88,7 +88,7 @@ index ece77f5ea4b14bbed7c070131b3251ea86764538..fb1367cc862185925997add3f19ef3df
 -        String[] parts = serverVersion.substring("git-Paper-".length()).split("[-\\s]");
 -        final Component updateMessage = getUpdateStatusMessage("PaperMC/Paper", GITHUB_BRANCH_NAME, parts[0]);
 +        String[] parts = serverVersion.substring("git-Crunchy-".length()).split("[-\\s]"); // Crunchy
-+        final Component updateMessage = getUpdateStatusMessage("MrFishCakes/Crunchy", GITHUB_BRANCH_NAME, parts[0]); // Crunchy
++        final Component updateMessage = getUpdateStatusMessage("CrunchyMC/Crunchy", GITHUB_BRANCH_NAME, parts[0]); // Crunchy
          final Component history = getHistory();
  
          return history != null ? TextComponent.ofChildren(updateMessage, Component.newline(), history) : updateMessage;
