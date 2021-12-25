@@ -6,7 +6,7 @@ Subject: [PATCH] Add PlayerBeheadEvent
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/event/player/PlayerBeheadEvent.java b/src/main/java/dev/mrfishcakes/crunchy/event/player/PlayerBeheadEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..b3d15cd8adc0f595ecb6c799a298d0b52a3409ab
+index 0000000000000000000000000000000000000000..53edeee8df13e2e343bbb2b30e6909b77c0dc115
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/event/player/PlayerBeheadEvent.java
 @@ -0,0 +1,46 @@
