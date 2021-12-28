@@ -5,7 +5,7 @@ Crunchy inherits all licensing from upstream projects (Paper, Spigot and Bukkit)
 As such, Paper is licensed under the [GNU General Public License version 3](licenses/GPL-3.0.md); as it inherits it from Paper, who in turn inherits it 
 from Spigot, who inherits it from Bukkit and CraftBukkit projects.
 
-The application of the MIT within Paper does not apply to the Crunchy project.
+The application of licenses from used libraries and/or APIs are also applicable within the Crunchy project. All licenses can be found [here](licenses).
 
 Terms
 ------
