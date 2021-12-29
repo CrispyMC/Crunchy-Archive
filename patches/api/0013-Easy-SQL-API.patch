@@ -8,7 +8,7 @@ https://www.spigotmc.org/threads/mysql-resource-execute-prepare-statements-in-th
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/sql/SQLHelper.java b/src/main/java/dev/mrfishcakes/crunchy/sql/SQLHelper.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..d0b290dd696af7bcf5a883308e4cc14dd81849a3
+index 0000000000000000000000000000000000000000..49c145a8299b40512b13c85c398eee23c7955f5b
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/sql/SQLHelper.java
 @@ -0,0 +1,77 @@
@@ -91,7 +91,7 @@ index 0000000000000000000000000000000000000000..d0b290dd696af7bcf5a883308e4cc14d
 +}
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/sql/SimpleSQLHelper.java b/src/main/java/dev/mrfishcakes/crunchy/sql/SimpleSQLHelper.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..429286fb8ad8e240b8df1a9d04b8a387cb46310a
+index 0000000000000000000000000000000000000000..f3beb27d7484d5d4e819dbf084e1b2d02af5f107
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/sql/SimpleSQLHelper.java
 @@ -0,0 +1,61 @@
@@ -158,7 +158,7 @@ index 0000000000000000000000000000000000000000..429286fb8ad8e240b8df1a9d04b8a387
 +}
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/sql/ThrowableConsumer.java b/src/main/java/dev/mrfishcakes/crunchy/sql/ThrowableConsumer.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..31e84d4b27a4148258643878c98298ddab6e7529
+index 0000000000000000000000000000000000000000..9c5a47f34327bd1f807c3bb1b605f257336ec420
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/sql/ThrowableConsumer.java
 @@ -0,0 +1,26 @@
@@ -190,7 +190,7 @@ index 0000000000000000000000000000000000000000..31e84d4b27a4148258643878c98298dd
 +}
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/sql/ThrowableFunction.java b/src/main/java/dev/mrfishcakes/crunchy/sql/ThrowableFunction.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..f56a721b0cd3de575dececbe34a85fcc0a8184c8
+index 0000000000000000000000000000000000000000..df550d1ddc32b4327288646828255f92a6b4eb40
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/sql/ThrowableFunction.java
 @@ -0,0 +1,15 @@
