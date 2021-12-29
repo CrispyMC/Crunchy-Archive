@@ -1,0 +1,211 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <fishcake007@outlook.com>
+Date: Wed, 29 Dec 2021 20:16:31 +0000
+Subject: [PATCH] Easy SQL API
+
+Includes an easy to use SQL wrapper for handling SQL queries and updates.
+https://www.spigotmc.org/threads/mysql-resource-execute-prepare-statements-in-the-most-simplest-way.539927/
+
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/sql/SQLHelper.java b/src/main/java/dev/mrfishcakes/crunchy/sql/SQLHelper.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..d0b290dd696af7bcf5a883308e4cc14dd81849a3
+--- /dev/null
++++ b/src/main/java/dev/mrfishcakes/crunchy/sql/SQLHelper.java
+@@ -0,0 +1,77 @@
++package dev.mrfishcakes.crunchy.sql;
++
++import org.jetbrains.annotations.NotNull;
++
++import java.sql.Connection;
++import java.sql.PreparedStatement;
++import java.sql.ResultSet;
++import java.sql.SQLException;
++
++public interface SQLHelper {
++
++    /**
++     * Executes an SQL update w/o result set
++     *
++     * @param connection   {@link Connection} to use (Should be supplied and open)
++     * @param sqlStatement SQL Statement
++     * @param consumer     Customize your prepare statement
++     * @return Rows affected
++     * <pre>
++     *     executeUpdate("UPDATE foo SET bar = ? WHERE id = ?", (ps) -> {
++     *         ps.setString(1, "foobar");
++     *         ps.setInt(2, 41);
++     *     });
++     * </pre>
++     */
++    int executeUpdate(@NotNull Connection connection, @NotNull String sqlStatement, @NotNull ThrowableConsumer<PreparedStatement> consumer);
++
++    /**
++     * Executes an SQL update
++     *
++     * @param connection   {@link Connection} to use (Should be supplied and open)
++     * @param sqlStatement SQL statement
++     * @return rows affected
++     * <pre>
++     *     executeUpdate("UPDATE foo SET life = 60 WHERE bar_count > 50");
++     * </pre>
++     */
++    int executeUpdate(@NotNull Connection connection, @NotNull String sqlStatement);
++
++    /**
++     * Execute an SQL query with a result set and prepared statement
++     *
++     * @param connection   {@link Connection} to use (Should be supplied and open)
++     * @param sqlStatement SQL Statement
++     * @param consumer     Prepare statement configuration
++     * @param function     read from result set
++     * @param <R>          Returns {R}
++     * @return Result set
++     * <pre>
++     *     executeQuery("SELECT * FROM foo WHERE id = ?", (ps) -> ps.setInt(id, 69), rs -> {
++     *        if(rs.next()) {
++     *            ...
++     *        }
++     *     });
++     * </pre>
++     */
++    <R> R executeQuery(@NotNull Connection connection, @NotNull String sqlStatement, @NotNull ThrowableConsumer<PreparedStatement> consumer,
++                       @NotNull ThrowableFunction<ResultSet, R, SQLException> function);
++
++    /**
++     * Execute an SQL query with only result set
++     *
++     * @param connection   {@link Connection} to use (Should be supplied and open)
++     * @param sqlStatement SQL Statement
++     * @param function     Result set
++     * @param <R>          Return values
++     * @return the result set
++     * <pre>
++     * String value = executeQuery("SELECT STRING_COL FROM SOME_TABLE WHERE ID=42",
++     *                             rs -> rs.next()? rs.getString(1): null);
++     * int max = executeQuery("SELECT MAX(INTVAL_COL) FROM SOME_TABLE",
++     *                        rs -> rs.next()? rs.getInt(1): -1);
++     * </pre>
++     */
++    <R> R executeQuery(@NotNull Connection connection, @NotNull String sqlStatement, @NotNull ThrowableFunction<ResultSet, R, SQLException> function);
++
++}
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/sql/SimpleSQLHelper.java b/src/main/java/dev/mrfishcakes/crunchy/sql/SimpleSQLHelper.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..429286fb8ad8e240b8df1a9d04b8a387cb46310a
+--- /dev/null
++++ b/src/main/java/dev/mrfishcakes/crunchy/sql/SimpleSQLHelper.java
+@@ -0,0 +1,61 @@
++package dev.mrfishcakes.crunchy.sql;
++
++import com.google.common.base.Preconditions;
++import org.jetbrains.annotations.NotNull;
++
++import java.sql.Connection;
++import java.sql.PreparedStatement;
++import java.sql.ResultSet;
++import java.sql.SQLException;
++
++public class SimpleSQLHelper implements SQLHelper {
++
++    @Override
++    public int executeUpdate(@NotNull Connection connection, @NotNull String sqlStatement, @NotNull ThrowableConsumer<PreparedStatement> consumer) {
++        return wrapException(connection, sqlStatement, sql -> {
++            consumer.accept(sql);
++
++            return sql.executeUpdate();
++        });
++    }
++
++    @Override
++    public int executeUpdate(@NotNull Connection connection, @NotNull String sqlStatement) {
++        return wrapException(connection, sqlStatement, PreparedStatement::executeUpdate);
++    }
++
++    @Override
++    public <R> R executeQuery(@NotNull Connection connection, @NotNull String sqlStatement, @NotNull ThrowableConsumer<PreparedStatement> consumer, @NotNull ThrowableFunction<ResultSet, R, SQLException> function) {
++        return wrapException(connection, sqlStatement, sql -> {
++            consumer.accept(sql);
++
++            return function.apply(sql.executeQuery());
++        });
++    }
++
++    @Override
++    public <R> R executeQuery(@NotNull Connection connection, @NotNull String sqlStatement, @NotNull ThrowableFunction<ResultSet, R, SQLException> function) {
++        return wrapException(connection, sqlStatement, sql -> function.apply(sql.executeQuery(sqlStatement)));
++    }
++
++    private <T> T wrapException(@NotNull Connection connection, @NotNull String sqlStatement, @NotNull ThrowableFunction<PreparedStatement, T, SQLException> function) {
++        Preconditions.checkNotNull(connection, "Connection cannot be null");
++        Preconditions.checkNotNull(sqlStatement, "SQL statement cannot be null");
++        Preconditions.checkNotNull(function, "SQL function cannot be null");
++
++        if (sqlStatement.isBlank())
++            throw new IllegalArgumentException("SQL statement cannot be blank");
++
++        try (connection) {
++            if (connection.isClosed())
++                throw new IllegalArgumentException("Connection is already closed");
++
++            try (PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement)) {
++                return function.apply(preparedStatement);
++            }
++        } catch (SQLException ex) {
++            throw new RuntimeException(ex);
++        }
++    }
++
++}
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/sql/ThrowableConsumer.java b/src/main/java/dev/mrfishcakes/crunchy/sql/ThrowableConsumer.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..31e84d4b27a4148258643878c98298ddab6e7529
+--- /dev/null
++++ b/src/main/java/dev/mrfishcakes/crunchy/sql/ThrowableConsumer.java
+@@ -0,0 +1,26 @@
++package dev.mrfishcakes.crunchy.sql;
++
++import org.jetbrains.annotations.NotNull;
++
++import java.util.function.Consumer;
++
++/**
++ * Functional interface that combines a {@link Consumer} with {@link T} parameter
++ *
++ * @param <T> SQL statement type
++ */
++@FunctionalInterface
++public interface ThrowableConsumer<T> extends Consumer<T> {
++
++    void acceptThrows(@NotNull T element) throws Exception;
++
++    @Override
++    default void accept(@NotNull T element) {
++        try {
++            acceptThrows(element);
++        } catch (Exception ex) {
++            ex.printStackTrace();
++        }
++    }
++
++}
+diff --git a/src/main/java/dev/mrfishcakes/crunchy/sql/ThrowableFunction.java b/src/main/java/dev/mrfishcakes/crunchy/sql/ThrowableFunction.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..f56a721b0cd3de575dececbe34a85fcc0a8184c8
+--- /dev/null
++++ b/src/main/java/dev/mrfishcakes/crunchy/sql/ThrowableFunction.java
+@@ -0,0 +1,15 @@
++package dev.mrfishcakes.crunchy.sql;
++
++/**
++ * Functional interface that combines a {@link T} SQL statement type, {@link R} type and {@link E} exception
++ *
++ * @param <T> SQL statement type
++ * @param <R> Raw return type
++ * @param <E> Base {@link Exception} to throw
++ */
++@FunctionalInterface
++public interface ThrowableFunction<T, R, E extends Exception> {
++
++    R apply(T input) throws E;
++
++}
