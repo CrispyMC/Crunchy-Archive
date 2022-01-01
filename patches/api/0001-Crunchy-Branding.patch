@@ -5,7 +5,7 @@ Subject: [PATCH] Crunchy Branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index a23b2bd8e1ca1ff8d0ad5ed5d5e41c89e4795090..b02795d1e51d33073fa6ea78ddbfb65581296b77 100644
+index 001c2b963205012f340db0d539e4033c748124ce..e9b4572954db8a98af1cf1367f463a8fcf52f8a9 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -1,3 +1,5 @@
@@ -16,7 +16,7 @@ index a23b2bd8e1ca1ff8d0ad5ed5d5e41c89e4795090..b02795d1e51d33073fa6ea78ddbfb655
      `maven-publish`
 @@ -40,6 +42,9 @@ dependencies {
      apiAndDocs("net.kyori:adventure-text-serializer-plain")
-     api("org.apache.logging.log4j:log4j-api:2.17.0")
+     api("org.apache.logging.log4j:log4j-api:2.17.1")
      api("org.slf4j:slf4j-api:1.8.0-beta4")
 +    api("com.zaxxer:HikariCP:5.0.0") // Crunchy
 +    api("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT") // Crunchy
