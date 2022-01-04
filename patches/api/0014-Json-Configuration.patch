@@ -1,0 +1,877 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrFishCakes <fishcake007@outlook.com>
+Date: Tue, 4 Jan 2022 19:55:04 +0000
+Subject: [PATCH] Json Configuration Using the configuration API created by
+ md_5 for BungeeCord, JSON configurations are now available. To use the API
+ for custom JSON files, look on the SpigotMC wiki for more information or look
+ at the JavaPlugin class where it is implemented
+
+
+diff --git a/src/main/java/net/md_5/bungee/config/Configuration.java b/src/main/java/net/md_5/bungee/config/Configuration.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..2c2a846e0429e1f6ba4ed639c151a7295e4151b4
+--- /dev/null
++++ b/src/main/java/net/md_5/bungee/config/Configuration.java
+@@ -0,0 +1,414 @@
++package net.md_5.bungee.config;
++
++import java.util.ArrayList;
++import java.util.Collection;
++import java.util.Collections;
++import java.util.LinkedHashMap;
++import java.util.LinkedHashSet;
++import java.util.List;
++import java.util.Map;
++
++public final class Configuration
++{
++
++    private static final char SEPARATOR = '.';
++    final Map<String, Object> self;
++    private final Configuration defaults;
++
++    public Configuration()
++    {
++        this( null );
++    }
++
++    public Configuration(Configuration defaults)
++    {
++        this( new LinkedHashMap<String, Object>(), defaults );
++    }
++
++    Configuration(Map<?, ?> map, Configuration defaults)
++    {
++        this.self = new LinkedHashMap<>();
++        this.defaults = defaults;
++
++        for ( Map.Entry<?, ?> entry : map.entrySet() )
++        {
++            String key = ( entry.getKey() == null ) ? "null" : entry.getKey().toString();
++
++            if ( entry.getValue() instanceof Map )
++            {
++                this.self.put( key, new Configuration( (Map) entry.getValue(), ( defaults == null ) ? null : defaults.getSection( key ) ) );
++            } else
++            {
++                this.self.put( key, entry.getValue() );
++            }
++        }
++    }
++
++    private Configuration getSectionFor(String path)
++    {
++        int index = path.indexOf( SEPARATOR );
++        if ( index == -1 )
++        {
++            return this;
++        }
++
++        String root = path.substring( 0, index );
++        Object section = self.get( root );
++        if ( section == null )
++        {
++            section = new Configuration( ( defaults == null ) ? null : defaults.getSection( root ) );
++            self.put( root, section );
++        }
++
++        return (Configuration) section;
++    }
++
++    private String getChild(String path)
++    {
++        int index = path.indexOf( SEPARATOR );
++        return ( index == -1 ) ? path : path.substring( index + 1 );
++    }
++
++    /*------------------------------------------------------------------------*/
++    @SuppressWarnings("unchecked")
++    public <T> T get(String path, T def)
++    {
++        Configuration section = getSectionFor( path );
++        Object val;
++        if ( section == this )
++        {
++            val = self.get( path );
++        } else
++        {
++            val = section.get( getChild( path ), def );
++        }
++
++        if ( val == null && def instanceof Configuration )
++        {
++            self.put( path, def );
++        }
++
++        return ( val != null ) ? (T) val : def;
++    }
++
++    public boolean contains(String path)
++    {
++        return get( path, null ) != null;
++    }
++
++    public Object get(String path)
++    {
++        return get( path, getDefault( path ) );
++    }
++
++    public Object getDefault(String path)
++    {
++        return ( defaults == null ) ? null : defaults.get( path );
++    }
++
++    public void set(String path, Object value)
++    {
++        if ( value instanceof Map )
++        {
++            value = new Configuration( (Map) value, ( defaults == null ) ? null : defaults.getSection( path ) );
++        }
++
++        Configuration section = getSectionFor( path );
++        if ( section == this )
++        {
++            if ( value == null )
++            {
++                self.remove( path );
++            } else
++            {
++                self.put( path, value );
++            }
++        } else
++        {
++            section.set( getChild( path ), value );
++        }
++    }
++
++    /*------------------------------------------------------------------------*/
++    public Configuration getSection(String path)
++    {
++        Object def = getDefault( path );
++        return (Configuration) get( path, ( def instanceof Configuration ) ? def : new Configuration( ( defaults == null ) ? null : defaults.getSection( path ) ) );
++    }
++
++    /**
++     * Gets keys, not deep by default.
++     *
++     * @return top level keys for this section
++     */
++    public Collection<String> getKeys()
++    {
++        return new LinkedHashSet<>( self.keySet() );
++    }
++
++    /*------------------------------------------------------------------------*/
++    public byte getByte(String path)
++    {
++        Object def = getDefault( path );
++        return getByte( path, ( def instanceof Number ) ? ( (Number) def ).byteValue() : 0 );
++    }
++
++    public byte getByte(String path, byte def)
++    {
++        Object val = get( path, def );
++        return ( val instanceof Number ) ? ( (Number) val ).byteValue() : def;
++    }
++
++    public List<Byte> getByteList(String path)
++    {
++        List<?> list = getList( path );
++        List<Byte> result = new ArrayList<>();
++
++        for ( Object object : list )
++        {
++            if ( object instanceof Number )
++            {
++                result.add( ( (Number) object ).byteValue() );
++            }
++        }
++
++        return result;
++    }
++
++    public short getShort(String path)
++    {
++        Object def = getDefault( path );
++        return getShort( path, ( def instanceof Number ) ? ( (Number) def ).shortValue() : 0 );
++    }
++
++    public short getShort(String path, short def)
++    {
++        Object val = get( path, def );
++        return ( val instanceof Number ) ? ( (Number) val ).shortValue() : def;
++    }
++
++    public List<Short> getShortList(String path)
++    {
++        List<?> list = getList( path );
++        List<Short> result = new ArrayList<>();
++
++        for ( Object object : list )
++        {
++            if ( object instanceof Number )
++            {
++                result.add( ( (Number) object ).shortValue() );
++            }
++        }
++
++        return result;
++    }
++
++    public int getInt(String path)
++    {
++        Object def = getDefault( path );
++        return getInt( path, ( def instanceof Number ) ? ( (Number) def ).intValue() : 0 );
++    }
++
++    public int getInt(String path, int def)
++    {
++        Object val = get( path, def );
++        return ( val instanceof Number ) ? ( (Number) val ).intValue() : def;
++    }
++
++    public List<Integer> getIntList(String path)
++    {
++        List<?> list = getList( path );
++        List<Integer> result = new ArrayList<>();
++
++        for ( Object object : list )
++        {
++            if ( object instanceof Number )
++            {
++                result.add( ( (Number) object ).intValue() );
++            }
++        }
++
++        return result;
++    }
++
++    public long getLong(String path)
++    {
++        Object def = getDefault( path );
++        return getLong( path, ( def instanceof Number ) ? ( (Number) def ).longValue() : 0 );
++    }
++
++    public long getLong(String path, long def)
++    {
++        Object val = get( path, def );
++        return ( val instanceof Number ) ? ( (Number) val ).longValue() : def;
++    }
++
++    public List<Long> getLongList(String path)
++    {
++        List<?> list = getList( path );
++        List<Long> result = new ArrayList<>();
++
++        for ( Object object : list )
++        {
++            if ( object instanceof Number )
++            {
++                result.add( ( (Number) object ).longValue() );
++            }
++        }
++
++        return result;
++    }
++
++    public float getFloat(String path)
++    {
++        Object def = getDefault( path );
++        return getFloat( path, ( def instanceof Number ) ? ( (Number) def ).floatValue() : 0 );
++    }
++
++    public float getFloat(String path, float def)
++    {
++        Object val = get( path, def );
++        return ( val instanceof Number ) ? ( (Number) val ).floatValue() : def;
++    }
++
++    public List<Float> getFloatList(String path)
++    {
++        List<?> list = getList( path );
++        List<Float> result = new ArrayList<>();
++
++        for ( Object object : list )
++        {
++            if ( object instanceof Number )
++            {
++                result.add( ( (Number) object ).floatValue() );
++            }
++        }
++
++        return result;
++    }
++
++    public double getDouble(String path)
++    {
++        Object def = getDefault( path );
++        return getDouble( path, ( def instanceof Number ) ? ( (Number) def ).doubleValue() : 0 );
++    }
++
++    public double getDouble(String path, double def)
++    {
++        Object val = get( path, def );
++        return ( val instanceof Number ) ? ( (Number) val ).doubleValue() : def;
++    }
++
++    public List<Double> getDoubleList(String path)
++    {
++        List<?> list = getList( path );
++        List<Double> result = new ArrayList<>();
++
++        for ( Object object : list )
++        {
++            if ( object instanceof Number )
++            {
++                result.add( ( (Number) object ).doubleValue() );
++            }
++        }
++
++        return result;
++    }
++
++    public boolean getBoolean(String path)
++    {
++        Object def = getDefault( path );
++        return getBoolean( path, ( def instanceof Boolean ) ? (Boolean) def : false );
++    }
++
++    public boolean getBoolean(String path, boolean def)
++    {
++        Object val = get( path, def );
++        return ( val instanceof Boolean ) ? (Boolean) val : def;
++    }
++
++    public List<Boolean> getBooleanList(String path)
++    {
++        List<?> list = getList( path );
++        List<Boolean> result = new ArrayList<>();
++
++        for ( Object object : list )
++        {
++            if ( object instanceof Boolean )
++            {
++                result.add( (Boolean) object );
++            }
++        }
++
++        return result;
++    }
++
++    public char getChar(String path)
++    {
++        Object def = getDefault( path );
++        return getChar( path, ( def instanceof Character ) ? (Character) def : '\u0000' );
++    }
++
++    public char getChar(String path, char def)
++    {
++        Object val = get( path, def );
++        return ( val instanceof Character ) ? (Character) val : def;
++    }
++
++    public List<Character> getCharList(String path)
++    {
++        List<?> list = getList( path );
++        List<Character> result = new ArrayList<>();
++
++        for ( Object object : list )
++        {
++            if ( object instanceof Character )
++            {
++                result.add( (Character) object );
++            }
++        }
++
++        return result;
++    }
++
++    public String getString(String path)
++    {
++        Object def = getDefault( path );
++        return getString( path, ( def instanceof String ) ? (String) def : "" );
++    }
++
++    public String getString(String path, String def)
++    {
++        Object val = get( path, def );
++        return ( val instanceof String ) ? (String) val : def;
++    }
++
++    public List<String> getStringList(String path)
++    {
++        List<?> list = getList( path );
++        List<String> result = new ArrayList<>();
++
++        for ( Object object : list )
++        {
++            if ( object instanceof String )
++            {
++                result.add( (String) object );
++            }
++        }
++
++        return result;
++    }
++
++    /*------------------------------------------------------------------------*/
++    public List<?> getList(String path)
++    {
++        Object def = getDefault( path );
++        return getList( path, ( def instanceof List<?> ) ? (List<?>) def : Collections.EMPTY_LIST );
++    }
++
++    public List<?> getList(String path, List<?> def)
++    {
++        Object val = get( path, def );
++        return ( val instanceof List<?> ) ? (List<?>) val : def;
++    }
++}
+\ No newline at end of file
+diff --git a/src/main/java/net/md_5/bungee/config/ConfigurationProvider.java b/src/main/java/net/md_5/bungee/config/ConfigurationProvider.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..fa05f11d866b2e51800faebfa282cd85fddb031c
+--- /dev/null
++++ b/src/main/java/net/md_5/bungee/config/ConfigurationProvider.java
+@@ -0,0 +1,60 @@
++package net.md_5.bungee.config;
++
++import java.io.File;
++import java.io.IOException;
++import java.io.InputStream;
++import java.io.Reader;
++import java.io.Writer;
++import java.util.HashMap;
++import java.util.Map;
++
++public abstract class ConfigurationProvider
++{
++
++    private static final Map<Class<? extends ConfigurationProvider>, ConfigurationProvider> providers = new HashMap<>();
++
++    static
++    {
++        try
++        {
++            providers.put( YamlConfiguration.class, new YamlConfiguration() );
++        } catch ( NoClassDefFoundError ex )
++        {
++            // Ignore, no SnakeYAML
++        }
++
++        try
++        {
++            providers.put( JsonConfiguration.class, new JsonConfiguration() );
++        } catch ( NoClassDefFoundError ex )
++        {
++            // Ignore, no Gson
++        }
++    }
++
++    public static ConfigurationProvider getProvider(Class<? extends ConfigurationProvider> provider)
++    {
++        return providers.get( provider );
++    }
++
++    /*------------------------------------------------------------------------*/
++    public abstract void save(Configuration config, File file) throws IOException;
++
++    public abstract void save(Configuration config, Writer writer);
++
++    public abstract Configuration load(File file) throws IOException;
++
++    public abstract Configuration load(File file, Configuration defaults) throws IOException;
++
++    public abstract Configuration load(Reader reader);
++
++    public abstract Configuration load(Reader reader, Configuration defaults);
++
++    public abstract Configuration load(InputStream is);
++
++    public abstract Configuration load(InputStream is, Configuration defaults);
++
++    public abstract Configuration load(String string);
++
++    public abstract Configuration load(String string, Configuration defaults);
++}
+\ No newline at end of file
+diff --git a/src/main/java/net/md_5/bungee/config/JsonConfiguration.java b/src/main/java/net/md_5/bungee/config/JsonConfiguration.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..c019b066b9f8b10473fdc018bbfd8a5dfae10de8
+--- /dev/null
++++ b/src/main/java/net/md_5/bungee/config/JsonConfiguration.java
+@@ -0,0 +1,121 @@
++package net.md_5.bungee.config;
++
++import com.google.common.base.Charsets;
++import com.google.gson.Gson;
++import com.google.gson.GsonBuilder;
++import com.google.gson.JsonElement;
++import com.google.gson.JsonSerializationContext;
++import com.google.gson.JsonSerializer;
++import java.io.File;
++import java.io.FileInputStream;
++import java.io.FileOutputStream;
++import java.io.IOException;
++import java.io.InputStream;
++import java.io.InputStreamReader;
++import java.io.OutputStreamWriter;
++import java.io.Reader;
++import java.io.Writer;
++import java.lang.reflect.Type;
++import java.util.LinkedHashMap;
++import java.util.Map;
++// Crunchy start - Removal of Lombok
++// import lombok.AccessLevel;
++// import lombok.NoArgsConstructor;
++
++// @NoArgsConstructor(access = AccessLevel.PACKAGE)
++// Crunchy end - Removal of Lombok
++public class JsonConfiguration extends ConfigurationProvider
++{
++
++    // Crunchy start - Removal of Lombok
++    JsonConfiguration() {
++    }
++    // Crunchy end - Removal of Lombok
++
++    private final Gson json = new GsonBuilder().serializeNulls().setPrettyPrinting().registerTypeAdapter( Configuration.class, new JsonSerializer<Configuration>()
++    {
++        @Override
++        public JsonElement serialize(Configuration src, Type typeOfSrc, JsonSerializationContext context)
++        {
++            return context.serialize( ( (Configuration) src ).self );
++        }
++    } ).create();
++
++    @Override
++    public void save(Configuration config, File file) throws IOException
++    {
++        try ( Writer writer = new OutputStreamWriter( new FileOutputStream( file ), Charsets.UTF_8 ) )
++        {
++            save( config, writer );
++        }
++    }
++
++    @Override
++    public void save(Configuration config, Writer writer)
++    {
++        json.toJson( config.self, writer );
++    }
++
++    @Override
++    public Configuration load(File file) throws IOException
++    {
++        return load( file, null );
++    }
++
++    @Override
++    public Configuration load(File file, Configuration defaults) throws IOException
++    {
++        try ( FileInputStream is = new FileInputStream( file ) )
++        {
++            return load( is, defaults );
++        }
++    }
++
++    @Override
++    public Configuration load(Reader reader)
++    {
++        return load( reader, null );
++    }
++
++    @Override
++    @SuppressWarnings("unchecked")
++    public Configuration load(Reader reader, Configuration defaults)
++    {
++        Map<String, Object> map = json.fromJson( reader, LinkedHashMap.class );
++        if ( map == null )
++        {
++            map = new LinkedHashMap<>();
++        }
++        return new Configuration( map, defaults );
++    }
++
++    @Override
++    public Configuration load(InputStream is)
++    {
++        return load( is, null );
++    }
++
++    @Override
++    public Configuration load(InputStream is, Configuration defaults)
++    {
++        return load( new InputStreamReader( is, Charsets.UTF_8 ), defaults );
++    }
++
++    @Override
++    public Configuration load(String string)
++    {
++        return load( string, null );
++    }
++
++    @Override
++    @SuppressWarnings("unchecked")
++    public Configuration load(String string, Configuration defaults)
++    {
++        Map<String, Object> map = json.fromJson( string, LinkedHashMap.class );
++        if ( map == null )
++        {
++            map = new LinkedHashMap<>();
++        }
++        return new Configuration( map, defaults );
++    }
++}
+\ No newline at end of file
+diff --git a/src/main/java/net/md_5/bungee/config/YamlConfiguration.java b/src/main/java/net/md_5/bungee/config/YamlConfiguration.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..adb4c76e5f6205d85dd6d6f5c75803ec96b4218c
+--- /dev/null
++++ b/src/main/java/net/md_5/bungee/config/YamlConfiguration.java
+@@ -0,0 +1,143 @@
++package net.md_5.bungee.config;
++
++import com.google.common.base.Charsets;
++import java.io.File;
++import java.io.FileInputStream;
++import java.io.FileOutputStream;
++import java.io.IOException;
++import java.io.InputStream;
++import java.io.OutputStreamWriter;
++import java.io.Reader;
++import java.io.Writer;
++import java.util.LinkedHashMap;
++import java.util.Map;
++// Crunchy start - Removal of Lombok
++// import lombok.AccessLevel;
++// import lombok.NoArgsConstructor;
++// Crunchy end - Removal of Lombok
++import org.yaml.snakeyaml.DumperOptions;
++import org.yaml.snakeyaml.Yaml;
++import org.yaml.snakeyaml.constructor.Constructor;
++import org.yaml.snakeyaml.nodes.Node;
++import org.yaml.snakeyaml.representer.Represent;
++import org.yaml.snakeyaml.representer.Representer;
++
++// @NoArgsConstructor(access = AccessLevel.PACKAGE) Crunchy - Removal of Lombok
++public class YamlConfiguration extends ConfigurationProvider
++{
++
++    // Crunchy start - Removal of Lombok
++    YamlConfiguration() {
++    }
++    // Crunchy end - Removal of Lombok
++
++    private final ThreadLocal<Yaml> yaml = new ThreadLocal<Yaml>()
++    {
++        @Override
++        protected Yaml initialValue()
++        {
++            Representer representer = new Representer()
++            {
++                {
++                    representers.put( Configuration.class, new Represent()
++                    {
++                        @Override
++                        public Node representData(Object data)
++                        {
++                            return represent( ( (Configuration) data ).self );
++                        }
++                    } );
++                }
++            };
++
++            DumperOptions options = new DumperOptions();
++            options.setDefaultFlowStyle( DumperOptions.FlowStyle.BLOCK );
++
++            return new Yaml( new Constructor(), representer, options );
++        }
++    };
++
++    @Override
++    public void save(Configuration config, File file) throws IOException
++    {
++        try ( Writer writer = new OutputStreamWriter( new FileOutputStream( file ), Charsets.UTF_8 ) )
++        {
++            save( config, writer );
++        }
++    }
++
++    @Override
++    public void save(Configuration config, Writer writer)
++    {
++        yaml.get().dump( config.self, writer );
++    }
++
++    @Override
++    public Configuration load(File file) throws IOException
++    {
++        return load( file, null );
++    }
++
++    @Override
++    public Configuration load(File file, Configuration defaults) throws IOException
++    {
++        try ( FileInputStream is = new FileInputStream( file ) )
++        {
++            return load( is, defaults );
++        }
++    }
++
++    @Override
++    public Configuration load(Reader reader)
++    {
++        return load( reader, null );
++    }
++
++    @Override
++    @SuppressWarnings("unchecked")
++    public Configuration load(Reader reader, Configuration defaults)
++    {
++        Map<String, Object> map = yaml.get().loadAs( reader, LinkedHashMap.class );
++        if ( map == null )
++        {
++            map = new LinkedHashMap<>();
++        }
++        return new Configuration( map, defaults );
++    }
++
++    @Override
++    public Configuration load(InputStream is)
++    {
++        return load( is, null );
++    }
++
++    @Override
++    @SuppressWarnings("unchecked")
++    public Configuration load(InputStream is, Configuration defaults)
++    {
++        Map<String, Object> map = yaml.get().loadAs( is, LinkedHashMap.class );
++        if ( map == null )
++        {
++            map = new LinkedHashMap<>();
++        }
++        return new Configuration( map, defaults );
++    }
++
++    @Override
++    public Configuration load(String string)
++    {
++        return load( string, null );
++    }
++
++    @Override
++    @SuppressWarnings("unchecked")
++    public Configuration load(String string, Configuration defaults)
++    {
++        Map<String, Object> map = yaml.get().loadAs( string, LinkedHashMap.class );
++        if ( map == null )
++        {
++            map = new LinkedHashMap<>();
++        }
++        return new Configuration( map, defaults );
++    }
++}
+\ No newline at end of file
+diff --git a/src/main/java/org/bukkit/plugin/Plugin.java b/src/main/java/org/bukkit/plugin/Plugin.java
+index f2751c5f8fe867fe93b06d1dd410888b448d6628..410f9680648c129c8934b76babfd4f9ce585c5b4 100644
+--- a/src/main/java/org/bukkit/plugin/Plugin.java
++++ b/src/main/java/org/bukkit/plugin/Plugin.java
+@@ -229,4 +229,28 @@ public interface Plugin extends TabExecutor {
+      */
+     void registerListener(@NotNull org.bukkit.event.Listener listener);
+     // Crunchy end - Easier command/listener registration
++    // Crunchy start - Json Configuration
++    /**
++     * Return the active {@link net.md_5.bungee.config.Configuration} being used
++     *
++     * @return Current JSON config
++     */
++    @NotNull
++    net.md_5.bungee.config.Configuration getJsonConfig();
++
++    /**
++     * Save the current JSON config to the disk
++     */
++    void saveJsonConfig();
++
++    /**
++     * Reload the current stored JSON config from the disk
++     */
++    void reloadJsonConfig();
++
++    /**
++     * Save the default JSON config to the disk
++     */
++    void saveDefaultJsonConfig();
++    // Crunchy end - Json Configuration
+ }
+diff --git a/src/main/java/org/bukkit/plugin/java/JavaPlugin.java b/src/main/java/org/bukkit/plugin/java/JavaPlugin.java
+index 00d74cd88a8e0cd3a69c302ee996147cb9f96ba3..a16b44c953c2082dbc8a8984f8cd5f6a1cca865c 100644
+--- a/src/main/java/org/bukkit/plugin/java/JavaPlugin.java
++++ b/src/main/java/org/bukkit/plugin/java/JavaPlugin.java
+@@ -277,6 +277,7 @@ public abstract class JavaPlugin extends PluginBase {
+         this.dataFolder = dataFolder;
+         this.classLoader = classLoader;
+         this.configFile = new File(dataFolder, "config.yml");
++        this.jsonConfigFile = new File(dataFolder, "config.json"); // Crunchy - Json Configuration
+         // Paper start
+         if (this.logger == null) {
+             this.logger = com.destroystokyo.paper.utils.PaperPluginLogger.getLogger(this.description);
+@@ -407,6 +408,56 @@ public abstract class JavaPlugin extends PluginBase {
+         getServer().getPluginManager().registerEvents(listener, this);
+     }
+     // Crunchy end - Easier command/listener registration
++    // Crunchy start - Json Configuration
++    private File jsonConfigFile = null;
++    private net.md_5.bungee.config.Configuration jsonConfig = null;
++
++    /**
++     * Return the active {@link net.md_5.bungee.config.Configuration} being used
++     *
++     * @return Current JSON config
++     */
++    @Override
++    @NotNull
++    public net.md_5.bungee.config.Configuration getJsonConfig() {
++        if (jsonConfig == null) reloadJsonConfig();
++
++        return jsonConfig;
++    }
++
++    /**
++     * Save the current JSON config to the disk
++     */
++    @Override
++    public void saveJsonConfig() {
++        try {
++            net.md_5.bungee.config.ConfigurationProvider.getProvider(net.md_5.bungee.config.JsonConfiguration.class).save(jsonConfig, jsonConfigFile);
++        } catch (IOException ex) {
++            logger.log(Level.SEVERE, "Unable to save " + jsonConfigFile, ex);
++        }
++    }
++
++    /**
++     * Reload the current stored JSON config from the disk
++     */
++    @Override
++    public void reloadJsonConfig() {
++        try {
++            jsonConfig = net.md_5.bungee.config.ConfigurationProvider.getProvider(net.md_5.bungee.config.JsonConfiguration.class).load(jsonConfigFile);
++        } catch (IOException ex) {
++            logger.log(Level.SEVERE, "Unable to reload " + jsonConfigFile, ex);
++        }
++    }
++
++    /**
++     * Save the default JSON config to the disk
++     */
++    @Override
++    public void saveDefaultJsonConfig() {
++        if (!jsonConfigFile.exists())
++            saveResource("config.json", false);
++    }
++    // Crunchy end - Json Configuration
+ 
+     /**
+      * This method provides fast access to the plugin that has {@link
