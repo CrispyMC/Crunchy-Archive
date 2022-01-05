@@ -1,15 +1,13 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: MrFishCakes <fishcake007@outlook.com>
 Date: Tue, 4 Jan 2022 19:55:04 +0000
-Subject: [PATCH] Json Configuration Using the configuration API created by
- md_5 for BungeeCord, JSON configurations are now available. To use the API
- for custom JSON files, look on the SpigotMC wiki for more information or look
- at the JavaPlugin class where it is implemented
+Subject: [PATCH] Json Configuration
 
+Using the configuration API created by md_5 for BungeeCord, JSON configurations are now available. To use the API for custom JSON files, look on the SpigotMC wiki for more information or look at the JavaPlugin class where it is implemented
 
 diff --git a/src/main/java/net/md_5/bungee/config/Configuration.java b/src/main/java/net/md_5/bungee/config/Configuration.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..2c2a846e0429e1f6ba4ed639c151a7295e4151b4
+index 0000000000000000000000000000000000000000..ecd25ecdd9bbe7925b072705c13d5e15539f2ff1
 --- /dev/null
 +++ b/src/main/java/net/md_5/bungee/config/Configuration.java
 @@ -0,0 +1,414 @@
@@ -430,7 +428,7 @@ index 0000000000000000000000000000000000000000..2c2a846e0429e1f6ba4ed639c151a729
 \ No newline at end of file
 diff --git a/src/main/java/net/md_5/bungee/config/ConfigurationProvider.java b/src/main/java/net/md_5/bungee/config/ConfigurationProvider.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..fa05f11d866b2e51800faebfa282cd85fddb031c
+index 0000000000000000000000000000000000000000..e790bfab8febc2a2df368c6852ba1fa2fb0b6fc3
 --- /dev/null
 +++ b/src/main/java/net/md_5/bungee/config/ConfigurationProvider.java
 @@ -0,0 +1,60 @@
@@ -497,7 +495,7 @@ index 0000000000000000000000000000000000000000..fa05f11d866b2e51800faebfa282cd85
 \ No newline at end of file
 diff --git a/src/main/java/net/md_5/bungee/config/JsonConfiguration.java b/src/main/java/net/md_5/bungee/config/JsonConfiguration.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..c019b066b9f8b10473fdc018bbfd8a5dfae10de8
+index 0000000000000000000000000000000000000000..5ef28fa13b44280f3be847201789f4b470eba874
 --- /dev/null
 +++ b/src/main/java/net/md_5/bungee/config/JsonConfiguration.java
 @@ -0,0 +1,121 @@
@@ -625,7 +623,7 @@ index 0000000000000000000000000000000000000000..c019b066b9f8b10473fdc018bbfd8a5d
 \ No newline at end of file
 diff --git a/src/main/java/net/md_5/bungee/config/YamlConfiguration.java b/src/main/java/net/md_5/bungee/config/YamlConfiguration.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..adb4c76e5f6205d85dd6d6f5c75803ec96b4218c
+index 0000000000000000000000000000000000000000..6078b6f575e599df15c55deafd1895e0b5e6534e
 --- /dev/null
 +++ b/src/main/java/net/md_5/bungee/config/YamlConfiguration.java
 @@ -0,0 +1,143 @@

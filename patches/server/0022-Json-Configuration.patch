@@ -1,11 +1,9 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: MrFishCakes <fishcake007@outlook.com>
 Date: Tue, 4 Jan 2022 19:56:50 +0000
-Subject: [PATCH] Json Configuration Json Configuration Using the configuration
- API created by md_5 for BungeeCord, JSON configurations are now available. To
- use the API for custom JSON files, look on the SpigotMC wiki for more
- information or look at the JavaPlugin class where it is implemented
+Subject: [PATCH] Json Configuration
 
+Json Configuration Using the configuration API created by md_5 for BungeeCord, JSON configurations are now available. To use the API for custom JSON files, look on the SpigotMC wiki for more information or look at the JavaPlugin class where it is implemented
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/scheduler/MinecraftInternalPlugin.java b/src/main/java/org/bukkit/craftbukkit/scheduler/MinecraftInternalPlugin.java
 index c736033ed0e214408b0d207614907654c04983be..f97b2a83ac20bb0c36f2f63da1ef0c771aa9434a 100644
