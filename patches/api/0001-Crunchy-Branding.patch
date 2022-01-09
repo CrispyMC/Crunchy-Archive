@@ -5,7 +5,7 @@ Subject: [PATCH] Crunchy Branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 001c2b963205012f340db0d539e4033c748124ce..e9b4572954db8a98af1cf1367f463a8fcf52f8a9 100644
+index 001c2b963205012f340db0d539e4033c748124ce..4ed80443e8f110bcb95dde51e8cbb7e6459ffd49 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -1,3 +1,5 @@
@@ -14,17 +14,16 @@ index 001c2b963205012f340db0d539e4033c748124ce..e9b4572954db8a98af1cf1367f463a8f
  plugins {
      `java-library`
      `maven-publish`
-@@ -40,6 +42,9 @@ dependencies {
+@@ -40,6 +42,8 @@ dependencies {
      apiAndDocs("net.kyori:adventure-text-serializer-plain")
      api("org.apache.logging.log4j:log4j-api:2.17.1")
      api("org.slf4j:slf4j-api:1.8.0-beta4")
-+    api("com.zaxxer:HikariCP:5.0.0") // Crunchy
++    runtimeOnly("com.zaxxer:HikariCP:5.0.0") // Crunchy
 +    api("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT") // Crunchy
-+    api("com.h2database:h2:2.0.202") // Crunchy
  
      implementation("org.ow2.asm:asm:9.2")
      implementation("org.ow2.asm:asm-commons:9.2")
-@@ -67,6 +72,7 @@ dependencies {
+@@ -67,6 +71,7 @@ dependencies {
  
  configure<PublishingExtension> {
      publications.create<MavenPublication>("maven") {
@@ -32,12 +31,11 @@ index 001c2b963205012f340db0d539e4033c748124ce..e9b4572954db8a98af1cf1367f463a8f
          from(components["java"])
      }
  }
-@@ -113,5 +119,7 @@ tasks.withType<Javadoc> {
+@@ -113,5 +118,6 @@ tasks.withType<Javadoc> {
          "https://jd.adventure.kyori.net/text-serializer-legacy/$adventureVersion/",
          "https://jd.adventure.kyori.net/text-serializer-plain/$adventureVersion/",
          // Paper end
 +        "https://javadoc.io/doc/com.zaxxer/HikariCP/latest/index.html", // Crunchy
-+        "https://javadoc.io/doc/com.h2database/h2/latest/index.html", // Crunchy
      )
  }
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/CrunchyUtil.java b/src/main/java/dev/mrfishcakes/crunchy/CrunchyUtil.java

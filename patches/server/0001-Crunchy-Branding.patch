@@ -5,7 +5,7 @@ Subject: [PATCH] Crunchy Branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index da31e84cb558e6fad9cab015cfae753ce7be7db0..9c473e87755677441e4a2b36508d9d3f2377057b 100644
+index 028f6a1795ceb99d1760c73b0980238677b4b8bc..42c70044211a5f3ac8fd40898f9ce885fbcca909 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -18,8 +18,8 @@ repositories {
@@ -19,7 +19,19 @@ index da31e84cb558e6fad9cab015cfae753ce7be7db0..9c473e87755677441e4a2b36508d9d3f
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.21.0")
      implementation("net.minecrell:terminalconsoleappender:1.3.0")
-@@ -68,7 +68,7 @@ tasks.jar {
+@@ -43,6 +43,11 @@ dependencies {
+     runtimeOnly("org.apache.maven:maven-resolver-provider:3.8.4")
+     runtimeOnly("org.apache.maven.resolver:maven-resolver-connector-basic:1.7.2")
+     runtimeOnly("org.apache.maven.resolver:maven-resolver-transport-http:1.7.2")
++    // Crunchy start - Database Implementations
++    runtimeOnly("com.h2database:h2:2.0.202") // H2
++    runtimeOnly("org.mariadb.jdbc:mariadb-java-client:3.0.2-rc") // MariaDB
++    runtimeOnly("org.postgresql:postgresql:42.3.1") // PostgreSQL
++    // Crunchy end - Database Implementations
+ 
+     implementation("net.fabricmc:mapping-io:0.3.0") // Paper - needed to read mappings for stacktrace deobfuscation
+     // Paper start - Use Velocity cipher
+@@ -68,7 +73,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
@@ -28,7 +40,7 @@ index da31e84cb558e6fad9cab015cfae753ce7be7db0..9c473e87755677441e4a2b36508d9d3f
              "Implementation-Vendor" to date, // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
-@@ -156,7 +156,7 @@ fun TaskContainer.registerRunTask(
+@@ -156,7 +161,7 @@ fun TaskContainer.registerRunTask(
      name: String,
      block: JavaExec.() -> Unit
  ): TaskProvider<JavaExec> = register<JavaExec>(name) {
@@ -37,7 +49,7 @@ index da31e84cb558e6fad9cab015cfae753ce7be7db0..9c473e87755677441e4a2b36508d9d3f
      mainClass.set("org.bukkit.craftbukkit.Main")
      standardInput = System.`in`
      workingDir = rootProject.layout.projectDirectory
-@@ -184,7 +184,7 @@ fun TaskContainer.registerRunTask(
+@@ -184,7 +189,7 @@ fun TaskContainer.registerRunTask(
      doFirst {
          workingDir.mkdirs()
      }
