@@ -253,10 +253,10 @@ index 6f6106ca4d74d50a7b74b086adc96c58c7906cb6..a1c478a10bc999163850f7d671f53e56
          @Override
          public boolean canEnchant(Item item) {
 diff --git a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
-index f0eef5eaef85d0e5c852949c4f15c58eb0612926..4b14f9fe11fcacf916316434ce93fe5d99df1c04 100644
+index d24e45480260b04650172be71783e12b2f1f21d0..cdaf0b249e68f4ff611a7a41db6fed7ce7448e3f 100644
 --- a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
 +++ b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
-@@ -431,6 +431,21 @@ public class EnchantmentHelper {
+@@ -428,6 +428,21 @@ public class EnchantmentHelper {
      }
      // Crunchy end - Enhanced mending
  
@@ -279,7 +279,7 @@ index f0eef5eaef85d0e5c852949c4f15c58eb0612926..4b14f9fe11fcacf916316434ce93fe5d
      interface EnchantmentVisitor {
          void accept(Enchantment enchantment, int level);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 371aaef19a7b71925a0b2def6562914c54a77930..e99212aba6fd128e7bbba7db56d99a45ada32f42 100644
+index 80a004a590b16064fe5a1f0e4005218830d7e650..1aa5da08e8ca2a80983fd29ac31cedfe08d2bbb6 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -244,6 +244,7 @@ import org.bukkit.scheduler.BukkitWorker;

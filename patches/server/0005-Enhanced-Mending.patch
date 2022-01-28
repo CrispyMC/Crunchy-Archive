@@ -55,10 +55,10 @@ index 66f808cabcf6a9a6584849b285f1c60133adc7b4..5bd978ad60d9b12f289aa179a572b4dd
  
          ENCHANTMENTS, MODIFIERS, UNBREAKABLE, CAN_DESTROY, CAN_PLACE, ADDITIONAL, DYE;
 diff --git a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
-index 7bc5aa35b52de0027cf58a6127a9903464ccaf47..f0eef5eaef85d0e5c852949c4f15c58eb0612926 100644
+index 3a09ce6d0ea51436adcae4719d3f28d1868c283c..d24e45480260b04650172be71783e12b2f1f21d0 100644
 --- a/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
 +++ b/src/main/java/net/minecraft/world/item/enchantment/EnchantmentHelper.java
-@@ -408,6 +408,29 @@ public class EnchantmentHelper {
+@@ -405,6 +405,29 @@ public class EnchantmentHelper {
          return list;
      }
  

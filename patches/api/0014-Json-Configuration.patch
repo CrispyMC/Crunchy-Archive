@@ -18,10 +18,10 @@ index 4ed80443e8f110bcb95dde51e8cbb7e6459ffd49..df89fe2b94f3dede55af1839504683fa
      implementation("org.ow2.asm:asm:9.2")
      implementation("org.ow2.asm:asm-commons:9.2")
 diff --git a/src/main/java/org/bukkit/plugin/Plugin.java b/src/main/java/org/bukkit/plugin/Plugin.java
-index f2751c5f8fe867fe93b06d1dd410888b448d6628..410f9680648c129c8934b76babfd4f9ce585c5b4 100644
+index 3940b3ecb53e5eb32599d576a63b1287a4571d5d..7b4f72623e09efccb047879cee17a6ad20967936 100644
 --- a/src/main/java/org/bukkit/plugin/Plugin.java
 +++ b/src/main/java/org/bukkit/plugin/Plugin.java
-@@ -229,4 +229,28 @@ public interface Plugin extends TabExecutor {
+@@ -233,4 +233,28 @@ public interface Plugin extends TabExecutor {
       */
      void registerListener(@NotNull org.bukkit.event.Listener listener);
      // Crunchy end - Easier command/listener registration
