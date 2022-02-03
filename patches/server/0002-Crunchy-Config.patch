@@ -412,7 +412,7 @@ index 4247dcb003626535dbb997f48ad9f61380bd17e9..0b02008417d79f4c9378dae78f39b39d
          this.world = new CraftWorld((ServerLevel) this, gen, biomeProvider, env);
          this.ticksPerAnimalSpawns = this.getCraftServer().getTicksPerAnimalSpawns(); // CraftBukkit
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index b9a522fec1d416772e5baae58cce3c09f5d49e3e..832478142b0c7d5e5831c2f2e9ef0ce302e98b71 100644
+index f0a52406dda5b8631c32e8f7dafee51e074186fc..9778081c9d0fc3238712d20090660c67ecc0678b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -952,6 +952,7 @@ public final class CraftServer implements Server {
@@ -439,7 +439,7 @@ index b9a522fec1d416772e5baae58cce3c09f5d49e3e..832478142b0c7d5e5831c2f2e9ef0ce3
          this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
          this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -2662,6 +2665,13 @@ public final class CraftServer implements Server {
+@@ -2669,6 +2672,13 @@ public final class CraftServer implements Server {
              return com.destroystokyo.paper.PaperConfig.config;
          }
  

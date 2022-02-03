@@ -221,10 +221,10 @@ index cd08f9b16c065be8f0eacaeba51d3e72d332daf9..4624fffe1ec40a367a55c61180a02aa8
          ClientboundPlayerInfoPacket packet = new ClientboundPlayerInfoPacket(ClientboundPlayerInfoPacket.Action.ADD_PLAYER, player);
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index f3a0b78cf164d2f3f131d4f0fd536d4986598892..186cc10b97bc665518def7d0e0ac3ae13531bbcc 100644
+index 6aa2a90e38b733d2d1ff8064778db6b6dd167ec6..1abf33a74c77d01829d97812c71277ef97c37a89 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -2850,4 +2850,32 @@ public final class CraftServer implements Server {
+@@ -2857,4 +2857,32 @@ public final class CraftServer implements Server {
          org.bukkit.enchantments.Enchantment.registerEnchantment(enchantment);
      }
      // Crunchy end - Custom enchantment API
@@ -258,10 +258,10 @@ index f3a0b78cf164d2f3f131d4f0fd536d4986598892..186cc10b97bc665518def7d0e0ac3ae1
 +    // Crunchy end - Fake Player API
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 8cac6f49b23841414fbcc7f3a158a7342b382496..cab4360fe6e715237c040463926b5f009ae1be9e 100644
+index 06b4135d3a684ef31c969b23d2349a6fef8a905f..e1b2eeafad07f8d0d9ed6c3987c3e5711d22e87e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -2655,6 +2655,67 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2661,6 +2661,67 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          return getHandle().connection != null ? getHandle().connection.getClientBrandName() : null;
      }
      // Paper end

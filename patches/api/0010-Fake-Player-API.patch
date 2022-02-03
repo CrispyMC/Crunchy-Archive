@@ -290,10 +290,10 @@ index 0000000000000000000000000000000000000000..4ffbed7957d11e1c1e03e8b3aa2734fd
 +
 +}
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index ce3e0d3bc725b9396fb98a5cf01d789ded9889e9..4e8bd1e848931d381d1b19ef6a630f0f1031d8f6 100644
+index 5eac672b770cd87df5a843a5d58d5739da0bd659..558fb78916a247500d00bfcee97eb9c29c27e60d 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2218,6 +2218,62 @@ public final class Bukkit {
+@@ -2232,6 +2232,62 @@ public final class Bukkit {
          server.registerEnchantment(enchantment);
      }
      // Crunchy end - Custom enchantment API
@@ -357,10 +357,10 @@ index ce3e0d3bc725b9396fb98a5cf01d789ded9889e9..4e8bd1e848931d381d1b19ef6a630f0f
      @NotNull
      public static Server.Spigot spigot() {
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 5de1434f3a738f04f2267eb01034916fa62e905e..cf3adc889af160ea3cf06f3e8230d232f055b8eb 100644
+index faa318a25ad7bccf0df034a051723988eb1e03dd..b6d9d1f5f29a9f5bd1c6c8f374f3c1948cbe3d69 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1932,4 +1932,54 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1944,4 +1944,54 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       */
      void registerEnchantment(@NotNull final dev.mrfishcakes.crunchy.enchantment.CustomEnchantment enchantment);
      // Crunchy end - Custom enchantment API

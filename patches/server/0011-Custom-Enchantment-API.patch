@@ -279,7 +279,7 @@ index d24e45480260b04650172be71783e12b2f1f21d0..cdaf0b249e68f4ff611a7a41db6fed7c
      interface EnchantmentVisitor {
          void accept(Enchantment enchantment, int level);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 80a004a590b16064fe5a1f0e4005218830d7e650..1aa5da08e8ca2a80983fd29ac31cedfe08d2bbb6 100644
+index 5ff0203a63c61380dbe58d1aa6aeed8e9804d674..712661f29d326449318d604608042e2f6f3b44c9 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -244,6 +244,7 @@ import org.bukkit.scheduler.BukkitWorker;
@@ -290,7 +290,7 @@ index 80a004a590b16064fe5a1f0e4005218830d7e650..1aa5da08e8ca2a80983fd29ac31cedfe
  import org.yaml.snakeyaml.Yaml;
  import org.yaml.snakeyaml.constructor.SafeConstructor;
  import org.yaml.snakeyaml.error.MarkedYAMLException;
-@@ -2838,4 +2839,14 @@ public final class CraftServer implements Server {
+@@ -2845,4 +2846,14 @@ public final class CraftServer implements Server {
          return MinecraftServer.START_MILLIS;
      }
      // Crunchy end - Uptime API
