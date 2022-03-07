@@ -6,7 +6,7 @@ Subject: [PATCH] Json Configuration
 Using the configuration API created by md_5 for BungeeCord, JSON configurations are now available. To use the API for custom JSON files, look on the SpigotMC wiki for more information or look at the JavaPlugin class where it is implemented
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 7b5c00712be8ffeae6b30dab10f6ae82860f9ea4..763f839a74ab93e0e5e82030978a713b52b3144d 100644
+index b6be47a27d7ccc6b3c675b291a4fdc3f4e501cb5..303a91552a86aa50ca53f2afbc8aa8d7e3b40472 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -45,6 +45,7 @@ dependencies {

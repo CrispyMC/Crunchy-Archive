@@ -221,13 +221,21 @@ index cd08f9b16c065be8f0eacaeba51d3e72d332daf9..4624fffe1ec40a367a55c61180a02aa8
          ClientboundPlayerInfoPacket packet = new ClientboundPlayerInfoPacket(ClientboundPlayerInfoPacket.Action.ADD_PLAYER, player);
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 6aa2a90e38b733d2d1ff8064778db6b6dd167ec6..1abf33a74c77d01829d97812c71277ef97c37a89 100644
+index c014ff9dcbdf41fe6458c959980fe65e4ea47178..0eb333333aaeb113e370e2631a6cf60f9a6855d9 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -2857,4 +2857,32 @@ public final class CraftServer implements Server {
-         org.bukkit.enchantments.Enchantment.registerEnchantment(enchantment);
+@@ -243,6 +243,7 @@ import org.bukkit.scheduler.BukkitWorker;
+ import org.bukkit.structure.StructureManager;
+ import org.bukkit.util.StringUtil;
+ import org.bukkit.util.permissions.DefaultPermissions;
++import org.jetbrains.annotations.NotNull;
+ import org.yaml.snakeyaml.Yaml;
+ import org.yaml.snakeyaml.constructor.SafeConstructor;
+ import org.yaml.snakeyaml.error.MarkedYAMLException;
+@@ -2846,4 +2847,32 @@ public final class CraftServer implements Server {
+         return MinecraftServer.START_MILLIS;
      }
-     // Crunchy end - Custom enchantment API
+     // Crunchy end - Uptime API
 +    // Crunchy start - Fake Player API
 +    public final Map<UUID, dev.mrfishcakes.crunchy.player.FakePlayer> fakePlayerMap = com.google.common.collect.Maps.newHashMap();
 +

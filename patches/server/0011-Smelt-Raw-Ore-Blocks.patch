@@ -277,7 +277,7 @@ index 0000000000000000000000000000000000000000..0acadd183b514cbe24cab2bd2db9d7a7
 +
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 9587902be86c44c861b08a45a4d90c5d248c6adb..5953d55bae815ccc956296d1fa9cff5e0ccd23b1 100644
+index ef46ddd04354de6e179eff7f74bd691da63a4fee..9498c6a7f5981f283c29eea9c27c95d95587fdd1 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1218,7 +1218,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -290,7 +290,7 @@ index 9587902be86c44c861b08a45a4d90c5d248c6adb..5953d55bae815ccc956296d1fa9cff5e
                  org.spigotmc.WatchdogThread.hasStarted = true; // Paper
                  Arrays.fill( recentTps, 20 );
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 09a4bd6ce7ae8db45bb40d872b7fea897b33e92b..014a6f80ffacccef0d036627892fa6f6550ddc93 100644
+index 5ff0203a63c61380dbe58d1aa6aeed8e9804d674..8679034544049b42afaffccd1175a4b3b63d5bf1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -4,7 +4,6 @@ import com.google.common.base.Charsets;
