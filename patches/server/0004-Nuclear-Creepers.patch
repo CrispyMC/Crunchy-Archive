@@ -33,7 +33,7 @@ index 6568b4cbe90481beb686403a4f3f19b4cda99777..8a3a32240a0e3a87963560385a7a5c58
 +
  }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Creeper.java b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
-index c2dbe53f504327f153efe195c74ad28c1b89791f..417f1608d1ae012eff2f7826c82c408b7dd1442f 100644
+index f9193f8cd3b0d0e689a523c7142a897c342c2931..c10bd159d633573e88d7ae57a389bfcbee4457c3 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Creeper.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Creeper.java
 @@ -60,6 +60,7 @@ public class Creeper extends Monster implements PowerableMob {
@@ -64,7 +64,7 @@ index c2dbe53f504327f153efe195c74ad28c1b89791f..417f1608d1ae012eff2f7826c82c408b
 +            if (chance > 0D && random.nextDouble() <= chance) {
 +                this.setNuclear(true);
 +
-+                this.getBukkitEntity().customName(net.kyori.adventure.text.minimessage.MiniMessage.get().parse(this.level.crunchyConfig.nuclearCreeperName));
++                this.getBukkitEntity().customName(net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize(this.level.crunchyConfig.nuclearCreeperName));
 +                if (this.level.crunchyConfig.nuclearCreeperShowName) {
 +                    this.getBukkitEntity().setCustomNameVisible(true);
 +                }

@@ -18,7 +18,7 @@ index 7c445b3604237ed9a5c4a692be44c8e718894679..c9cb210db299c4cd0a8ed6d2f778f927
          AtomicReference<S> atomicreference = new AtomicReference();
          Thread thread = new Thread(() -> {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 705cba2a17bffa13f25b8bfe0f2050c1d91b6968..140779b155b2ecd232fecdae91e46387952bf6b8 100644
+index 705cba2a17bffa13f25b8bfe0f2050c1d91b6968..289378819f8f568124e139ec2046808b2e063121 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -2863,4 +2863,16 @@ public final class CraftServer implements Server {
@@ -29,12 +29,12 @@ index 705cba2a17bffa13f25b8bfe0f2050c1d91b6968..140779b155b2ecd232fecdae91e46387
 +    // Crunchy start - Uptime API
 +    @Override
 +    public long getUptimeElapsed() {
-+        return System.currentTimeMillis() - MinecraftServer.START_MILLIS;
++        return System.currentTimeMillis() - net.minecraft.server.MinecraftServer.START_MILLIS;
 +    }
 +
 +    @Override
 +    public long getUptimeStart() {
-+        return MinecraftServer.START_MILLIS;
++        return net.minecraft.server.MinecraftServer.START_MILLIS;
 +    }
 +    // Crunchy end - Uptime API
  }

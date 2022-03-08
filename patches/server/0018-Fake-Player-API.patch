@@ -221,7 +221,7 @@ index 02dc93c394d37c9a84aa4a58d80615c403c54fb9..59d03240563e9e0a22677c2224ecbf10
          ClientboundPlayerInfoPacket packet = new ClientboundPlayerInfoPacket(ClientboundPlayerInfoPacket.Action.ADD_PLAYER, player);
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index d8445a770eaf1ad1422b0ed715a469cecc7355ce..5ba371474f6335fd187172e421d3f8e8a8d9756b 100644
+index 6490ad0fc4b7b3c280dc4572a5df54846635aa51..004565283464ad08a1c8541619f4c2be3e1493ec 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -238,6 +238,7 @@ import org.bukkit.scheduler.BukkitWorker;
@@ -233,7 +233,7 @@ index d8445a770eaf1ad1422b0ed715a469cecc7355ce..5ba371474f6335fd187172e421d3f8e8
  import org.yaml.snakeyaml.constructor.SafeConstructor;
  import org.yaml.snakeyaml.error.MarkedYAMLException;
 @@ -2877,4 +2878,32 @@ public final class CraftServer implements Server {
-         return MinecraftServer.START_MILLIS;
+         return net.minecraft.server.MinecraftServer.START_MILLIS;
      }
      // Crunchy end - Uptime API
 +    // Crunchy start - Fake Player API

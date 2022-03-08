@@ -6,15 +6,18 @@ Subject: [PATCH] Uptime Command
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/commands/UptimeCommand.java b/src/main/java/dev/mrfishcakes/crunchy/commands/UptimeCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..90d7478fa1c3734c72ecd95fa99e346cd24a07de
+index 0000000000000000000000000000000000000000..29de319f0e714b16bc91cacb991855ac6239632d
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/commands/UptimeCommand.java
-@@ -0,0 +1,72 @@
+@@ -0,0 +1,75 @@
 +package dev.mrfishcakes.crunchy.commands;
 +
 +import dev.mrfishcakes.crunchy.CrunchyUtil;
 +import dev.mrfishcakes.crunchy.config.CrunchyConfig;
++import net.kyori.adventure.text.Component;
 +import net.kyori.adventure.text.minimessage.MiniMessage;
++import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
++import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 +import org.bukkit.Bukkit;
 +import org.bukkit.ChatColor;
 +import org.bukkit.command.Command;
@@ -56,22 +59,22 @@ index 0000000000000000000000000000000000000000..90d7478fa1c3734c72ecd95fa99e346c
 +        boolean hasMinutes = output.contains("<minutes>");
 +
 +        long elapsedTime = Bukkit.getUptimeElapsed();
-+        Map<String, String> placeholders = new HashMap<>();
++        TagResolver.Builder placeholders = TagResolver.builder();
 +
 +        Duration duration = Duration.ofMillis(elapsedTime);
 +        if (hasDays) {
-+            placeholders.put("days", String.valueOf(duration.toDaysPart()));
++            placeholders.resolver(Placeholder.component("days", Component.text(duration.toDaysPart())));
 +        }
 +
 +        if (hasHours) {
-+            placeholders.put("hours", String.valueOf(duration.toHoursPart()));
++            placeholders.resolver(Placeholder.component("hours", Component.text(duration.toHoursPart())));
 +        }
 +
 +        if (hasMinutes) {
-+            placeholders.put("minutes", String.valueOf(duration.toMinutesPart()));
++            placeholders.resolver(Placeholder.component("minutes", Component.text(duration.toMinutesPart())));
 +        }
 +
-+        CrunchyUtil.sendMessage(MiniMessage.get(), placeholders, sender, output);
++        CrunchyUtil.sendMessage(MiniMessage.miniMessage(), placeholders.build(), sender, output);
 +        return true;
 +    }
 +
