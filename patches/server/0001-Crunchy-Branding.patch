@@ -5,7 +5,7 @@ Subject: [PATCH] Crunchy Branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 028f6a1795ceb99d1760c73b0980238677b4b8bc..42c70044211a5f3ac8fd40898f9ce885fbcca909 100644
+index 4beb35d1e5b013395f5df101e843f41c2ce174ad..1363b4b9b50990daa6d601accbf4a7082a70af10 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -18,8 +18,8 @@ repositories {
@@ -127,10 +127,10 @@ index e0b1f0671d16ddddcb6725acd25a1d1d69e42701..e47669d699f29c224d7e2e46eed5a980
                  .completer(new ConsoleCommandCompleter(this.server))
                  .option(LineReader.Option.COMPLETE_IN_WORD, true);
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 481a5dbad82f3f8dd5b1bf8ab207d82ec73d5bbd..92e3128cf53b39969d93043d02a49e0feb2a4dd8 100644
+index 39b7c78b032ed6fc29ac765020d5a38858bf2a3a..7c445b3604237ed9a5c4a692be44c8e718894679 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1709,7 +1709,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1697,7 +1697,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
      @DontObfuscate
      public String getServerModName() {
@@ -140,10 +140,10 @@ index 481a5dbad82f3f8dd5b1bf8ab207d82ec73d5bbd..92e3128cf53b39969d93043d02a49e0f
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index ba7023e7ca5d29375ff53c2951892138d155f69f..b9a522fec1d416772e5baae58cce3c09f5d49e3e 100644
+index 55c981f2c8070fc1bd9ecd4f4df140d9d0c68319..30aec868d1ecb648deb539fa12024199e6f4794d 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -254,7 +254,7 @@ import javax.annotation.Nullable; // Paper
+@@ -248,7 +248,7 @@ import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {

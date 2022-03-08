@@ -6,10 +6,10 @@ Subject: [PATCH] Json Configuration
 Using the configuration API created by md_5 for BungeeCord, JSON configurations are now available. To use the API for custom JSON files, look on the SpigotMC wiki for more information or look at the JavaPlugin class where it is implemented
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index b6be47a27d7ccc6b3c675b291a4fdc3f4e501cb5..303a91552a86aa50ca53f2afbc8aa8d7e3b40472 100644
+index bcce7e6c3799149027224089e3404b2f4cfe15cd..8ef2afaea3995504d8036507f89663ec6fc9a072 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -45,6 +45,7 @@ dependencies {
+@@ -46,6 +46,7 @@ dependencies {
      runtimeOnly("com.zaxxer:HikariCP:5.0.1") // Crunchy
      runtimeOnly("com.j256.ormlite:ormlite-jdbc:6.1") // Crunchy
      api("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT") // Crunchy

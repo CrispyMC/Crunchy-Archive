@@ -202,7 +202,7 @@ index 420cc7ab5f7245f31dd5b333eacf4e306fc6e7c1..732bf54e8d37a4228de9dcdfcd832d65
          this.action = action;
          this.entries = Lists.newArrayListWithCapacity(players.length);
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index cd08f9b16c065be8f0eacaeba51d3e72d332daf9..4624fffe1ec40a367a55c61180a02aa8642cf3ea 100644
+index 02dc93c394d37c9a84aa4a58d80615c403c54fb9..59d03240563e9e0a22677c2224ecbf10ca750b11 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -375,7 +375,13 @@ public abstract class PlayerList {
@@ -221,10 +221,10 @@ index cd08f9b16c065be8f0eacaeba51d3e72d332daf9..4624fffe1ec40a367a55c61180a02aa8
          ClientboundPlayerInfoPacket packet = new ClientboundPlayerInfoPacket(ClientboundPlayerInfoPacket.Action.ADD_PLAYER, player);
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index c014ff9dcbdf41fe6458c959980fe65e4ea47178..0eb333333aaeb113e370e2631a6cf60f9a6855d9 100644
+index d8445a770eaf1ad1422b0ed715a469cecc7355ce..5ba371474f6335fd187172e421d3f8e8a8d9756b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -243,6 +243,7 @@ import org.bukkit.scheduler.BukkitWorker;
+@@ -238,6 +238,7 @@ import org.bukkit.scheduler.BukkitWorker;
  import org.bukkit.structure.StructureManager;
  import org.bukkit.util.StringUtil;
  import org.bukkit.util.permissions.DefaultPermissions;
@@ -232,7 +232,7 @@ index c014ff9dcbdf41fe6458c959980fe65e4ea47178..0eb333333aaeb113e370e2631a6cf60f
  import org.yaml.snakeyaml.Yaml;
  import org.yaml.snakeyaml.constructor.SafeConstructor;
  import org.yaml.snakeyaml.error.MarkedYAMLException;
-@@ -2846,4 +2847,32 @@ public final class CraftServer implements Server {
+@@ -2877,4 +2878,32 @@ public final class CraftServer implements Server {
          return MinecraftServer.START_MILLIS;
      }
      // Crunchy end - Uptime API
@@ -266,10 +266,10 @@ index c014ff9dcbdf41fe6458c959980fe65e4ea47178..0eb333333aaeb113e370e2631a6cf60f
 +    // Crunchy end - Fake Player API
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 06b4135d3a684ef31c969b23d2349a6fef8a905f..e1b2eeafad07f8d0d9ed6c3987c3e5711d22e87e 100644
+index 603e9234294c01f1cde4bfc0b0053e69b99861d9..17600c4a1a8549c31ceaff936f6159ee3d8ff5bd 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -2661,6 +2661,67 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2708,6 +2708,67 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          return getHandle().connection != null ? getHandle().connection.getClientBrandName() : null;
      }
      // Paper end

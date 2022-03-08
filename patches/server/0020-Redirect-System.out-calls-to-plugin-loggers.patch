@@ -5,10 +5,10 @@ Subject: [PATCH] Redirect System.out calls to plugin loggers
 
 
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 04e4031d52d9b2cd9c36bfa96f340a00cdffde03..5a93266bd6fb91aca477d004b7102a3e70dbeacf 100644
+index a66a6956d0ae0a1877a50973d0b0fe594e17edca..e3c53600f35ff1a8c84afbc24e75227dc1bc7dbf 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -176,8 +176,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -179,8 +179,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
          */
          // Paper end
  
@@ -20,18 +20,17 @@ index 04e4031d52d9b2cd9c36bfa96f340a00cdffde03..5a93266bd6fb91aca477d004b7102a3e
  
          thread.setDaemon(true);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 0eb333333aaeb113e370e2631a6cf60f9a6855d9..dfdc34d874b33c4e9ebd81282af4cef20abce8a8 100644
+index 5ba371474f6335fd187172e421d3f8e8a8d9756b..efc142f2ab50d5fc6e92f3fade459d88b6c30d5a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -294,7 +294,7 @@ public final class CraftServer implements Server {
+@@ -284,6 +284,7 @@ public final class CraftServer implements Server {
      public int reloadCount;
      private final io.papermc.paper.datapack.PaperDatapackManager datapackManager; // Paper
      public static Exception excessiveVelEx; // Paper - Velocity warnings
--    private final SysoutCatcher sysoutCatcher = new SysoutCatcher(); // Paper
 +    //private final SysoutCatcher sysoutCatcher = new SysoutCatcher(); // Paper // Purpur - we have our own implementation that doesnt nag or prefix output
+     private final io.papermc.paper.logging.SysoutCatcher sysoutCatcher = new io.papermc.paper.logging.SysoutCatcher(); // Paper
+     private final CraftPotionBrewer potionBrewer = new CraftPotionBrewer(); // Paper
  
-     static {
-         ConfigurationSerialization.registerClass(CraftOfflinePlayer.class);
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurPrintStream.java b/src/main/java/org/purpurmc/purpur/PurpurPrintStream.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..f39c451f8877c7cb66fd4761006176107eceeac6

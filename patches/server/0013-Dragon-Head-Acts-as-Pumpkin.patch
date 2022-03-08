@@ -27,10 +27,10 @@ index 077ed729b1339f7d2694710a8685ec32716fd095..7127455c0527e42abf5ce0b91927fe4a
  
      // World Settings
 diff --git a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
-index d47002d45dabd66f38d25d398d8943f4b911cdc5..23bc2d1ddc060ff929cb7b86b6c0667c256f41da 100644
+index 4920f5465298b4da33b53f80b8af6220cb0e8ccc..6a14554cc9679860923e3079a008fa244eaf69b6 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
-@@ -237,7 +237,7 @@ public class EnderMan extends Monster implements NeutralMob {
+@@ -236,7 +236,7 @@ public class EnderMan extends Monster implements NeutralMob {
          // Paper end
          ItemStack itemstack = (ItemStack) player.getInventory().armor.get(3);
  

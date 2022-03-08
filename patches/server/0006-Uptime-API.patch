@@ -5,7 +5,7 @@ Subject: [PATCH] Uptime API
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 902c7b0cba49cb581d93dc1d70ec7e88bf2e36a1..ef46ddd04354de6e179eff7f74bd691da63a4fee 100644
+index 7c445b3604237ed9a5c4a692be44c8e718894679..c9cb210db299c4cd0a8ed6d2f778f927081aa62e 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -311,6 +311,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -18,10 +18,10 @@ index 902c7b0cba49cb581d93dc1d70ec7e88bf2e36a1..ef46ddd04354de6e179eff7f74bd691d
          AtomicReference<S> atomicreference = new AtomicReference();
          Thread thread = new Thread(() -> {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 9778081c9d0fc3238712d20090660c67ecc0678b..5ff0203a63c61380dbe58d1aa6aeed8e9804d674 100644
+index 705cba2a17bffa13f25b8bfe0f2050c1d91b6968..140779b155b2ecd232fecdae91e46387952bf6b8 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -2833,4 +2833,16 @@ public final class CraftServer implements Server {
+@@ -2863,4 +2863,16 @@ public final class CraftServer implements Server {
      }
  
      // Paper end
