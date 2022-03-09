@@ -42,10 +42,10 @@ index 01798255d45f2a642df00156f11dd2bcd8108079..fa86622bbb2744de2d947fd4f1e08e02
      inputs.files(apiAndDocs).ignoreEmptyDirectories().withPropertyName(apiAndDocs.name + "-configuration")
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/CrunchyUtil.java b/src/main/java/dev/mrfishcakes/crunchy/CrunchyUtil.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..af4cee5edbf3f826bb5e7803c83fd31cfc37d1e2
+index 0000000000000000000000000000000000000000..b8ed4bf03d8988e4e71dd582cc0de0516d2b1b6c
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/CrunchyUtil.java
-@@ -0,0 +1,32 @@
+@@ -0,0 +1,53 @@
 +package dev.mrfishcakes.crunchy;
 +
 +import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -65,14 +65,35 @@ index 0000000000000000000000000000000000000000..af4cee5edbf3f826bb5e7803c83fd31c
 +        throw new UnsupportedOperationException("CrunchyUtil cannot be initiated");
 +    }
 +
++    /**
++     * Send a message to the given {@link CommandSender}
++     *
++     * @param sender  Sender to message
++     * @param message Message to send
++     */
 +    public static void sendMessage(@NotNull CommandSender sender, @NotNull String message) {
 +        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', message.replaceAll("''", "'")));
 +    }
 +
++    /**
++     * Send a message to the given {@link CommandSender}
++     *
++     * @param miniMessage {@link MiniMessage} instance to pass
++     * @param sender      Sender to message
++     * @param message     Message to send
++     */
 +    public static void sendMessage(@NotNull MiniMessage miniMessage, @NotNull CommandSender sender, @NotNull String message) {
 +        sender.sendMessage(miniMessage.deserialize(message));
 +    }
 +
++    /**
++     * Send a message to the given {@link CommandSender}
++     *
++     * @param miniMessage {@link MiniMessage} instance to pass
++     * @param resolver    {@link TagResolver} for placeholders/tags
++     * @param sender      Sender to message
++     * @param message     Message to send
++     */
 +    public static void sendMessage(@NotNull MiniMessage miniMessage, @NotNull TagResolver resolver, @NotNull CommandSender sender, @NotNull String message) {
 +        sender.sendMessage(miniMessage.deserialize(message, resolver));
 +    }

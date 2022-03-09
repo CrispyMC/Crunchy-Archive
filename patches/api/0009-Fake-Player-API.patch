@@ -6,16 +6,19 @@ Subject: [PATCH] Fake Player API
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/event/player/FakePlayerEvent.java b/src/main/java/dev/mrfishcakes/crunchy/event/player/FakePlayerEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..006013bbcae75ca9f8601658642b32cdf35ca1aa
+index 0000000000000000000000000000000000000000..a7cecb46eab423b424f8df10bcd61fe45f75ca4d
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/event/player/FakePlayerEvent.java
-@@ -0,0 +1,20 @@
+@@ -0,0 +1,28 @@
 +package dev.mrfishcakes.crunchy.event.player;
 +
 +import dev.mrfishcakes.crunchy.player.FakePlayer;
 +import org.bukkit.event.Event;
 +import org.jetbrains.annotations.NotNull;
 +
++/**
++ * Event representing FakePlayers
++ */
 +public abstract class FakePlayerEvent extends Event {
 +
 +    protected FakePlayer player;
@@ -24,6 +27,11 @@ index 0000000000000000000000000000000000000000..006013bbcae75ca9f8601658642b32cd
 +        this.player = who;
 +    }
 +
++    /**
++     * Fetch the {@link FakePlayer} involved in the event
++     *
++     * @return Involved FakePlayer
++     */
 +    @NotNull
 +    public FakePlayer getPlayer() {
 +        return player;
@@ -32,16 +40,19 @@ index 0000000000000000000000000000000000000000..006013bbcae75ca9f8601658642b32cd
 +}
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/event/player/FakePlayerJoinEvent.java b/src/main/java/dev/mrfishcakes/crunchy/event/player/FakePlayerJoinEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..0e8e483509c84bb3fe235dbb4609aee81e77643a
+index 0000000000000000000000000000000000000000..199c2e3d4e6c8aadec90cdbbbcab80bcaeef0c44
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/event/player/FakePlayerJoinEvent.java
-@@ -0,0 +1,26 @@
+@@ -0,0 +1,29 @@
 +package dev.mrfishcakes.crunchy.event.player;
 +
 +import dev.mrfishcakes.crunchy.player.FakePlayer;
 +import org.bukkit.event.HandlerList;
 +import org.jetbrains.annotations.NotNull;
 +
++/**
++ * Event for when a {@link FakePlayer} joins the server
++ */
 +public class FakePlayerJoinEvent extends FakePlayerEvent {
 +
 +    private static final HandlerList HANDLERS = new HandlerList();
@@ -64,16 +75,19 @@ index 0000000000000000000000000000000000000000..0e8e483509c84bb3fe235dbb4609aee8
 +}
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/event/player/FakePlayerQuitEvent.java b/src/main/java/dev/mrfishcakes/crunchy/event/player/FakePlayerQuitEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..e8d5509a507cb661744828e92baab7727deb0316
+index 0000000000000000000000000000000000000000..ec4097f74b0f1adeafe5785e474b08332150cc3c
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/event/player/FakePlayerQuitEvent.java
-@@ -0,0 +1,26 @@
+@@ -0,0 +1,29 @@
 +package dev.mrfishcakes.crunchy.event.player;
 +
 +import dev.mrfishcakes.crunchy.player.FakePlayer;
 +import org.bukkit.event.HandlerList;
 +import org.jetbrains.annotations.NotNull;
 +
++/**
++ * Event for when a {@link FakePlayer} leaves the server
++ */
 +public class FakePlayerQuitEvent extends FakePlayerEvent {
 +
 +    private static final HandlerList HANDLERS = new HandlerList();
@@ -290,7 +304,7 @@ index 0000000000000000000000000000000000000000..4ffbed7957d11e1c1e03e8b3aa2734fd
 +
 +}
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 8eef858d67d61221554894ea032aa9e68295f03d..0d9a03b47632dfdb492e4aaba52d8536155894c5 100644
+index cde20f18c9d511ef9ab1dbb26fb1a8f8eb896127..afa32c183669574ef950902a8660f01eb3bba7d4 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
 @@ -2338,6 +2338,62 @@ public final class Bukkit {
@@ -353,14 +367,14 @@ index 8eef858d67d61221554894ea032aa9e68295f03d..0d9a03b47632dfdb492e4aaba52d8536
 +        return server.getJoinedFakePlayers();
 +    }
 +    // Crunch end - Fake Player API
- 
      @NotNull
      public static Server.Spigot spigot() {
+         return server.spigot();
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index f7cdd04f961af81b36570e206d97f3baab62e508..1b2f51a0556349c928cbb001e7b08576d345f37f 100644
+index c1c03a268318a37f42d74bc8c49bf4e2bb8c33bc..59b17b6af4e63669366eb9c32a28ff1445d49bc4 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -2038,4 +2038,54 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2037,4 +2037,54 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       */
      long getUptimeStart();
      // Crunchy end - Uptime API

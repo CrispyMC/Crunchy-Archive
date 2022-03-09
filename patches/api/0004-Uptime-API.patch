@@ -5,10 +5,10 @@ Subject: [PATCH] Uptime API
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 944f9b87a11472ac6d7e328acc00bf09f899e648..8eef858d67d61221554894ea032aa9e68295f03d 100644
+index 944f9b87a11472ac6d7e328acc00bf09f899e648..cde20f18c9d511ef9ab1dbb26fb1a8f8eb896127 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2308,6 +2308,37 @@ public final class Bukkit {
+@@ -2308,6 +2308,36 @@ public final class Bukkit {
      }
      // Paper end
  
@@ -42,19 +42,17 @@ index 944f9b87a11472ac6d7e328acc00bf09f899e648..8eef858d67d61221554894ea032aa9e6
 +        return server.getUptimeStart();
 +    }
 +    // Crunchy end - Uptime API
-+
      @NotNull
      public static Server.Spigot spigot() {
          return server.spigot();
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index a354dc32daa78f5f28f990ac58a8df2fb924c979..f7cdd04f961af81b36570e206d97f3baab62e508 100644
+index a354dc32daa78f5f28f990ac58a8df2fb924c979..c1c03a268318a37f42d74bc8c49bf4e2bb8c33bc 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -2011,4 +2011,31 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2011,4 +2011,30 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       */
      @NotNull org.bukkit.potion.PotionBrewer getPotionBrewer();
      // Paper end
-+
 +    // Crunchy start - Uptime API
 +    /**
 +     * Get the server uptime in milliseconds

@@ -6,10 +6,10 @@ Subject: [PATCH] Add PlayerBeheadEvent
 
 diff --git a/src/main/java/dev/mrfishcakes/crunchy/event/player/PlayerBeheadEvent.java b/src/main/java/dev/mrfishcakes/crunchy/event/player/PlayerBeheadEvent.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..53edeee8df13e2e343bbb2b30e6909b77c0dc115
+index 0000000000000000000000000000000000000000..52af97324ae0313b68a4422d1b5dfa59dfec07fa
 --- /dev/null
 +++ b/src/main/java/dev/mrfishcakes/crunchy/event/player/PlayerBeheadEvent.java
-@@ -0,0 +1,46 @@
+@@ -0,0 +1,64 @@
 +package dev.mrfishcakes.crunchy.event.player;
 +
 +import org.bukkit.entity.Player;
@@ -18,6 +18,9 @@ index 0000000000000000000000000000000000000000..53edeee8df13e2e343bbb2b30e6909b7
 +import org.bukkit.inventory.ItemStack;
 +import org.jetbrains.annotations.NotNull;
 +
++/**
++ * Event called when a {@link Player} is beheaded
++ */
 +public class PlayerBeheadEvent extends Event {
 +
 +    private static final HandlerList HANDLERS = new HandlerList();
@@ -32,14 +35,29 @@ index 0000000000000000000000000000000000000000..53edeee8df13e2e343bbb2b30e6909b7
 +        this.headItem = headItem;
 +    }
 +
++    /**
++     * Get the killer of the victim
++     *
++     * @return Victim's killer
++     */
 +    public Player getKiller() {
 +        return killer;
 +    }
 +
++    /**
++     * Get the victim
++     *
++     * @return Victim
++     */
 +    public Player getVictim() {
 +        return victim;
 +    }
 +
++    /**
++     * Get the {@link ItemStack} used to behead the victim
++     *
++     * @return {@link ItemStack} used to behead
++     */
 +    public ItemStack getItemStack() {
 +        return headItem;
 +    }
