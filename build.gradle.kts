@@ -77,3 +77,22 @@ paperweight {
         }
     }
 }
+
+tasks.generateDevelopmentBundle {
+    apiCoordinates.set("dev.mrfishcakes.crunchy:crunchy-api")
+    mojangApiCoordinates.set("io.papermc.paper:paper-mojangapi")
+    libraryRepositories.set(
+            listOf(
+                    "https://repo.maven.apache.org/maven2/",
+                    "https://libraries.minecraft.net/",
+                    "https://papermc.io/repo/repository/maven-public/",
+                    "https://maven.quiltmc.org/repository/release/",
+            )
+    )
+}
+
+publishing {
+    publications.create<MavenPublication>("devBundle") {
+        artifactId = "dev-bundle"
+    }
+}
