@@ -87,6 +87,7 @@ tasks.generateDevelopmentBundle {
                     "https://libraries.minecraft.net/",
                     "https://papermc.io/repo/repository/maven-public/",
                     "https://maven.quiltmc.org/repository/release/",
+                    "https://maven.mrfishcakes.dev/"
             )
     )
 }
