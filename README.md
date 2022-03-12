@@ -30,7 +30,7 @@ How To (Plugin Developers)
 <dependency>
     <groupId>dev.mrfishcakes.crunchy</groupId>
     <artifactId>crunchy-api</artifactId>
-    <version>1.18.1-R0.1-SNAPSHOT</version>
+    <version>1.18.2-R0.1-SNAPSHOT</version>
     <scope>provided</scope>
 </dependency>
  ```
@@ -46,7 +46,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("dev.mrfishcakes.crunchy:crunchy-api:1.18.1-R0.1-SNAPSHOT")
+    compileOnly("dev.mrfishcakes.crunchy:crunchy-api:1.18.2-R0.1-SNAPSHOT")
 }
 
 java {
@@ -67,8 +67,8 @@ Included Libraries/APIs
 ------
 Crunchy includes some different libraries and APIs that aren't bundled into CraftBukkit, Spigot or Paper. They can be found below with a link to the source code and license (Where applicable).
 
-|     Name    |                               Source Code                              |  License |
-|:-----------:|:----------------------------------------------------------------------:|:--------:|
-| H2 Database |                https://github.com/h2database/h2database                |  MPL 2.0 |
-|   HikariCP  |               https://github.com/brettwooldridge/HikariCP              | Apache 2 |
-| MiniMessage | https://github.com/KyoriPowered/adventure/tree/master/text-minimessage |    MIT   |
+|    Name     |                 Source Code                 |  License |
+|:-----------:|:-------------------------------------------:|:--------:|
+| H2 Database |  https://github.com/h2database/h2database   |  MPL 2.0 |
+|  HikariCP   | https://github.com/brettwooldridge/HikariCP | Apache 2 |
+|   OrmLite   |    https://github.com/j256/ormlite-core     |    ISC License   |
