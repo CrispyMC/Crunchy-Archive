@@ -53,6 +53,9 @@ java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 ```
+
+Crunchy does have a `dev-bundle` which can be used for CraftBukkit and Minecraft internals. More information can be found in Paper's example plugin [here](https://github.com/PaperMC/paperweight-test-plugin).
+
 How to compile from source
 ------
 To compile Crunchy, you need JDK 17 (Or later) and an internet connection.
