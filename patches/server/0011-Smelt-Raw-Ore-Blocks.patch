@@ -277,10 +277,10 @@ index 0000000000000000000000000000000000000000..0acadd183b514cbe24cab2bd2db9d7a7
 +
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index c9cb210db299c4cd0a8ed6d2f778f927081aa62e..4968841d5427cd1c3021640e40f5c9a6f3a189f6 100644
+index d81f3eb51e2856468f146587afedca96730938b1..622c6768c644bc14968c2231bdbe1a4819c30520 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1181,7 +1181,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1179,7 +1179,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                  String doneTime = String.format(java.util.Locale.ROOT, "%.3fs", (double) (Util.getNanos() - serverStartTime) / 1.0E9D);
                  LOGGER.info("Done ({})! For help, type \"help\"", doneTime);
                  // Paper end

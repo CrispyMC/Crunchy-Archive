@@ -5,10 +5,10 @@ Subject: [PATCH] Uptime API
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 7c445b3604237ed9a5c4a692be44c8e718894679..c9cb210db299c4cd0a8ed6d2f778f927081aa62e 100644
+index 940f20c9d9f791d34b90a0442847a83df30b8955..d81f3eb51e2856468f146587afedca96730938b1 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -311,6 +311,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -309,6 +309,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      public volatile Thread shutdownThread; // Paper
      public volatile boolean abnormalExit = false; // Paper
  
