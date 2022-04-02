@@ -17,7 +17,7 @@ if [ ! -z "paper" ]; then
     logsuffix="$logsuffix\n\nPaper Changes:\n$paper"
     updated="Paper"
 fi
-disclaimer="Upstream has released updates that appear to apply and compile correctly"
+disclaimer="Upstream has released updates that appear to apply and compile correctly\nDisclaimer: Crunchy has not tested these updates for bugs or other issues"
 
 log="${UP_LOG_PREFIX}Updated Upstream ($updated)\n\n${disclaimer}${logsuffix}"
 
