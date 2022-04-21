@@ -304,10 +304,10 @@ index 0000000000000000000000000000000000000000..4ffbed7957d11e1c1e03e8b3aa2734fd
 +
 +}
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index f33eef6e0a4c158cb088859bc9eaec771ad970ec..37701414b8b8876e35be45139176d7931b8a3fad 100644
+index f0c9ba11caf90225e4071da36e89fe27e65a1ecc..6468fa89fed8458faf39206c833fbd4209ee060b 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2348,6 +2348,62 @@ public final class Bukkit {
+@@ -2360,6 +2360,62 @@ public final class Bukkit {
          return server.getUptimeStart();
      }
      // Crunchy end - Uptime API
@@ -371,10 +371,10 @@ index f33eef6e0a4c158cb088859bc9eaec771ad970ec..37701414b8b8876e35be45139176d793
      public static Server.Spigot spigot() {
          return server.spigot();
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 8f48aacf8ca06a2db986a0e9f9781fbdc5b3de3e..1610bb1a2370730ea05185ef5d9a4c1b288306c6 100644
+index 95ff3eec18144f383dffce0664d6b4d924eaec49..0e92a1da6c6abaa0f021ea0767fd8315795a52cb 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -2047,4 +2047,54 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2060,4 +2060,54 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       */
      long getUptimeStart();
      // Crunchy end - Uptime API
@@ -430,10 +430,10 @@ index 8f48aacf8ca06a2db986a0e9f9781fbdc5b3de3e..1610bb1a2370730ea05185ef5d9a4c1b
 +    // Crunchy end - Fake Player API
  }
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index f954801f6a5d465b8545e75d7ff5af0352d6ec0d..fdac202888c02d9ecf434188f6fedd27c17cec7e 100644
+index 8ca135d2e3682581855399e7c6d07a2d13244600..2c91c279bae3e11ad509f226a08f0bc19c3bd717 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -2672,4 +2672,38 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -2696,4 +2696,38 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
      @Override
      Spigot spigot();
      // Spigot end

@@ -18,10 +18,10 @@ index 940f20c9d9f791d34b90a0442847a83df30b8955..d81f3eb51e2856468f146587afedca96
          AtomicReference<S> atomicreference = new AtomicReference();
          Thread thread = new Thread(() -> {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 6604607120b776a84112f351cab7958c86da7e73..5d10e0c2179de5c83998930deddbe7651291fb8f 100644
+index 27f2218684a530575d9709218031263d4f6dc9d4..e0b5a4d17ae738e5f54a3e79c8cc5bf9dbe6337a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -2868,4 +2868,16 @@ public final class CraftServer implements Server {
+@@ -2875,4 +2875,16 @@ public final class CraftServer implements Server {
      }
  
      // Paper end

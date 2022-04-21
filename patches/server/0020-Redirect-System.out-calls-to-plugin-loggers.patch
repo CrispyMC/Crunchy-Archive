@@ -5,7 +5,7 @@ Subject: [PATCH] Redirect System.out calls to plugin loggers
 
 
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index a66a6956d0ae0a1877a50973d0b0fe594e17edca..e3c53600f35ff1a8c84afbc24e75227dc1bc7dbf 100644
+index 8ab9674af216c241805907559b08300a48c02935..3b8aa1fa53d979be58d2b7061cdcc64d5974b9f4 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -179,8 +179,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -20,10 +20,10 @@ index a66a6956d0ae0a1877a50973d0b0fe594e17edca..e3c53600f35ff1a8c84afbc24e75227d
  
          thread.setDaemon(true);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 5ba371474f6335fd187172e421d3f8e8a8d9756b..efc142f2ab50d5fc6e92f3fade459d88b6c30d5a 100644
+index 5e00001ababf67b815271b46b53131c5d3abc253..7d3c422ff6ab01110b0c52113ff9840d643f733e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -284,6 +284,7 @@ public final class CraftServer implements Server {
+@@ -285,6 +285,7 @@ public final class CraftServer implements Server {
      public int reloadCount;
      private final io.papermc.paper.datapack.PaperDatapackManager datapackManager; // Paper
      public static Exception excessiveVelEx; // Paper - Velocity warnings

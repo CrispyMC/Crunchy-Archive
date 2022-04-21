@@ -5,10 +5,10 @@ Subject: [PATCH] Uptime API
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index c093ba024cfd951be1afc4100d899ed8f70ab003..f33eef6e0a4c158cb088859bc9eaec771ad970ec 100644
+index dcfd22862c79ae01ca7707d9abf0a71cc0d4ad9d..f0c9ba11caf90225e4071da36e89fe27e65a1ecc 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2318,6 +2318,36 @@ public final class Bukkit {
+@@ -2330,6 +2330,36 @@ public final class Bukkit {
      }
      // Paper end
  
@@ -46,10 +46,10 @@ index c093ba024cfd951be1afc4100d899ed8f70ab003..f33eef6e0a4c158cb088859bc9eaec77
      public static Server.Spigot spigot() {
          return server.spigot();
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 25627a90efbb18bffe8dfeb1c6e0f583786ba732..8f48aacf8ca06a2db986a0e9f9781fbdc5b3de3e 100644
+index d9b2420459529a48480789603cb8db534c37665c..95ff3eec18144f383dffce0664d6b4d924eaec49 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -2021,4 +2021,30 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2034,4 +2034,30 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       */
      @NotNull org.bukkit.potion.PotionBrewer getPotionBrewer();
      // Paper end
