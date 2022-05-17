@@ -1,3 +1,4 @@
+**This repsoitory is now archived, thank you for the good words!**
 
 Crunchy [![Crunchy Build Status](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fjenkins.mrfishcakes.dev%2Fjob%2FCrunchy%2F)](https://jenkins.mrfishcakes.dev/job/Crunchy/lastBuild) [![Discord](https://img.shields.io/discord/891090110140022875.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/xkSa7Jj2Ak)
 ===========
